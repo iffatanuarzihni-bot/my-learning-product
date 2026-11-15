@@ -362,13 +362,20 @@ function guruView(){
  <button type="submit">${TEKS.tambahMurid}</button></form></div>`+blocks;
 }
 let AC;
-function bip(f,d){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type="square";o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+(d||.12))}catch(e){}}
-const POKEDEX = [
- {id:25,name:"Pikachu"}, {id:1,name:"Bulbasaur"}, {id:4,name:"Charmander"},
- {id:133,name:"Eevee"}, {id:52,name:"Meowth"}, {id:39,name:"Jigglypuff"},
- {id:54,name:"Psyduck"}, {id:16,name:"Pidgey"}, {id:150,name:"Mewtwo"},
- {id:6,name:"Charizard"}, {id:7,name:"Squirtle"}
-];
+function bip(f,d){
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+    const o=AC.createOscillator(),
+    g=AC.createGain();
+    o.type="square";
+    o.frequency.value=f;
+    g.gain.value=.05;
+    o.connect(g);
+    g.connect(AC.destination);
+    o.start();
+    o.stop(AC.currentTime+(d||.12))
+  }catch(e){}
+}
 // Imej sprite Pokémon dimuatkan daripada repositori sprite awam PokeAPI.
 function pokemon(id,w,label){
  const size=w||100;
