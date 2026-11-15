@@ -29,7 +29,7 @@ function loginView(){
  <div class="q"><label for="p">Password</label><input id="p" name="p" type="password" autocomplete="current-password" required></div>
  <button type="submit">Sign in</button></form></div>`;
 }
-function top(title,sub){
+function topBar(title,sub){
  return `<div class="top"><div><h1 style="font-size:2rem">${esc(title)}</h1><div class="mut">${esc(sub)}</div></div><button class="ghost" onclick="logout()">Sign out</button></div>`;
 }
 const pct=s=>Math.round(Object.keys(s.p).length/LESSONS.length*100);
@@ -38,7 +38,7 @@ const avg=s=>{let a=0,b=0;for(const k in s.p){a+=s.p[k].s;b+=s.p[k].t}return b?M
 function adminView(){
  const rows=db.teachers.map(t=>`<tr><td>${esc(t.n)}</td><td>${esc(t.u)}</td><td>${db.students.filter(s=>s.t===t.id).length}</td><td><button class="ghost" onclick="delT('${t.id}')">Remove</button></td></tr>`).join("")
   ||`<tr><td colspan="4" class="mut">No Guru yet. Add the first one above.</td></tr>`;
- return top("Admin","Manage the Guru in your school")+note()+
+ return topBar("Admin","Manage the Guru in your school")+note()+
  `<div class="card"><h2>Add Guru</h2><form onsubmit="addT(event)" class="grid">
  <div><label for="n">Full name</label><input id="n" name="n" required></div>
  <div><label for="u">Username</label><input id="u" name="u" required></div>
@@ -56,7 +56,7 @@ function guruView(){
   <td>${avg(s)}</td><td><button class="ghost" onclick="delS('${s.id}')">Remove</button></td></tr>`).join("");
   return `<div class="card"><h2>Class ${esc(c)} <span class="tag">${mine.filter(s=>s.c===c).length} murid</span></h2><div class="scroll"><table><tr><th>Name</th><th>Username / password</th><th>Progress</th><th>Quiz score</th><th></th></tr>${rows}</table></div></div>`}).join("")
   ||`<div class="card mut">No murid yet. Add your first murid above and give them a class.</div>`;
- return top("Cikgu "+me.n,"Your classes and your murid")+note()+
+ return topBar("Cikgu "+me.n,"Your classes and your murid")+note()+
  `<div class="card"><h2>Add Murid</h2><form onsubmit="addS(event)" class="grid">
  <div><label for="n">Full name</label><input id="n" name="n" required></div>
  <div><label for="u">Username</label><input id="u" name="u" required></div>
@@ -67,7 +67,7 @@ function guruView(){
 function muridView(){
  const me=db.students.find(s=>s.id===S.id);if(!me){setTimeout(logout);return ""}
  const cards=LESSONS.map(l=>{const p=me.p[l.id];return `<div class="card"><div class="top" style="margin:0"><div><h2>${esc(l.title)}</h2><span class="tag">${esc(l.subject)}</span> ${p?`<span class="tag ok">Best score ${p.s}/${p.t}</span>`:""}</div><button onclick="openL('${l.id}')">${p?"Try again":"Start lesson"}</button></div></div>`}).join("");
- return top("Hello, "+me.n,"Class "+me.c)+`<div class="card"><b>Your progress: ${pct(me)}%</b><div class="bar" style="margin-top:.5rem"><i style="width:${pct(me)}%"></i></div></div>`+cards;
+ return topBar("Hello, "+me.n,"Class "+me.c)+`<div class="card"><b>Your progress: ${pct(me)}%</b><div class="bar" style="margin-top:.5rem"><i style="width:${pct(me)}%"></i></div></div>`+cards;
 }
 function lessonView(){
  const L=LESSONS.find(l=>l.id===lesson);
