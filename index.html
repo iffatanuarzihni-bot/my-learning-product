@@ -499,7 +499,136 @@ function finishB(){
  if(!old||B.ok>old.s)me.p[L.id]={s:B.ok,t:L.q.length};
  save();B.ph="end";render();window.scrollTo(0,0);
 }
+/* ================================
+   AKTIVITI POKÉMON LATAR
+================================ */
+
+const BG_POKEMON_ACTIVITY = {
+  "bg-pikachu": {
+    message: "Pikachu menggunakan Thunder Shock! ⚡",
+    className: "activity-bounce",
+    sound: 880
+  },
+
+  "bg-jigglypuff": {
+    message: "Jigglypuff menyanyi untuk anda! 🎵",
+    className: "activity-spin",
+    sound: 660
+  },
+
+  "bg-eevee": {
+    message: "Eevee sedang bergembira! ✨",
+    className: "activity-wiggle",
+    sound: 520
+  }
+};
+
+function showPokemonBubble(element, message) {
+  const oldBubble = document.querySelector(".pokemon-bubble");
+
+  if (oldBubble) {
+    oldBubble.remove();
+  }
+
+  const bubble = document.createElement("div");
+  bubble.className = "pokemon-bubble";
+  bubble.textContent = message;
+  document.body.appendChild(bubble);
+
+  const rect = element.getBoundingClientRect();
+  const bubbleWidth = 220;
+
+  let left = rect.left + rect.width / 2 - bubbleWidth / 2;
+  let top = rect.top - 60;
+
+  left = Math.max(8, Math.min(left, window.innerWidth - bubbleWidth - 8));
+  top = Math.max(8, top);
+
+  bubble.style.left = `${left}px`;
+  bubble.style.top = `${top}px`;
+
+  setTimeout(() => {
+    bubble.remove();
+  }, 2300);
+}
+
+function createPokemonSparks(element) {
+  const rect = element.getBoundingClientRect();
+  const symbols = ["✦", "✧", "⚡", "★", "✨"];
+
+  for (let i = 0; i < 5; i++) {
+    const spark = document.createElement("span");
+
+    spark.className = "pokemon-spark";
+    spark.textContent = symbols[i % symbols.length];
+    spark.style.left = `${rect.left + rect.width / 2}px`;
+    spark.style.top = `${rect.top + rect.height / 2}px`;
+    spark.style.setProperty("--spark-x", `${(Math.random() - .5) * 130}px`);
+    spark.style.setProperty("--spark-y", `${-30 - Math.random() * 90}px`);
+
+    document.body.appendChild(spark);
+
+    setTimeout(() => {
+      spark.remove();
+    }, 900);
+  }
+}
+
+function activateBackgroundPokemon(element) {
+  const activity = BG_POKEMON_ACTIVITY[element.id];
+
+  if (!activity) {
+    return;
+  }
+
+  element.classList.remove(
+    "activity-bounce",
+    "activity-spin",
+    "activity-wiggle"
+  );
+
+  /*
+   * Paksa browser memulakan animasi semula setiap kali Pokémon diklik.
+   */
+  void element.offsetWidth;
+
+  element.classList.add(activity.className);
+
+  showPokemonBubble(element, activity.message);
+  createPokemonSparks(element);
+
+  /*
+   * Fungsi bip() telah tersedia dalam kod asal anda.
+   */
+  if (typeof bip === "function") {
+    bip(activity.sound, .14);
+  }
+
+  setTimeout(() => {
+    element.classList.remove(activity.className);
+  }, 950);
+}
+
+function setupBackgroundPokemon() {
+  document.querySelectorAll(".bg-pokemon").forEach(element => {
+    element.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      activateBackgroundPokemon(element);
+    });
+
+    element.addEventListener("keydown", event => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        event.stopPropagation();
+        activateBackgroundPokemon(element);
+      }
+    });
+  });
+}
+
 seedDemo();
+setupBackgroundPokemon();
 render();
 </script>
 </body>
