@@ -3,45 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Belajar Digital</title>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<title>Dunia Monster Belajar</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#17233a;--mut:#5d6b82;--bg:#f2f5fb;--card:#fff;--line:#dbe2ef;--blue:#2b5fd9;--yel:#ffc933;--grn:#1f9d62;--red:#c93a3a}
+:root{--ink:#1b1740;--paper:#fff8e7;--pri:#7c4dff;--gold:#ffc933;--grn:#2ecc71;--red:#ff4d6d;--mut:#5b5680}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-h1,h2,h3{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.15;margin:0 0 .5rem}
-h1{font-size:2.6rem;font-weight:800}h2{font-size:1.4rem}
-.wrap{max-width:860px;margin:0 auto;padding:1.5rem 1rem 3rem}
-.mut{color:var(--mut)}
-button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:.6rem 1rem;background:var(--ink);color:#fff;font-weight:600}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-button.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-button.ghost:hover{border-color:var(--ink)}
-input{font:inherit;padding:.6rem .7rem;border:1.5px solid var(--line);border-radius:10px;width:100%;background:#fff}
-label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.2rem}
-.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem}
+body{margin:0;min-height:100vh;color:var(--ink);font:600 16px/1.5 "Baloo 2",system-ui,sans-serif;background:linear-gradient(#25156b,#4a2fb0 50%,#1e7fd6) fixed;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 140px 90px,#ffe9a0,transparent),radial-gradient(1.5px 1.5px at 80px 160px,#fff,transparent),radial-gradient(2px 2px at 200px 40px,#fff,transparent);background-size:240px 200px;animation:twinkle 2.5s ease-in-out infinite alternate}
+@keyframes twinkle{to{opacity:.25}}
+.wrap{position:relative;max-width:900px;margin:0 auto;padding:1.2rem 1rem 3rem;animation:pop .35s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}}
+h1,h2{margin:0 0 .5rem;line-height:1.3}
+h1{font:400 1.2rem/1.6 "Press Start 2P","Courier New",monospace;color:var(--gold);text-shadow:3px 3px 0 var(--ink),-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink)}
+h1.logo{font-size:1.5rem;text-align:center;animation:glow 2s ease-in-out infinite alternate}
+@keyframes glow{to{transform:scale(1.04) rotate(-1deg)}}
+h2{font-size:1.3rem;font-weight:800}
+.sub{color:#e6defc;text-align:center;margin:.2rem 0 1rem}
+.mut{color:var(--mut)}.top .mut{color:#e6defc}
+button{font:inherit;font-weight:800;cursor:pointer;border:3px solid var(--ink);border-radius:12px;padding:.55rem 1rem;background:var(--gold);color:var(--ink);box-shadow:0 5px 0 var(--ink);transition:transform .1s,box-shadow .1s}
+button:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--ink)}
+button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+button.ghost{background:#fff}
+button:focus-visible,input:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+input{font:inherit;padding:.55rem .7rem;border:3px solid var(--ink);border-radius:10px;width:100%;background:#fff;color:var(--ink)}
+label{display:block;font-weight:800;font-size:.9rem;margin-bottom:.2rem}
+.card{background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:1.1rem;margin-bottom:1.2rem;box-shadow:0 6px 0 rgba(0,0,0,.35)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;align-items:end}
-.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.tag{display:inline-block;padding:.1rem .6rem;border-radius:99px;font-size:.85rem;font-weight:700;background:#e4ecff;color:var(--blue)}
-.tag.ok{background:#dcf5e7;color:var(--grn)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.tag{display:inline-block;padding:0 .6rem;border:2px solid var(--ink);border-radius:99px;font-size:.8rem;font-weight:800;background:#d9ccff}
+.tag.ok{background:#b8f2cd}
 table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:.55rem .4rem;border-bottom:1px solid var(--line);vertical-align:middle}
-th{font-size:.9rem;color:var(--mut);font-weight:600}
+th,td{text-align:left;padding:.5rem .4rem;border-bottom:2px dashed #d9cfb5;vertical-align:middle}
+th{font-size:.85rem;color:var(--mut)}
 .scroll{overflow-x:auto}
-.bar{height:10px;background:#e8edf6;border-radius:9px;min-width:90px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--grn)}
-.err{background:#fde8e8;color:var(--red);padding:.6rem .8rem;border-radius:10px;margin-bottom:1rem;font-weight:600}
-.roles{display:grid;gap:.9rem;margin-top:2rem}
-.role{display:flex;align-items:stretch;text-align:left;padding:0;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
-.role:hover{border-color:var(--ink)}
-.role b{display:flex;align-items:center;justify-content:center;width:84px;font-size:2rem;flex:none}
-.role span{padding:1rem 1.2rem;display:block}
-.role strong{font:800 1.35rem "Baloo 2",system-ui,sans-serif;display:block}
-.q{margin:1.2rem 0}.q label{font-size:1rem}
-.opt{display:flex;gap:.6rem;align-items:center;font-weight:400;padding:.5rem .7rem;border:1.5px solid var(--line);border-radius:10px;margin:.4rem 0;cursor:pointer}
-.opt input{width:auto}
-.big{font:800 3rem "Baloo 2",system-ui,sans-serif}
-@media (max-width:520px){h1{font-size:2rem}.role b{width:64px}}
+.bar{height:16px;background:#e5dcc3;border:3px solid var(--ink);border-radius:99px;overflow:hidden;min-width:90px}
+.bar i{display:block;height:100%;background:linear-gradient(#5df29a,#1fb86b);transition:width .6s}
+.xp i{background:linear-gradient(#ffe066,#ffb300)}.hp.low i{background:linear-gradient(#ff8fa3,#ff4d6d)}
+.err{background:#ffe0e6;color:#b3173a;border:3px solid var(--ink);padding:.6rem .8rem;border-radius:12px;margin-bottom:1rem}
+.q{margin:1rem 0}
+.mon svg{display:block;margin:auto;max-width:100%;height:auto;filter:drop-shadow(0 6px 0 rgba(0,0,0,.2))}
+.sil svg{filter:brightness(0) opacity(.35)}
+.float{animation:bob 2.2s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.parade{display:flex;justify-content:center;gap:1rem;margin:.5rem 0 1rem}.parade .mon{width:90px}
+.roles{display:grid;gap:1rem;margin-top:1rem}
+.role{display:flex;align-items:center;gap:1rem;width:100%;text-align:left;padding:.7rem 1rem;background:var(--paper);box-shadow:0 6px 0 rgba(0,0,0,.35);border-radius:18px}
+.role .mon{width:80px;flex:none}.role strong{font-size:1.4rem;display:block}
+.role:hover .mon{animation:jump .5s}
+@keyframes jump{40%{transform:translateY(-16px) scale(1.08)}}
+.stage{display:flex;align-items:center;gap:1rem}.stage .mon{width:84px;flex:none}.grow{flex:1;min-width:0}
+.hud{display:flex;gap:1rem;align-items:center}.avatar{font-size:2.6rem}
+.strip{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.7rem}.strip .mon{width:46px}
+.arena{position:relative;height:290px;margin-bottom:1.2rem;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:linear-gradient(#8fd3ff 0 58%,#6fcf6f 58%);box-shadow:0 6px 0 rgba(0,0,0,.35)}
+.cloud{position:absolute;top:14%;font-size:2rem;animation:drift 16s linear infinite}
+@keyframes drift{from{left:-10%}to{left:105%}}
+.enemy{position:absolute;right:9%;top:48px;width:130px}
+.enemy:after{content:"";position:absolute;left:5%;right:5%;bottom:-8px;height:16px;border-radius:50%;background:rgba(0,0,0,.2);z-index:-1}
+.enemy .mon{animation:bob 2s ease-in-out infinite}
+.trainer{position:absolute;left:10%;bottom:14px;font-size:4rem;animation:bob 3s ease-in-out infinite}
+.plate{position:absolute;background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:.2rem .6rem;box-shadow:0 3px 0 rgba(0,0,0,.3)}
+.plate.en{left:4%;top:12px;width:46%}.plate.me{right:4%;bottom:12px}
+.hit{animation:hit .5s}.miss{animation:hit .4s}
+@keyframes hit{20%{transform:translateX(-12px);filter:brightness(2)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}}
+.miss:after{content:"";position:absolute;inset:0;background:rgba(255,0,60,.35);animation:flash .5s forwards}
+@keyframes flash{to{opacity:0}}
+.dmg{position:absolute;left:30%;top:-8px;font:400 1.2rem "Press Start 2P",monospace;color:var(--red);text-shadow:2px 2px 0 var(--ink);animation:up .9s forwards}
+@keyframes up{to{opacity:0;transform:translateY(-50px)}}
+.opts{display:grid;gap:.6rem;margin-top:.6rem}.opts.lock{pointer-events:none}
+.opts button{text-align:left;background:#fff}
+.opts .ok{background:var(--grn);color:#fff}.opts .no{background:var(--red);color:#fff}.opts .dim{opacity:.5}
+.bubble{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:.8rem 1rem;margin:.8rem 0;text-align:left}
+.center{text-align:center}.big{font:400 2.2rem "Press Start 2P",monospace;margin:.4rem 0}
+.capt{position:relative;height:150px;display:grid;place-items:center}
+.capt .mon{width:120px;opacity:0;animation:appear .5s 2s forwards}
+@keyframes appear{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+.orb{position:absolute;width:72px;height:72px;border-radius:50%;border:4px solid var(--ink);background:linear-gradient(var(--pri) 0 44%,var(--ink) 44% 56%,#fff 56%);animation:orb 2s ease-in-out forwards}
+.orb:after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;background:var(--gold);border:3px solid var(--ink)}
+@keyframes orb{0%{transform:translateY(-130px) scale(.5);opacity:0}20%{transform:none;opacity:1}35%{transform:rotate(-25deg)}50%{transform:rotate(25deg)}65%{transform:rotate(-25deg)}80%{transform:rotate(0)}100%{transform:scale(1.9);opacity:0}}
+.spark{position:absolute;font-size:1.6rem;opacity:0;animation:appear .6s 2.1s forwards,twinkle 1s 2.7s infinite alternate}
+.flee{width:120px;margin:0 auto;animation:flee 1.2s forwards}
+@keyframes flee{to{transform:translateX(220px) rotate(25deg);opacity:0}}
+@media (max-width:520px){h1.logo{font-size:1.05rem}.enemy{width:105px}.role .mon{width:64px}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 <body>
@@ -76,11 +119,11 @@ const DEMO = {
 const TEKS = {
  memuat:"Memuatkan Belajar Digital... Jika mesej ini kekal, skrip tidak berjalan.",
  ralat:"Sesuatu tidak kena:",
- tajuk:"Belajar Digital",
- pilih:"Pilih siapa anda untuk meneruskan.",
- admin:"Admin", adminHuraian:"Sediakan sekolah dan tambah Guru",
- guru:"Guru", guruHuraian:"Tambah Murid, susun kelas dan lihat kemajuan",
- murid:"Murid", muridHuraian:"Belajar pelajaran dan jawab kuiz",
+ tajuk:"Dunia Monster Belajar",
+ pilih:"Pilih watak anda untuk memulakan pengembaraan!",
+ admin:"Admin", adminHuraian:"Jaga dunia sekolah dan jemput Guru",
+ guru:"Guru", guruHuraian:"Latih Murid, susun kelas dan pantau kemajuan",
+ murid:"Murid", muridHuraian:"Belajar, bertarung dan tangkap monster!",
  kembali:"Kembali",
  logMasuk:"Log masuk", logKeluar:"Log keluar",
  namaPengguna:"Nama pengguna", kataLaluan:"Kata laluan",
@@ -108,7 +151,12 @@ const TEKS = {
  kembaliSenarai:"Kembali ke senarai pelajaran",
  demoTajuk:"Akaun demo untuk pensyarah",
  demoHuraian:"Gunakan akaun ini untuk mencuba semua fungsi. Klik \"Isi\" untuk mengisi borang log masuk secara automatik, atau salin nama pengguna dan kata laluan.",
- kolPeranan:"Peranan", isi:"Isi"
+ kolPeranan:"Peranan", isi:"Isi",
+ tahap:"Tahap", koleksi:"Koleksi monster", bertarung:"Bertarung!", mulaB:"Mula bertarung!",
+ liarMuncul:"liar muncul!", soalan:"Soalan", ditangkap:"Ditangkap!",
+ berjaya:"Hebat! Monster berjaya ditangkap!",
+ gagal:"Monster melarikan diri... Baca pelajaran sekali lagi dan cuba semula!",
+ syarat:"Jawab betul sekurang-kurangnya dua pertiga soalan untuk menangkap monster."
 };
 
 /* =====================================================================
@@ -116,13 +164,13 @@ const TEKS = {
    a = nombor jawapan betul (0 = pilihan pertama, 1 = kedua, 2 = ketiga)
    ===================================================================== */
 const LESSONS = [
- {id:"m1",title:"Tambah",subject:"Matematik",
+ {id:"m1",mon:{n:"Bolbol",c:"#ffcf33",k:0},title:"Tambah",subject:"Matematik",
   text:"Tambah bermaksud menggabungkan nombor. Jika anda ada 5 biji epal dan dapat 3 biji lagi, anda mengira 5 + 3 = 8 biji epal.",
   q:[{q:"4 + 6 = ?",o:["8","10","12"],a:1},{q:"7 + 5 = ?",o:["11","12","13"],a:1},{q:"9 + 9 = ?",o:["17","18","19"],a:1}]},
- {id:"s1",title:"Tumbuhan",subject:"Sains",
+ {id:"s1",mon:{n:"Daunik",c:"#4cd27a",k:1},title:"Tumbuhan",subject:"Sains",
   text:"Tumbuhan memerlukan cahaya matahari, air dan udara untuk membuat makanan sendiri. Akar menyerap air daripada tanah. Daun menggunakan cahaya matahari untuk membuat makanan.",
   q:[{q:"Bahagian manakah yang menyerap air?",o:["Akar","Daun","Bunga"],a:0},{q:"Bahagian manakah yang membuat makanan menggunakan cahaya matahari?",o:["Akar","Daun","Batang"],a:1},{q:"Apakah yang diperlukan tumbuhan untuk membuat makanan?",o:["Cahaya matahari","Gula","Plastik"],a:0}]},
- {id:"e1",title:"Kata Nama",subject:"Bahasa Melayu",
+ {id:"e1",mon:{n:"Kamusu",c:"#a78bfa",k:2},title:"Kata Nama",subject:"Bahasa Melayu",
   text:"Kata nama ialah nama bagi orang, tempat atau benda. Guru ialah orang. Kuala Lumpur ialah tempat. Buku ialah benda.",
   q:[{q:"Perkataan manakah ialah kata nama?",o:["Lari","Guru","Cepat"],a:1},{q:"Kuala Lumpur ialah...",o:["orang","tempat","benda"],a:1},{q:"Perkataan manakah ialah benda?",o:["Buku","Menyanyi","Gembira"],a:0}]}
 ];
@@ -169,8 +217,10 @@ const ROLES=[
  ["murid",TEKS.murid,"🎒","#ffc933","#17233a",TEKS.muridHuraian]];
 
 function home(){
- return `<h1>${TEKS.tajuk}</h1><p class="mut">${TEKS.pilih}</p><div class="roles">`+
- ROLES.map(r=>`<button class="role" onclick="pick('${r[0]}')"><b style="background:${r[3]};color:${r[4]}">${r[2]}</b><span><strong>${r[1]}</strong><span class="mut" style="padding:0">${r[5]}</span></span></button>`).join("")+`</div>`+demoBox();
+ const ic=[mon("#8e6cff",2,80),mon("#4cd27a",1,80),mon("#ffcf33",0,80)];
+ return `<h1 class="logo">${TEKS.tajuk}</h1><p class="sub">${TEKS.pilih}</p>
+ <div class="parade">${ic.map((m,i)=>`<div class="mon float" style="animation-delay:${i*.4}s">${m}</div>`).join("")}</div><div class="roles">`+
+ ROLES.map((r,i)=>`<button class="role" onclick="pick('${r[0]}');bip(660)"><div class="mon">${ic[i]}</div><span><strong>${r[1]}</strong><span class="mut">${r[5]}</span></span></button>`).join("")+`</div>`+demoBox();
 }
 function loginView(){
  const r=ROLES.find(x=>x[0]===loginRole);
@@ -214,16 +264,45 @@ function guruView(){
  <div><label for="c">${TEKS.kelas}</label><input id="c" name="c" list="cls" placeholder="${TEKS.contohKelas}" required><datalist id="cls">${classes.map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div>
  <button type="submit">${TEKS.tambahMurid}</button></form></div>`+blocks;
 }
+let AC;
+function bip(f,d){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type="square";o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+(d||.12))}catch(e){}}
+function mon(c,k,w){
+ const L='stroke="#1b1740" stroke-width="3"';
+ const f=k===0?`<path d="M28 42 L34 8 L52 34Z M92 42 L86 8 L68 34Z" fill="${c}" ${L}/>`:
+  k===1?`<path d="M60 40 C56 18 40 14 34 20 C38 32 50 40 60 40Z M60 40 C64 18 80 14 86 20 C82 32 70 40 60 40Z" fill="#35c46b" ${L}/>`:
+  `<path d="M36 38 L30 12 L50 30Z M84 38 L90 12 L70 30Z" fill="#fff" ${L}/><circle cx="60" cy="44" r="5" fill="#ffc933" ${L}/>`;
+ return `<svg viewBox="0 0 120 120" width="${w||110}" aria-hidden="true">${f}<ellipse cx="60" cy="74" rx="40" ry="34" fill="${c}" ${L}/><ellipse cx="60" cy="86" rx="22" ry="17" fill="#fff" opacity=".6"/><circle cx="45" cy="68" r="9" fill="#fff" stroke="#1b1740" stroke-width="2"/><circle cx="75" cy="68" r="9" fill="#fff" stroke="#1b1740" stroke-width="2"/><circle cx="47" cy="69" r="4.5" fill="#1b1740"/><circle cx="73" cy="69" r="4.5" fill="#1b1740"/><circle cx="32" cy="82" r="5" fill="#ff8fa3" opacity=".8"/><circle cx="88" cy="82" r="5" fill="#ff8fa3" opacity=".8"/><path d="M52 84 Q60 92 68 84" fill="none" stroke="#1b1740" stroke-width="3" stroke-linecap="round"/></svg>`}
+const monOf=l=>l.mon||{n:"Monster",c:"#7c4dff",k:0};
+const need=L=>Math.ceil(L.q.length*2/3);
+const lessonObj=()=>LESSONS.find(l=>l.id===lesson);
+let B=null;
+
 function muridView(){
  const me=db.students.find(s=>s.id===S.id);if(!me){setTimeout(logout);return ""}
- const cards=LESSONS.map(l=>{const p=me.p[l.id];return `<div class="card"><div class="top" style="margin:0"><div><h2>${esc(l.title)}</h2><span class="tag">${esc(l.subject)}</span> ${p?`<span class="tag ok">${TEKS.skorTerbaik} ${p.s}/${p.t}</span>`:""}</div><button onclick="openL('${l.id}')">${p?TEKS.cubaLagi:TEKS.mulaPelajaran}</button></div></div>`}).join("");
- return topBar(TEKS.helo+" "+me.n,TEKS.kelas+" "+me.c)+`<div class="card"><b>${TEKS.kemajuanAnda} ${pct(me)}%</b><div class="bar" style="margin-top:.5rem"><i style="width:${pct(me)}%"></i></div></div>`+cards;
+ const got=l=>me.p[l.id]&&me.p[l.id].s>=need(l);
+ const xp=Object.values(me.p).reduce((a,x)=>a+x.s*10,0),lv=1+Math.floor(xp/30);
+ const strip=LESSONS.map(l=>{const m=monOf(l);return `<div class="mon ${got(l)?"float":"sil"}" title="${esc(m.n)}">${mon(m.c,m.k,46)}</div>`}).join("");
+ const cards=LESSONS.map(l=>{const p=me.p[l.id],m=monOf(l);return `<div class="card stage"><div class="mon ${got(l)?"":"sil"}">${mon(m.c,m.k,84)}</div><div class="grow"><h2>${esc(l.title)}</h2><span class="tag">${esc(l.subject)}</span> ${p?`<span class="tag ok">${TEKS.skorTerbaik} ${p.s}/${p.t}</span>`:""} ${got(l)?`<span class="tag ok">${TEKS.ditangkap}</span>`:""}</div><button onclick="openL('${l.id}')">${p?TEKS.cubaLagi:TEKS.bertarung}</button></div>`}).join("");
+ return topBar(TEKS.helo+" "+me.n,TEKS.kelas+" "+me.c)+
+ `<div class="card"><div class="hud"><div class="avatar">🧒</div><div class="grow"><b>${TEKS.tahap} ${lv} · XP ${xp}</b><div class="bar xp"><i style="width:${xp%30/30*100}%"></i></div><small class="mut">${TEKS.kemajuanAnda} ${pct(me)}%</small></div></div><div class="strip" aria-label="${TEKS.koleksi}">${strip}</div></div>`+cards;
 }
 function lessonView(){
- const L=LESSONS.find(l=>l.id===lesson);
- if(result!==null)return `<div class="card" style="text-align:center"><h2>${esc(L.title)}</h2><div class="big">${result}/${L.q.length}</div><p>${result===L.q.length?TEKS.sempurna:TEKS.cubaSemula}</p><button onclick="closeL()">${TEKS.kembaliSenarai}</button></div>`;
- return `<button class="ghost" onclick="closeL()">${TEKS.kembali}</button><div class="card" style="margin-top:1rem"><h2>${esc(L.title)}</h2><p>${esc(L.text)}</p></div>
- <form class="card" onsubmit="submitQ(event)"><h2>${TEKS.kuiz}</h2>`+L.q.map((q,i)=>`<div class="q"><label>${i+1}. ${esc(q.q)}</label>`+q.o.map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}" required> ${esc(o)}</label>`).join("")+`</div>`).join("")+`<button type="submit">${TEKS.semak}</button></form>`;
+ const L=lessonObj(),m=monOf(L),mm=mon(m.c,m.k,120);
+ if(B.ph==="learn")return `<button class="ghost" onclick="closeL()">${TEKS.kembali}</button>
+ <div class="card center" style="margin-top:1rem"><div class="mon float" style="width:130px;margin:0 auto">${mon(m.c,m.k,130)}</div><h2>${esc(m.n)} ${TEKS.liarMuncul}</h2><span class="tag">${esc(L.title)}</span>
+ <p class="bubble">${esc(L.text)}</p><p class="mut">${TEKS.syarat}</p><button onclick="startB()">${TEKS.mulaB}</button></div>`;
+ if(B.ph==="end"){const won=B.ok>=need(L);
+  return `<div class="card center"><h2>${esc(L.title)}</h2><div class="big">${B.ok}/${L.q.length}</div>`+
+  (won?`<div class="capt"><div class="orb"></div><div class="mon">${mm}</div><span class="spark" style="left:18%;top:10%">✨</span><span class="spark" style="right:18%;top:20%">⭐</span></div><p><b>${TEKS.berjaya}</b></p>`
+      :`<div class="mon flee">${mm}</div><p>${TEKS.gagal}</p>`)+
+  `<button onclick="closeL()">${TEKS.kembaliSenarai}</button></div>`}
+ const q=L.q[B.q],fb=B.fb,hp=Math.round((1-B.ok/L.q.length)*100);
+ return `<div class="arena${fb&&!fb.right?" miss":""}"><i class="cloud">☁️</i>
+ <div class="plate en"><b>${esc(m.n)}</b> <small>HP</small><div class="bar hp${hp<40?" low":""}"><i style="width:${hp}%"></i></div></div>
+ <div class="enemy"><div class="${fb&&fb.right?"hit":""}">${mm}</div>${fb&&fb.right?`<span class="dmg">-${Math.round(100/L.q.length)}</span>`:""}</div>
+ <div class="trainer">🧒</div><div class="plate me">${"❤️".repeat(B.hp)}${"🖤".repeat(3-B.hp)}</div></div>
+ <div class="card"><span class="tag">${TEKS.soalan} ${B.q+1}/${L.q.length}</span><h2 style="margin-top:.5rem">${esc(q.q)}</h2>
+ <div class="opts${fb?" lock":""}">`+q.o.map((o,j)=>`<button class="${fb?(j===q.a?"ok":j===fb.j?"no":"dim"):""}" onclick="answer(${j})">${esc(o)}</button>`).join("")+`</div></div>`;
 }
 
 function render(){
@@ -237,7 +316,7 @@ function render(){
 const pick=r=>{loginRole=r;msg="";render()};
 const demoFill=(r,u,p)=>{loginRole=r;prefill={u:u,p:p};msg="";render();window.scrollTo(0,0)};
 const back=()=>{loginRole=null;render()};
-const logout=()=>{loginRole=null;lesson=null;result=null;setS(null)};
+const logout=()=>{loginRole=null;lesson=null;B=null;result=null;setS(null)};
 function login(e){
  e.preventDefault();const f=e.target,p=f.p.value,u=f.u?f.u.value.trim().toLowerCase():"";
  if(loginRole==="admin"){if(p===ADMIN_PASS)return setS({role:"admin"})}
@@ -263,14 +342,19 @@ function delS(id){
  if(!confirm(TEKS.buangMuridTanya))return;
  db.students=db.students.filter(x=>x.id!==id);save();render();
 }
-const openL=id=>{lesson=id;result=null;render();window.scrollTo(0,0)};
-const closeL=()=>{lesson=null;result=null;render()};
-function submitQ(e){
- e.preventDefault();const L=LESSONS.find(l=>l.id===lesson);let sc=0;
- L.q.forEach((q,i)=>{const c=e.target.querySelector(`input[name=q${i}]:checked`);if(c&&+c.value===q.a)sc++});
- const me=db.students.find(s=>s.id===S.id),old=me.p[L.id];
- if(!old||sc>old.s)me.p[L.id]={s:sc,t:L.q.length};
- save();result=sc;render();window.scrollTo(0,0);
+function openL(id){lesson=id;B={ph:"learn",q:0,ok:0,hp:3,fb:null};render();window.scrollTo(0,0)}
+function closeL(){lesson=null;B=null;render()}
+function startB(){bip(520);B.ph="fight";render()}
+function answer(j){
+ if(!B||B.fb)return;const L=lessonObj(),q=L.q[B.q],right=j===q.a;
+ B.fb={j,right};if(right){B.ok++;bip(880,.15)}else{B.hp--;bip(150,.25)}
+ render();
+ setTimeout(()=>{if(!B)return;B.fb=null;B.q++;if(B.q>=L.q.length||B.hp<=0)finishB();else render()},900);
+}
+function finishB(){
+ const L=lessonObj(),me=db.students.find(s=>s.id===S.id),old=me.p[L.id];
+ if(!old||B.ok>old.s)me.p[L.id]={s:B.ok,t:L.q.length};
+ save();B.ph="end";render();window.scrollTo(0,0);
 }
 seedDemo();
 render();
