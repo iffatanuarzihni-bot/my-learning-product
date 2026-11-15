@@ -3,108 +3,440 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dunia Monster Belajar</title>
+<title>Kisah Bawah Tanah: Dunia Monster</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#1b1740;--paper:#fff8e7;--pri:#7c4dff;--gold:#ffc933;--grn:#2ecc71;--red:#ff4d6d;--mut:#5b5680}
+:root{
+  --ink:#eef2ff;
+  --dark:#0c1020;
+  --paper:#161c33;
+  --paper2:#1e2645;
+  --line:#33416e;
+  --pri:#38bdf8;
+  --gold:#fbbf24;
+  --grn:#2dd4bf;
+  --red:#fb7185;
+  --mut:#94a3b8;
+  --glow:0 0 18px rgba(56,189,248,.32);
+}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:var(--ink);font:600 16px/1.5 "Baloo 2",system-ui,sans-serif;background:linear-gradient(#25156b,#4a2fb0 50%,#1e7fd6) fixed;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 140px 90px,#ffe9a0,transparent),radial-gradient(1.5px 1.5px at 80px 160px,#fff,transparent),radial-gradient(2px 2px at 200px 40px,#fff,transparent);background-size:240px 200px;animation:twinkle 2.5s ease-in-out infinite alternate}
-@keyframes twinkle{to{opacity:.25}}
-.wrap{position:relative;max-width:900px;margin:0 auto;padding:1.2rem 1rem 3rem;animation:pop .35s ease-out}
-@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}}
-h1,h2{margin:0 0 .5rem;line-height:1.3}
-h1{font:400 1.2rem/1.6 "Press Start 2P","Courier New",monospace;color:var(--gold);text-shadow:3px 3px 0 var(--ink),-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink)}
-h1.logo{font-size:1.5rem;text-align:center;animation:glow 2s ease-in-out infinite alternate}
-@keyframes glow{to{transform:scale(1.04) rotate(-1deg)}}
-h2{font-size:1.3rem;font-weight:800}
-.sub{color:#e6defc;text-align:center;margin:.2rem 0 1rem}
-.mut{color:var(--mut)}.top .mut{color:#e6defc}
-button{font:inherit;font-weight:800;cursor:pointer;border:3px solid var(--ink);border-radius:12px;padding:.55rem 1rem;background:var(--gold);color:var(--ink);box-shadow:0 5px 0 var(--ink);transition:transform .1s,box-shadow .1s}
-button:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--ink)}
-button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
-button.ghost{background:#fff}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font:600 16px/1.55 "Baloo 2",system-ui,sans-serif;
+  background-color:#070913;
+  background-image:
+    radial-gradient(circle at 18% 15%, rgba(56,189,248,.16) 0%, transparent 42%),
+    radial-gradient(circle at 82% 22%, rgba(251,191,36,.13) 0%, transparent 38%),
+    radial-gradient(circle at 50% 92%, rgba(45,212,191,.14) 0%, transparent 48%),
+    linear-gradient(180deg,#090b16 0%,#10162b 55%,#070913 100%);
+  background-attachment:fixed;
+  overflow-x:hidden;
+}
+/* Lapisan animasi latar belakang gua bawah tanah */
+#bgCanvas{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.cavern-top{
+  position:fixed;top:0;left:0;right:0;height:46px;pointer-events:none;z-index:1;opacity:.65;
+  background:
+    linear-gradient(135deg,#05070f 25%,transparent 25%) -20px 0/40px 40px,
+    linear-gradient(225deg,#05070f 25%,transparent 25%) -20px 0/40px 40px;
+}
+.cavern-mist{
+  position:fixed;left:-20%;right:-20%;bottom:-40px;height:180px;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse at center,rgba(45,212,191,.14),transparent 70%);
+  animation:mistMove 10s ease-in-out infinite alternate;
+}
+@keyframes mistMove{from{transform:translateX(-4%) scaleY(1)}to{transform:translateX(4%) scaleY(1.15)}}
+
+.wrap{position:relative;z-index:2;max-width:920px;margin:0 auto;padding:1rem 1rem 3.5rem;animation:pop .35s ease-out}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}}
+
+/* Bar Kawalan Audio Game */
+.audio-bar{display:flex;justify-content:flex-end;gap:.5rem;margin-bottom:.8rem;flex-wrap:wrap}
+.pill-btn{
+  font:700 .85rem "Baloo 2",sans-serif;
+  padding:.3rem .75rem;
+  border-radius:99px;
+  background:rgba(22,28,51,.9);
+  color:var(--ink);
+  border:2px solid var(--line);
+  box-shadow:0 3px 0 #05070f;
+}
+.pill-btn.on{border-color:var(--grn);color:var(--grn);box-shadow:0 3px 0 #05070f,0 0 12px rgba(45,212,191,.25)}
+
+h1,h2,h3{margin:0 0 .5rem;line-height:1.3}
+h1{
+  font:400 1.2rem/1.55 "Press Start 2P","Courier New",monospace;
+  color:var(--gold);
+  text-shadow:3px 3px 0 #05070f,-2px -2px 0 #05070f,0 0 16px rgba(251,191,36,.45);
+}
+h1.logo{font-size:1.38rem;text-align:center;animation:glow 2.2s ease-in-out infinite alternate}
+@keyframes glow{to{transform:scale(1.03);text-shadow:3px 3px 0 #05070f,0 0 24px rgba(56,189,248,.65)}}
+h2{font-size:1.35rem;font-weight:800;color:var(--gold)}
+.sub{color:#cbd5e1;text-align:center;margin:.3rem 0 1.1rem}
+.mut{color:var(--mut)}
+
+/* Butang RPG 3D */
+button{
+  font:inherit;font-weight:800;cursor:pointer;
+  border:2px solid #05070f;border-radius:12px;padding:.58rem 1.05rem;
+  background:linear-gradient(180deg,#fbbf24,#d97706);
+  color:#0c1020;
+  box-shadow:0 5px 0 #78350f,0 6px 16px rgba(251,191,36,.25);
+  transition:transform .12s,box-shadow .12s,filter .15s;
+}
+button:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 7px 0 #78350f,0 10px 20px rgba(251,191,36,.35)}
+button:active{transform:translateY(4px);box-shadow:0 1px 0 #78350f}
+button.ghost{
+  background:linear-gradient(180deg,#1e2645,#141a30);
+  color:var(--ink);
+  border:2px solid var(--line);
+  box-shadow:0 4px 0 #05070f;
+}
+button.ghost:hover{border-color:var(--pri);color:var(--pri);box-shadow:0 6px 0 #05070f,var(--glow)}
+button.cyan{
+  background:linear-gradient(180deg,#38bdf8,#0284c7);
+  color:#061224;
+  box-shadow:0 5px 0 #075985,0 6px 16px rgba(56,189,248,.3);
+}
 button:focus-visible,input:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
-input{font:inherit;padding:.55rem .7rem;border:3px solid var(--ink);border-radius:10px;width:100%;background:#fff;color:var(--ink)}
-label{display:block;font-weight:800;font-size:.9rem;margin-bottom:.2rem}
-.card{background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:1.1rem;margin-bottom:1.2rem;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+
+input{
+  font:inherit;padding:.58rem .75rem;
+  border:2px solid var(--line);border-radius:10px;width:100%;
+  background:#0a0e1c;color:var(--ink);
+  transition:border-color .2s,box-shadow .2s;
+}
+input:focus{border-color:var(--pri);box-shadow:var(--glow)}
+label{display:block;font-weight:800;font-size:.9rem;margin-bottom:.25rem;color:#cbd5e1}
+
+/* Kad Batu Obsidian */
+.card{
+  background:linear-gradient(165deg,rgba(28,36,66,.94),rgba(14,19,36,.97));
+  border:2px solid var(--line);
+  border-radius:18px;padding:1.15rem;margin-bottom:1.2rem;
+  box-shadow:0 8px 0 rgba(5,7,15,.85),0 14px 28px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter:blur(6px);
+}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;align-items:end}
 .top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap}
-.tag{display:inline-block;padding:0 .6rem;border:2px solid var(--ink);border-radius:99px;font-size:.8rem;font-weight:800;background:#d9ccff}
-.tag.ok{background:#b8f2cd}
+
+.tag{
+  display:inline-block;padding:.1rem .65rem;
+  border:1.5px solid rgba(56,189,248,.5);border-radius:99px;
+  font-size:.8rem;font-weight:800;background:rgba(56,189,248,.14);color:var(--pri);
+}
+.tag.ok{background:rgba(45,212,191,.16);color:var(--grn);border-color:rgba(45,212,191,.55)}
+.tag.zone{background:rgba(251,191,36,.15);color:var(--gold);border-color:rgba(251,191,36,.5)}
+
 table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:.5rem .4rem;border-bottom:2px dashed #d9cfb5;vertical-align:middle}
-th{font-size:.85rem;color:var(--mut)}
+th,td{text-align:left;padding:.55rem .45rem;border-bottom:1.5px dashed var(--line);vertical-align:middle}
+th{font-size:.85rem;color:var(--gold);text-transform:uppercase;letter-spacing:.4px}
+tr:hover td{background:rgba(56,189,248,.05)}
 .scroll{overflow-x:auto}
-.bar{height:16px;background:#e5dcc3;border:3px solid var(--ink);border-radius:99px;overflow:hidden;min-width:90px}
-.bar i{display:block;height:100%;background:linear-gradient(#5df29a,#1fb86b);transition:width .6s}
-.xp i{background:linear-gradient(#ffe066,#ffb300)}.hp.low i{background:linear-gradient(#ff8fa3,#ff4d6d)}
-.err{background:#ffe0e6;color:#b3173a;border:3px solid var(--ink);padding:.6rem .8rem;border-radius:12px;margin-bottom:1rem}
+
+/* Bar HP & XP Kristal Bercahaya */
+.bar{height:16px;background:#080b16;border:2px solid var(--line);border-radius:99px;overflow:hidden;min-width:90px;box-shadow:inset 0 2px 5px rgba(0,0,0,.7)}
+.bar i{
+  display:block;height:100%;
+  background:linear-gradient(90deg,#10b981,#2dd4bf,#38bdf8,#2dd4bf);
+  background-size:200% 100%;
+  animation:shine 2.5s linear infinite;
+  transition:width .55s ease;
+}
+.xp i{background:linear-gradient(90deg,#f59e0b,#fde047,#fbbf24);background-size:200% 100%}
+.hp.low i{background:linear-gradient(90deg,#e11d48,#fb7185,#fda4af);background-size:200% 100%}
+@keyframes shine{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+.err{
+  background:rgba(251,113,133,.15);color:var(--red);
+  border:2px solid var(--red);padding:.65rem .9rem;border-radius:12px;margin-bottom:1rem;
+}
 .q{margin:1rem 0}
-.mon svg{display:block;margin:auto;max-width:100%;height:auto;filter:drop-shadow(0 6px 0 rgba(0,0,0,.2))}
-.sil svg{filter:brightness(0) opacity(.35)}
+
+.mon svg{display:block;margin:auto;max-width:100%;height:auto;filter:drop-shadow(0 6px 10px rgba(0,0,0,.55))}
+.sil svg{filter:brightness(0) invert(.12) drop-shadow(0 0 4px rgba(56,189,248,.4))}
 .float{animation:bob 2.2s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-10px)}}
-.parade{display:flex;justify-content:center;gap:1rem;margin:.5rem 0 1rem}.parade .mon{width:90px}
-.roles{display:grid;gap:1rem;margin-top:1rem}
-.role{display:flex;align-items:center;gap:1rem;width:100%;text-align:left;padding:.7rem 1rem;background:var(--paper);box-shadow:0 6px 0 rgba(0,0,0,.35);border-radius:18px}
-.role .mon{width:80px;flex:none}.role strong{font-size:1.4rem;display:block}
+.parade{display:flex;justify-content:center;gap:1.2rem;margin:.6rem 0 1.2rem}
+.parade .mon{width:92px;cursor:pointer;transition:transform .2s}
+.parade .mon:hover{transform:scale(1.12)}
+
+/* Kad Pemilihan Peranan */
+.roles{display:grid;gap:.95rem;margin-top:1rem}
+.role{
+  display:flex;align-items:center;gap:1rem;width:100%;text-align:left;
+  padding:.75rem 1.05rem;
+  background:linear-gradient(155deg,#1d2544,#12172c);
+  color:var(--ink);border:2px solid var(--line);
+  box-shadow:0 6px 0 #05070f;border-radius:18px;
+}
+.role:hover{border-color:var(--gold);box-shadow:0 8px 0 #05070f,0 0 22px rgba(251,191,36,.25)}
+.role .mon{width:78px;flex:none}
+.role strong{font-size:1.38rem;display:block;color:var(--gold)}
 .role:hover .mon{animation:jump .5s}
-@keyframes jump{40%{transform:translateY(-16px) scale(1.08)}}
-.stage{display:flex;align-items:center;gap:1rem}.stage .mon{width:84px;flex:none}.grow{flex:1;min-width:0}
-.hud{display:flex;gap:1rem;align-items:center}.avatar{font-size:2.6rem}
-.strip{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.7rem}.strip .mon{width:46px}
-.arena{position:relative;height:290px;margin-bottom:1.2rem;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:linear-gradient(#8fd3ff 0 58%,#6fcf6f 58%);box-shadow:0 6px 0 rgba(0,0,0,.35)}
-.cloud{position:absolute;top:14%;font-size:2rem;animation:drift 16s linear infinite}
-@keyframes drift{from{left:-10%}to{left:105%}}
-.enemy{position:absolute;right:9%;top:48px;width:130px}
-.enemy:after{content:"";position:absolute;left:5%;right:5%;bottom:-8px;height:16px;border-radius:50%;background:rgba(0,0,0,.2);z-index:-1}
+@keyframes jump{40%{transform:translateY(-14px) scale(1.08)}}
+
+/* Peta Pengembaraan Bawah Tanah (Murid) */
+.quest-trail{position:relative;display:grid;gap:1rem}
+.stage{display:flex;align-items:center;gap:1rem;position:relative;transition:border-color .2s,transform .2s}
+.stage:hover{border-color:var(--pri);transform:translateY(-2px)}
+.stage .mon{width:84px;flex:none}
+.grow{flex:1;min-width:0}
+.hud{display:flex;gap:1rem;align-items:center}
+.avatar{
+  font-size:2.4rem;width:62px;height:62px;display:grid;place-items:center;
+  border-radius:16px;background:radial-gradient(circle,#1e293b,#090d1a);
+  border:2px solid var(--gold);box-shadow:0 0 14px rgba(251,191,36,.25);
+}
+.strip{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.8rem;padding-top:.7rem;border-top:1px dashed var(--line)}
+.strip .mon{width:50px;cursor:pointer;transition:transform .2s}
+.strip .mon:hover{transform:scale(1.18) rotate(-4deg)}
+
+/* Arena Pertempuran Gua Bawah Tanah */
+.arena{
+  position:relative;height:305px;margin-bottom:1.2rem;
+  border:3px solid var(--line);border-radius:18px;overflow:hidden;
+  background:
+    radial-gradient(circle at 75% 32%,rgba(56,189,248,.22),transparent 42%),
+    radial-gradient(circle at 20% 70%,rgba(251,191,36,.16),transparent 40%),
+    linear-gradient(180deg,#0b1024 0%,#162044 58%,#1a162b 58%,#0d0f1d 100%);
+  box-shadow:0 8px 0 #05070f,inset 0 0 35px rgba(0,0,0,.6);
+}
+.arena-stalactites{
+  position:absolute;top:0;left:0;right:0;height:36px;pointer-events:none;
+  background:
+    linear-gradient(135deg,#060812 25%,transparent 25%) -16px 0/32px 32px,
+    linear-gradient(225deg,#060812 25%,transparent 25%) -16px 0/32px 32px;
+}
+.cave-bat{position:absolute;top:15%;font-size:1.4rem;opacity:.75;animation:drift 13s linear infinite}
+.cave-gem{position:absolute;font-size:1.5rem;opacity:.85;animation:bob 3s ease-in-out infinite}
+@keyframes drift{from{left:-10%;transform:translateY(0)}50%{transform:translateY(10px)}to{left:108%;transform:translateY(-6px)}}
+
+.enemy{position:absolute;right:9%;top:54px;width:132px;z-index:2}
+.enemy:after{content:"";position:absolute;left:5%;right:5%;bottom:-8px;height:16px;border-radius:50%;background:rgba(0,0,0,.45);z-index:-1}
 .enemy .mon{animation:bob 2s ease-in-out infinite}
-.trainer{position:absolute;left:10%;bottom:14px;font-size:4rem;animation:bob 3s ease-in-out infinite}
-.plate{position:absolute;background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:.2rem .6rem;box-shadow:0 3px 0 rgba(0,0,0,.3)}
-.plate.en{left:4%;top:12px;width:46%}.plate.me{right:4%;bottom:12px}
-.hit{animation:hit .5s}.miss{animation:hit .4s}
-@keyframes hit{20%{transform:translateX(-12px);filter:brightness(2)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}}
-.miss:after{content:"";position:absolute;inset:0;background:rgba(255,0,60,.35);animation:flash .5s forwards}
+.trainer{position:absolute;left:10%;bottom:18px;font-size:3.8rem;z-index:2;animation:bob 2.8s ease-in-out infinite;filter:drop-shadow(0 6px 8px rgba(0,0,0,.6))}
+
+/* Projektil Serangan Kristal */
+.bolt{
+  position:absolute;left:18%;bottom:55px;font-size:2rem;z-index:4;
+  animation:shoot .42s cubic-bezier(.2,.8,.3,1) forwards;
+}
+@keyframes shoot{
+  0%{transform:translate(0,0) scale(.6);opacity:1}
+  100%{transform:translate(420px,-125px) scale(1.4) rotate(180deg);opacity:0}
+}
+
+.plate{
+  position:absolute;z-index:3;
+  background:rgba(15,21,40,.92);border:2px solid var(--line);
+  border-radius:12px;padding:.35rem .65rem;box-shadow:0 4px 0 #05070f;
+}
+.plate.en{left:4%;top:14px;width:48%}
+.plate.me{right:4%;bottom:12px}
+
+.hit{animation:hit .5s}.miss{animation:shake .45s}
+@keyframes hit{20%{transform:translateX(-14px) scale(.95);filter:brightness(2.2)}40%{transform:translateX(14px)}60%{transform:translateX(-8px)}}
+@keyframes shake{20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}}
+.miss:after{content:"";position:absolute;inset:0;background:rgba(251,113,133,.32);animation:flash .5s forwards;z-index:5}
 @keyframes flash{to{opacity:0}}
-.dmg{position:absolute;left:30%;top:-8px;font:400 1.2rem "Press Start 2P",monospace;color:var(--red);text-shadow:2px 2px 0 var(--ink);animation:up .9s forwards}
-@keyframes up{to{opacity:0;transform:translateY(-50px)}}
-.opts{display:grid;gap:.6rem;margin-top:.6rem}.opts.lock{pointer-events:none}
-.opts button{text-align:left;background:#fff}
-.opts .ok{background:var(--grn);color:#fff}.opts .no{background:var(--red);color:#fff}.opts .dim{opacity:.5}
-.bubble{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:.8rem 1rem;margin:.8rem 0;text-align:left}
-.center{text-align:center}.big{font:400 2.2rem "Press Start 2P",monospace;margin:.4rem 0}
-.capt{position:relative;height:150px;display:grid;place-items:center}
-.capt .mon{width:120px;opacity:0;animation:appear .5s 2s forwards}
+.dmg{
+  position:absolute;left:22%;top:-12px;z-index:5;
+  font:400 1.05rem "Press Start 2P",monospace;color:var(--gold);
+  text-shadow:2px 2px 0 #05070f,0 0 12px rgba(251,113,133,.9);
+  animation:up .95s forwards;
+}
+@keyframes up{to{opacity:0;transform:translateY(-54px)}}
+.combo-badge{
+  position:absolute;left:4%;bottom:14px;z-index:4;
+  background:rgba(251,191,36,.2);border:1.5px solid var(--gold);color:var(--gold);
+  padding:.15rem .55rem;border-radius:99px;font-size:.78rem;font-weight:800;
+}
+
+.opts{display:grid;gap:.65rem;margin-top:.7rem}.opts.lock{pointer-events:none}
+.opts button{
+  text-align:left;background:linear-gradient(180deg,#1d2544,#131930);
+  color:var(--ink);border:2px solid var(--line);box-shadow:0 4px 0 #05070f;
+}
+.opts button:hover{border-color:var(--pri);transform:translateX(4px)}
+.opts .ok{background:linear-gradient(180deg,#10b981,#059669);border-color:#6ee7b7;color:#fff}
+.opts .no{background:linear-gradient(180deg,#f43f5e,#be123c);border-color:#fda4af;color:#fff}
+.opts .dim{opacity:.42}
+
+.bubble{
+  background:#0c1122;border:2px solid var(--pri);border-radius:14px;
+  padding:.9rem 1.05rem;margin:.85rem 0;text-align:left;
+  box-shadow:inset 0 0 18px rgba(56,189,248,.12);
+}
+.center{text-align:center}
+.big{font:400 2.2rem "Press Start 2P",monospace;margin:.5rem 0;color:var(--gold);text-shadow:3px 3px 0 #05070f}
+
+/* Animasi Tangkap Kristal */
+.capt{position:relative;height:155px;display:grid;place-items:center}
+.capt .mon{width:120px;opacity:0;animation:appear .5s 1.9s forwards}
 @keyframes appear{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
-.orb{position:absolute;width:72px;height:72px;border-radius:50%;border:4px solid var(--ink);background:linear-gradient(var(--pri) 0 44%,var(--ink) 44% 56%,#fff 56%);animation:orb 2s ease-in-out forwards}
-.orb:after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;background:var(--gold);border:3px solid var(--ink)}
-@keyframes orb{0%{transform:translateY(-130px) scale(.5);opacity:0}20%{transform:none;opacity:1}35%{transform:rotate(-25deg)}50%{transform:rotate(25deg)}65%{transform:rotate(-25deg)}80%{transform:rotate(0)}100%{transform:scale(1.9);opacity:0}}
-.spark{position:absolute;font-size:1.6rem;opacity:0;animation:appear .6s 2.1s forwards,twinkle 1s 2.7s infinite alternate}
+.orb{
+  position:absolute;width:72px;height:72px;border-radius:50%;
+  border:4px solid #05070f;
+  background:linear-gradient(var(--pri) 0 44%,#05070f 44% 56%,#eef2ff 56%);
+  box-shadow:0 0 24px rgba(56,189,248,.75);
+  animation:orb 1.9s ease-in-out forwards;
+}
+.orb:after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;background:var(--gold);border:3px solid #05070f}
+@keyframes orb{
+  0%{transform:translateY(-120px) scale(.5);opacity:0}
+  20%{transform:none;opacity:1}
+  35%{transform:rotate(-25deg)}50%{transform:rotate(25deg)}65%{transform:rotate(-25deg)}80%{transform:rotate(0)}
+  100%{transform:scale(1.9);opacity:0}
+}
+.spark{position:absolute;font-size:1.7rem;opacity:0;animation:appear .6s 2s forwards,bob 1.5s 2.5s infinite}
 .flee{width:120px;margin:0 auto;animation:flee 1.2s forwards}
 @keyframes flee{to{transform:translateX(220px) rotate(25deg);opacity:0}}
-@media (max-width:520px){h1.logo{font-size:1.05rem}.enemy{width:105px}.role .mon{width:64px}}
+
+@media (max-width:520px){
+  h1.logo{font-size:1rem}
+  .enemy{width:104px}
+  .role .mon{width:64px}
+  @keyframes shoot{100%{transform:translate(210px,-115px) scale(1.3);opacity:0}}
+}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 <body>
-<div class="wrap" id="app"><p>Memuatkan Belajar Digital... Jika mesej ini kekal, skrip tidak berjalan.</p></div>
-<noscript>Sila hidupkan JavaScript untuk menggunakan laman ini.</noscript>
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
+<div class="cavern-top" aria-hidden="true"></div>
+<div class="cavern-mist" aria-hidden="true"></div>
+
+<div class="wrap">
+  <div class="audio-bar">
+    <button type="button" id="btnSfx" class="pill-btn on" onclick="toggleSfx()">🔊 Bunyi Klik: ON</button>
+    <button type="button" id="btnBgm" class="pill-btn" onclick="toggleBgm()">🎵 Muzik Gua: OFF</button>
+  </div>
+  <div id="app"><p>Memuatkan Ekspedisi Bawah Tanah... Jika mesej ini kekal, skrip tidak berjalan.</p></div>
+</div>
+<noscript>Sila hidupkan JavaScript untuk bermain.</noscript>
+
 <script>
-window.onerror=function(m,s,l){var a=document.getElementById("app");if(a)a.innerHTML='<div style="padding:1rem;background:#fde8e8;color:#c93a3a;border-radius:10px"><b>'+TEKS.ralat+'</b> '+m+' ('+l+')</div>'};
+window.onerror=function(m,s,l){var a=document.getElementById("app");if(a)a.innerHTML='<div style="padding:1rem;background:#3b0d1b;color:#fda4af;border:2px solid #fb7185;border-radius:12px"><b>'+TEKS.ralat+'</b> '+m+' ('+l+')</div>'};
+
+/* =====================================================================
+   0) ANIMASI LATAR BELAKANG GUA BAWAH TANAH (CANVAS)
+   ===================================================================== */
+(function initCavernBg(){
+  const c=document.getElementById("bgCanvas");if(!c)return;
+  const ctx=c.getContext("2d");
+  const cols=["#38bdf8","#fbbf24","#2dd4bf","#a78bfa"];
+  let W=0,H=0,pts=[];
+  function resize(){
+    W=c.width=window.innerWidth;H=c.height=window.innerHeight;
+    if(!pts.length){
+      for(let i=0;i<46;i++)pts.push({
+        x:Math.random()*W,y:Math.random()*H,
+        r:1.2+Math.random()*2.6,
+        vy:0.25+Math.random()*0.55,
+        vx:(Math.random()-0.5)*0.3,
+        ph:Math.random()*Math.PI*2,
+        col:cols[i%cols.length]
+      });
+    }
+  }
+  window.addEventListener("resize",resize);resize();
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of pts){
+      p.y-=p.vy;p.x+=p.vx+Math.sin(p.ph)*0.18;p.ph+=0.025;
+      if(p.y<-10){p.y=H+10;p.x=Math.random()*W;}
+      if(p.x<-10)p.x=W+10;if(p.x>W+10)p.x=-10;
+      const a=0.35+0.45*Math.sin(p.ph);
+      ctx.globalAlpha=Math.max(0.1,a);
+      ctx.fillStyle=p.col;
+      ctx.shadowBlur=10;ctx.shadowColor=p.col;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+    }
+    ctx.globalAlpha=1;ctx.shadowBlur=0;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* =====================================================================
+   0.5) ENJIN BUNYI GAME (WEB AUDIO API) - BUNYI SETIAP KLIK & MUZIK
+   ===================================================================== */
+let AC=null,SFX_ON=true,BGM_ON=false,bgmTimer=null,bgmStep=0;
+function getAC(){
+  if(!AC){const Ctx=window.AudioContext||window.webkitAudioContext;if(Ctx)AC=new Ctx();}
+  if(AC&&AC.state==="suspended")AC.resume();
+  return AC;
+}
+function tone(freq,dur,type="square",vol=0.06,slide=null,delay=0){
+  if(!SFX_ON)return;
+  try{
+    const a=getAC();if(!a)return;
+    const t=a.currentTime+delay;
+    const o=a.createOscillator(),g=a.createGain();
+    o.type=type;o.frequency.setValueAtTime(freq,t);
+    if(slide)o.frequency.exponentialRampToValueAtTime(Math.max(40,slide),t+dur);
+    g.gain.setValueAtTime(vol,t);
+    g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+    o.connect(g);g.connect(a.destination);
+    o.start(t);o.stop(t+dur);
+  }catch(e){}
+}
+function sfx(name){
+  if(!SFX_ON)return;
+  if(name==="click"){tone(680,0.045,"square",0.045,980);}
+  else if(name==="start"){tone(440,0.08,"square",0.05,550,0);tone(554,0.08,"square",0.05,660,0.07);tone(659,0.14,"triangle",0.07,880,0.14);}
+  else if(name==="hit"){tone(320,0.09,"sawtooth",0.07,900,0);tone(880,0.14,"square",0.06,1200,0.07);}
+  else if(name==="miss"){tone(210,0.16,"sawtooth",0.07,110,0);tone(140,0.22,"square",0.06,80,0.12);}
+  else if(name==="win"){[523,659,784,1046].forEach((f,i)=>tone(f,0.16,"square",0.06,null,i*0.11));}
+  else if(name==="lose"){[392,330,262].forEach((f,i)=>tone(f,0.22,"triangle",0.07,null,i*0.16));}
+  else if(name==="pet"){tone(520,0.07,"sine",0.06,780,0);tone(780,0.09,"sine",0.06,1040,0.06);}
+}
+function bip(f,d){tone(f,d||0.12,"square",0.05);}
+
+/* Bunyi automatik untuk setiap klik pada butang atau elemen interaktif */
+document.addEventListener("click",function(e){
+  const el=e.target.closest("button, .parade .mon, .strip .mon");
+  if(!el||el.id==="btnSfx")return;
+  if(!el.dataset.noClickSfx)sfx("click");
+});
+
+function toggleSfx(){
+  SFX_ON=!SFX_ON;
+  const b=document.getElementById("btnSfx");
+  if(b){b.textContent=SFX_ON?"🔊 Bunyi Klik: ON":"🔇 Bunyi Klik: OFF";b.classList.toggle("on",SFX_ON);}
+  if(SFX_ON)sfx("click");
+}
+function toggleBgm(){
+  BGM_ON=!BGM_ON;
+  const b=document.getElementById("btnBgm");
+  if(b){b.textContent=BGM_ON?"🎵 Muzik Gua: ON":"🎵 Muzik Gua: OFF";b.classList.toggle("on",BGM_ON);}
+  if(BGM_ON){
+    const notes=[220,261,293,329,293,261,246,196,220,261,329,392,329,293,261,220];
+    bgmTimer=setInterval(()=>{
+      if(!BGM_ON)return;
+      try{
+        const a=getAC();if(!a)return;
+        const o=a.createOscillator(),g=a.createGain(),t=a.currentTime;
+        o.type="triangle";o.frequency.setValueAtTime(notes[bgmStep%notes.length],t);
+        g.gain.setValueAtTime(0.028,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.32);
+        o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+0.34);
+        bgmStep++;
+      }catch(e){}
+    },360);
+  }else{
+    clearInterval(bgmTimer);bgmTimer=null;
+  }
+}
 
 /* =====================================================================
    1) TETAPAN: tukar kata laluan Admin di sini (WAJIB tukar sebelum kongsi!)
    ===================================================================== */
 const ADMIN_PASS = "admin123";
-
-/* Papar kotak "Akaun demo" di muka depan untuk pensyarah? true = papar, false = sembunyi.
-   Tukar kepada false apabila laman ini digunakan sebenar di sekolah. */
 const PAPAR_DEMO = true;
 
-/* Akaun demo (dicipta sekali sahaja pada kali pertama laman dibuka).
-   Guru: [nama, nama pengguna, kata laluan]
-   Murid: [nama, nama pengguna, kata laluan, nama pengguna guru, kelas, kemajuan]  */
 const DEMO = {
  guru:[["Cikgu Aminah","guru1","guru123"],["Cikgu Raju","guru2","guru123"]],
  murid:[["Ali bin Ahmad","murid1","murid123","guru1","4 Bestari",{}],
@@ -113,70 +445,67 @@ const DEMO = {
 };
 
 /* =====================================================================
-   2) TEKS: semua perkataan yang dipaparkan di laman web ada di sini.
-   Tukar ejaan atau ayat DI ANTARA tanda petikan sahaja ("...").
+   2) TEKS: Tema Kisah Bawah Tanah
    ===================================================================== */
 const TEKS = {
- memuat:"Memuatkan Belajar Digital... Jika mesej ini kekal, skrip tidak berjalan.",
+ memuat:"Memuatkan Ekspedisi Bawah Tanah...",
  ralat:"Sesuatu tidak kena:",
- tajuk:"Dunia Monster Belajar",
- pilih:"Pilih watak anda untuk memulakan pengembaraan!",
- admin:"Admin", adminHuraian:"Jaga dunia sekolah dan jemput Guru",
- guru:"Guru", guruHuraian:"Latih Murid, susun kelas dan pantau kemajuan",
- murid:"Murid", muridHuraian:"Belajar, bertarung dan tangkap monster!",
+ tajuk:"Kisah Bawah Tanah",
+ pilih:"Pilih watak pengembara anda untuk meneroka gua kristal!",
+ admin:"Penjaga Gua (Admin)", adminHuraian:"Urus dunia bawah tanah & jemput Guru",
+ guru:"Mentor Gua (Guru)", guruHuraian:"Latih Pengembara, susun kelas & pantau kemajuan",
+ murid:"Pengembara (Murid)", muridHuraian:"Teroka gua, bertarung & tangkap monster kristal!",
  kembali:"Kembali",
- logMasuk:"Log masuk", logKeluar:"Log keluar",
+ logMasuk:"Log masuk", logKeluar:"Keluar Gua",
  namaPengguna:"Nama pengguna", kataLaluan:"Kata laluan",
  salahLogin:"Nama pengguna atau kata laluan salah. Semak dan cuba lagi.",
- adminSub:"Urus Guru di sekolah anda",
+ adminSub:"Urus Mentor Guru di dunia bawah tanah",
  tambahGuru:"Tambah Guru", namaPenuh:"Nama penuh",
- senaraiGuru:"Guru di sekolah anda",
+ senaraiGuru:"Senarai Guru",
  kolNama:"Nama", kolPengguna:"Nama pengguna", kolMurid:"Murid", buang:"Buang",
  tiadaGuru:"Belum ada Guru. Tambah yang pertama di atas.",
- guruSama:"Nama pengguna ini sudah digunakan oleh Guru lain. Pilih yang lain.",
+ guruSama:"Nama pengguna ini sudah digunakan oleh Guru lain.",
  buangGuruTanya:"Buang Guru ini dan semua Murid mereka?",
- cikgu:"Cikgu", guruSub:"Kelas dan murid anda",
+ cikgu:"Cikgu", guruSub:"Kelas dan pengembara anda",
  tambahMurid:"Tambah Murid", kelas:"Kelas", contohKelas:"cth: 4 Bestari",
- bilMurid:"murid",
- kolPenggunaKata:"Nama pengguna / kata laluan", kolKemajuan:"Kemajuan", kolSkor:"Skor kuiz",
- pelajaran:"pelajaran", tiadaKuiz:"Belum ada kuiz",
- tiadaMurid:"Belum ada murid. Tambah murid pertama anda di atas dan berikan kelas.",
- muridSama:"Nama pengguna ini sudah digunakan oleh Murid lain. Pilih yang lain.",
+ bilMurid:"pengembara",
+ kolPenggunaKata:"Nama pengguna / kata laluan", kolKemajuan:"Kemajuan Gua", kolSkor:"Skor kuiz",
+ pelajaran:"bab", tiadaKuiz:"Belum ada kuiz",
+ tiadaMurid:"Belum ada murid. Tambah murid pertama anda di atas.",
+ muridSama:"Nama pengguna ini sudah digunakan oleh Murid lain.",
  buangMuridTanya:"Buang Murid ini?",
- helo:"Helo,", kemajuanAnda:"Kemajuan anda:", skorTerbaik:"Skor terbaik",
- cubaLagi:"Cuba lagi", mulaPelajaran:"Mulakan pelajaran",
+ helo:"Pengembara", kemajuanAnda:"Kemajuan Ekspedisi:", skorTerbaik:"Skor terbaik",
+ cubaLagi:"Ulang Cabaran", mulaPelajaran:"Masuk Gua",
  kuiz:"Kuiz", semak:"Semak jawapan",
- sempurna:"Sempurna! Syabas.",
- cubaSemula:"Cubaan yang baik. Baca pelajaran sekali lagi dan cuba semula.",
- kembaliSenarai:"Kembali ke senarai pelajaran",
- demoTajuk:"Akaun demo untuk pensyarah",
- demoHuraian:"Gunakan akaun ini untuk mencuba semua fungsi. Klik \"Isi\" untuk mengisi borang log masuk secara automatik, atau salin nama pengguna dan kata laluan.",
- kolPeranan:"Peranan", isi:"Isi",
- tahap:"Tahap", koleksi:"Koleksi monster", bertarung:"Bertarung!", mulaB:"Mula bertarung!",
- liarMuncul:"liar muncul!", soalan:"Soalan", ditangkap:"Ditangkap!",
- berjaya:"Hebat! Monster berjaya ditangkap!",
- gagal:"Monster melarikan diri... Baca pelajaran sekali lagi dan cuba semula!",
- syarat:"Jawab betul sekurang-kurangnya dua pertiga soalan untuk menangkap monster."
+ sempurna:"Sempurna! Kristal Gua Berjaya Dibuka.",
+ cubaSemula:"Cubaan yang baik. Baca skrol ilmu sekali lagi dan cuba semula.",
+ kembaliSenarai:"Kembali ke Peta Gua",
+ demoTajuk:"Akaun Demo Ekspedisi (Untuk Pensyarah)",
+ demoHuraian:"Klik \"Isi\" untuk mengisi borang log masuk secara automatik.",
+ kolPeranan:"Peranan", isi:"Isi", tahap:"Tahap", koleksi:"Koleksi Monster Gua", bertarung:"Bertarung!", mulaB:"⚔️ Mula Bertarung!",
+ liarMuncul:"penjaga gua muncul!", soalan:"Cabaran", ditangkap:"Ditangkap!",
+ berjaya:"Hebat! Monster Bawah Tanah berjaya ditangkap!",
+ gagal:"Monster melarikan diri ke terowong gelap... Baca skrol ilmu dan cuba lagi!",
+ syarat:"Jawab betul sekurang-kurangnya dua pertiga cabaran untuk menangkap monster."
 };
 
 /* =====================================================================
-   3) PELAJARAN: tambah atau ubah pelajaran dan soalan kuiz di sini.
-   a = nombor jawapan betul (0 = pilihan pertama, 1 = kedua, 2 = ketiga)
+   3) PELAJARAN & ZON KISAH BAWAH TANAH
    ===================================================================== */
 const LESSONS = [
- {id:"m1",mon:{n:"Bolbol",c:"#ffcf33",k:0},title:"Tambah",subject:"Matematik",
-  text:"Tambah bermaksud menggabungkan nombor. Jika anda ada 5 biji epal dan dapat 3 biji lagi, anda mengira 5 + 3 = 8 biji epal.",
+ {id:"m1",zone:"Bab 1: Gua Gema",mon:{n:"Bolbol",c:"#fbbf24",k:0},title:"Tambah",subject:"Matematik",
+  text:"Di pintu Gua Gema, terukir rahsia nombor: Tambah bermaksud menggabungkan nombor. Jika anda ada 5 biji kristal dan jumpa 3 biji lagi, anda mengira 5 + 3 = 8 biji kristal!",
   q:[{q:"4 + 6 = ?",o:["8","10","12"],a:1},{q:"7 + 5 = ?",o:["11","12","13"],a:1},{q:"9 + 9 = ?",o:["17","18","19"],a:1}]},
- {id:"s1",mon:{n:"Daunik",c:"#4cd27a",k:1},title:"Tumbuhan",subject:"Sains",
-  text:"Tumbuhan memerlukan cahaya matahari, air dan udara untuk membuat makanan sendiri. Akar menyerap air daripada tanah. Daun menggunakan cahaya matahari untuk membuat makanan.",
-  q:[{q:"Bahagian manakah yang menyerap air?",o:["Akar","Daun","Bunga"],a:0},{q:"Bahagian manakah yang membuat makanan menggunakan cahaya matahari?",o:["Akar","Daun","Batang"],a:1},{q:"Apakah yang diperlukan tumbuhan untuk membuat makanan?",o:["Cahaya matahari","Gula","Plastik"],a:0}]},
- {id:"e1",mon:{n:"Kamusu",c:"#a78bfa",k:2},title:"Kata Nama",subject:"Bahasa Melayu",
-  text:"Kata nama ialah nama bagi orang, tempat atau benda. Guru ialah orang. Kuala Lumpur ialah tempat. Buku ialah benda.",
+ {id:"s1",zone:"Bab 2: Tasik Lumut",mon:{n:"Daunik",c:"#2dd4bf",k:1},title:"Tumbuhan",subject:"Sains",
+  text:"Di Tasik Lumut Bawah Tanah, tumbuhan unik tetap hidup! Tumbuhan memerlukan cahaya, air dan udara untuk membuat makanan. Akar menyerap air daripada tanah, manakala daun memproses cahaya untuk membuat makanan.",
+  q:[{q:"Bahagian manakah yang menyerap air?",o:["Akar","Daun","Bunga"],a:0},{q:"Bahagian manakah yang membuat makanan menggunakan cahaya?",o:["Akar","Daun","Batang"],a:1},{q:"Apakah yang diperlukan tumbuhan untuk membuat makanan?",o:["Cahaya matahari","Gula","Plastik"],a:0}]},
+ {id:"e1",zone:"Bab 3: Teras Kristal",mon:{n:"Kamusu",c:"#a78bfa",k:2},title:"Kata Nama",subject:"Bahasa Melayu",
+  text:"Di Teras Kristal purba, penjaga menguji bahasa: Kata nama ialah nama bagi orang, tempat atau benda. Guru ialah orang. Kuala Lumpur ialah tempat. Buku ialah benda.",
   q:[{q:"Perkataan manakah ialah kata nama?",o:["Lari","Guru","Cepat"],a:1},{q:"Kuala Lumpur ialah...",o:["orang","tempat","benda"],a:1},{q:"Perkataan manakah ialah benda?",o:["Buku","Menyanyi","Gembira"],a:0}]}
 ];
 
 /* =====================================================================
-   4) KOD APLIKASI: tidak perlu diubah
+   4) KOD APLIKASI GAME
    ===================================================================== */
 const KEY="belajar_digital_v1";
 let db;try{db=JSON.parse(localStorage.getItem(KEY))}catch(e){}
@@ -187,7 +516,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 const $=s=>document.querySelector(s);
 
 let S=null;try{S=JSON.parse(sessionStorage.getItem("bd_s"))}catch(e){}
-let loginRole=null,lesson=null,result=null,msg="",prefill={u:"",p:""};
+let loginRole=null,lesson=null,msg="",prefill={u:"",p:""};
 function setS(v){S=v;try{v?sessionStorage.setItem("bd_s",JSON.stringify(v)):sessionStorage.removeItem("bd_s")}catch(e){}render()}
 const note=()=>msg?`<div class="err" role="alert">${esc(msg)}</div>`:"";
 
@@ -207,30 +536,30 @@ function demoBox(){
  const rows=[["admin",TEKS.admin,"-",ADMIN_PASS]]
   .concat(DEMO.guru.map(g=>["guru",TEKS.guru+" ("+g[0]+")",g[1],g[2]]))
   .concat(DEMO.murid.map(m=>["murid",TEKS.murid+" ("+m[0]+")",m[1],m[2]]));
- return `<div class="card" style="margin-top:2rem"><h2>${TEKS.demoTajuk}</h2><p class="mut">${TEKS.demoHuraian}</p><div class="scroll"><table><tr><th>${TEKS.kolPeranan}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kataLaluan}</th><th></th></tr>`+
+ return `<div class="card" style="margin-top:2rem"><h2>💎 ${TEKS.demoTajuk}</h2><p class="mut">${TEKS.demoHuraian}</p><div class="scroll"><table><tr><th>${TEKS.kolPeranan}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kataLaluan}</th><th></th></tr>`+
  rows.map(r=>`<tr><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td><button class="ghost" onclick="demoFill('${r[0]}','${r[2]==="-"?"":esc(r[2])}','${esc(r[3])}')">${TEKS.isi}</button></td></tr>`).join("")+`</table></div></div>`;
 }
 
 const ROLES=[
  ["admin",TEKS.admin,"🛠️","#17233a","#fff",TEKS.adminHuraian],
- ["guru",TEKS.guru,"👩‍🏫","#2b5fd9","#fff",TEKS.guruHuraian],
- ["murid",TEKS.murid,"🎒","#ffc933","#17233a",TEKS.muridHuraian]];
+ ["guru",TEKS.guru,"🧙‍♂️","#2b5fd9","#fff",TEKS.guruHuraian],
+ ["murid",TEKS.murid,"🔦","#fbbf24","#0c1020",TEKS.muridHuraian]];
 
 function home(){
- const ic=[mon("#8e6cff",2,80),mon("#4cd27a",1,80),mon("#ffcf33",0,80)];
- return `<h1 class="logo">${TEKS.tajuk}</h1><p class="sub">${TEKS.pilih}</p>
- <div class="parade">${ic.map((m,i)=>`<div class="mon float" style="animation-delay:${i*.4}s">${m}</div>`).join("")}</div><div class="roles">`+
- ROLES.map((r,i)=>`<button class="role" onclick="pick('${r[0]}');bip(660)"><div class="mon">${ic[i]}</div><span><strong>${r[1]}</strong><span class="mut">${r[5]}</span></span></button>`).join("")+`</div>`+demoBox();
+ const ic=[mon("#a78bfa",2,80),mon("#2dd4bf",1,80),mon("#fbbf24",0,80)];
+ return `<h1 class="logo">⛏️ ${TEKS.tajuk} 💎</h1><p class="sub">${TEKS.pilih}</p>
+ <div class="parade">${ic.map((m,i)=>`<div class="mon float" style="animation-delay:${i*.4}s" onclick="sfx('pet')" title="Klik monster!">${m}</div>`).join("")}</div><div class="roles">`+
+ ROLES.map((r,i)=>`<button class="role" onclick="pick('${r[0]}')"><div class="mon">${ic[i]}</div><span><strong>${r[1]}</strong><span class="mut">${r[5]}</span></span></button>`).join("")+`</div>`+demoBox();
 }
 function loginView(){
  const r=ROLES.find(x=>x[0]===loginRole);
- return `<button class="ghost" onclick="back()">${TEKS.kembali}</button><div class="card" style="max-width:420px;margin:1.5rem auto"><h2>${TEKS.logMasuk} ${r[1]}</h2>${note()}
+ return `<button class="ghost" onclick="back()">⬅️ ${TEKS.kembali}</button><div class="card" style="max-width:430px;margin:1.5rem auto"><h2>🔐 ${TEKS.logMasuk} ${r[1]}</h2>${note()}
  <form onsubmit="login(event)">${loginRole==="admin"?"":`<div class="q"><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" autocomplete="username" value="${esc(prefill.u)}" required></div>`}
  <div class="q"><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" type="password" autocomplete="current-password" value="${esc(prefill.p)}" required></div>
- <button type="submit">${TEKS.logMasuk}</button></form></div>`;
+ <button type="submit" class="cyan" style="width:100%">🚀 ${TEKS.logMasuk}</button></form></div>`;
 }
 function topBar(title,sub){
- return `<div class="top"><div><h1 style="font-size:2rem">${esc(title)}</h1><div class="mut">${esc(sub)}</div></div><button class="ghost" onclick="logout()">${TEKS.logKeluar}</button></div>`;
+ return `<div class="top"><div><h1 style="font-size:1.55rem">${esc(title)}</h1><div class="mut">${esc(sub)}</div></div><button class="ghost" onclick="logout()">🚪 ${TEKS.logKeluar}</button></div>`;
 }
 const pct=s=>Math.round(Object.keys(s.p).length/LESSONS.length*100);
 const avg=s=>{let a=0,b=0;for(const k in s.p){a+=s.p[k].s;b+=s.p[k].t}return b?Math.round(a/b*100)+"%":TEKS.tiadaKuiz};
@@ -238,13 +567,13 @@ const avg=s=>{let a=0,b=0;for(const k in s.p){a+=s.p[k].s;b+=s.p[k].t}return b?M
 function adminView(){
  const rows=db.teachers.map(t=>`<tr><td>${esc(t.n)}</td><td>${esc(t.u)}</td><td>${db.students.filter(s=>s.t===t.id).length}</td><td><button class="ghost" onclick="delT('${t.id}')">${TEKS.buang}</button></td></tr>`).join("")
   ||`<tr><td colspan="4" class="mut">${TEKS.tiadaGuru}</td></tr>`;
- return topBar(TEKS.admin,TEKS.adminSub)+note()+
- `<div class="card"><h2>${TEKS.tambahGuru}</h2><form onsubmit="addT(event)" class="grid">
+ return topBar("🛡️ "+TEKS.admin,TEKS.adminSub)+note()+
+ `<div class="card"><h2>➕ ${TEKS.tambahGuru}</h2><form onsubmit="addT(event)" class="grid">
  <div><label for="n">${TEKS.namaPenuh}</label><input id="n" name="n" required></div>
  <div><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" required></div>
  <div><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" required></div>
  <button type="submit">${TEKS.tambahGuru}</button></form></div>
- <div class="card"><h2>${TEKS.senaraiGuru}</h2><div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kolMurid}</th><th></th></tr>${rows}</table></div></div>`;
+ <div class="card"><h2>📜 ${TEKS.senaraiGuru}</h2><div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kolMurid}</th><th></th></tr>${rows}</table></div></div>`;
 }
 function guruView(){
  const me=db.teachers.find(t=>t.id===S.id);if(!me){setTimeout(logout);return ""}
@@ -254,25 +583,25 @@ function guruView(){
   const rows=mine.filter(s=>s.c===c).map(s=>`<tr><td>${esc(s.n)}</td><td>${esc(s.u)} / ${esc(s.p0)}</td>
   <td><div class="bar" title="${pct(s)}%"><i style="width:${pct(s)}%"></i></div><small class="mut">${Object.keys(s.p).length}/${LESSONS.length} ${TEKS.pelajaran}</small></td>
   <td>${avg(s)}</td><td><button class="ghost" onclick="delS('${s.id}')">${TEKS.buang}</button></td></tr>`).join("");
-  return `<div class="card"><h2>${TEKS.kelas} ${esc(c)} <span class="tag">${mine.filter(s=>s.c===c).length} ${TEKS.bilMurid}</span></h2><div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPenggunaKata}</th><th>${TEKS.kolKemajuan}</th><th>${TEKS.kolSkor}</th><th></th></tr>${rows}</table></div></div>`}).join("")
+  return `<div class="card"><h2>⛺ ${TEKS.kelas} ${esc(c)} <span class="tag">${mine.filter(s=>s.c===c).length} ${TEKS.bilMurid}</span></h2><div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPenggunaKata}</th><th>${TEKS.kolKemajuan}</th><th>${TEKS.kolSkor}</th><th></th></tr>${rows}</table></div></div>`}).join("")
   ||`<div class="card mut">${TEKS.tiadaMurid}</div>`;
- return topBar(TEKS.cikgu+" "+me.n,TEKS.guruSub)+note()+
- `<div class="card"><h2>${TEKS.tambahMurid}</h2><form onsubmit="addS(event)" class="grid">
+ return topBar("🧙‍♂️ "+TEKS.cikgu+" "+me.n,TEKS.guruSub)+note()+
+ `<div class="card"><h2>➕ ${TEKS.tambahMurid}</h2><form onsubmit="addS(event)" class="grid">
  <div><label for="n">${TEKS.namaPenuh}</label><input id="n" name="n" required></div>
  <div><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" required></div>
  <div><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" required></div>
  <div><label for="c">${TEKS.kelas}</label><input id="c" name="c" list="cls" placeholder="${TEKS.contohKelas}" required><datalist id="cls">${classes.map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div>
  <button type="submit">${TEKS.tambahMurid}</button></form></div>`+blocks;
 }
-let AC;
-function bip(f,d){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type="square";o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(AC.destination);o.start();o.stop(AC.currentTime+(d||.12))}catch(e){}}
+
 function mon(c,k,w){
- const L='stroke="#1b1740" stroke-width="3"';
+ const L='stroke="#05070f" stroke-width="3"';
  const f=k===0?`<path d="M28 42 L34 8 L52 34Z M92 42 L86 8 L68 34Z" fill="${c}" ${L}/>`:
-  k===1?`<path d="M60 40 C56 18 40 14 34 20 C38 32 50 40 60 40Z M60 40 C64 18 80 14 86 20 C82 32 70 40 60 40Z" fill="#35c46b" ${L}/>`:
-  `<path d="M36 38 L30 12 L50 30Z M84 38 L90 12 L70 30Z" fill="#fff" ${L}/><circle cx="60" cy="44" r="5" fill="#ffc933" ${L}/>`;
- return `<svg viewBox="0 0 120 120" width="${w||110}" aria-hidden="true">${f}<ellipse cx="60" cy="74" rx="40" ry="34" fill="${c}" ${L}/><ellipse cx="60" cy="86" rx="22" ry="17" fill="#fff" opacity=".6"/><circle cx="45" cy="68" r="9" fill="#fff" stroke="#1b1740" stroke-width="2"/><circle cx="75" cy="68" r="9" fill="#fff" stroke="#1b1740" stroke-width="2"/><circle cx="47" cy="69" r="4.5" fill="#1b1740"/><circle cx="73" cy="69" r="4.5" fill="#1b1740"/><circle cx="32" cy="82" r="5" fill="#ff8fa3" opacity=".8"/><circle cx="88" cy="82" r="5" fill="#ff8fa3" opacity=".8"/><path d="M52 84 Q60 92 68 84" fill="none" stroke="#1b1740" stroke-width="3" stroke-linecap="round"/></svg>`}
-const monOf=l=>l.mon||{n:"Monster",c:"#7c4dff",k:0};
+  k===1?`<path d="M60 40 C56 18 40 14 34 20 C38 32 50 40 60 40Z M60 40 C64 18 80 14 86 20 C82 32 70 40 60 40Z" fill="#2dd4bf" ${L}/>`:
+  `<path d="M36 38 L30 12 L50 30Z M84 38 L90 12 L70 30Z" fill="#e2e8f0" ${L}/><circle cx="60" cy="44" r="5" fill="#fbbf24" ${L}/>`;
+ return `<svg viewBox="0 0 120 120" width="${w||110}" aria-hidden="true">${f}<ellipse cx="60" cy="74" rx="40" ry="34" fill="${c}" ${L}/><ellipse cx="60" cy="86" rx="22" ry="17" fill="#fff" opacity=".45"/><circle cx="45" cy="68" r="9" fill="#fff" stroke="#05070f" stroke-width="2"/><circle cx="75" cy="68" r="9" fill="#fff" stroke="#05070f" stroke-width="2"/><circle cx="47" cy="69" r="4.5" fill="#05070f"/><circle cx="73" cy="69" r="4.5" fill="#05070f"/><circle cx="32" cy="82" r="5" fill="#fb7185" opacity=".8"/><circle cx="88" cy="82" r="5" fill="#fb7185" opacity=".8"/><path d="M52 84 Q60 92 68 84" fill="none" stroke="#05070f" stroke-width="3" stroke-linecap="round"/></svg>`}
+
+const monOf=l=>l.mon||{n:"Monster",c:"#38bdf8",k:0};
 const need=L=>Math.ceil(L.q.length*2/3);
 const lessonObj=()=>LESSONS.find(l=>l.id===lesson);
 let B=null;
@@ -280,29 +609,90 @@ let B=null;
 function muridView(){
  const me=db.students.find(s=>s.id===S.id);if(!me){setTimeout(logout);return ""}
  const got=l=>me.p[l.id]&&me.p[l.id].s>=need(l);
+ const capturedCount=LESSONS.filter(got).length;
  const xp=Object.values(me.p).reduce((a,x)=>a+x.s*10,0),lv=1+Math.floor(xp/30);
- const strip=LESSONS.map(l=>{const m=monOf(l);return `<div class="mon ${got(l)?"float":"sil"}" title="${esc(m.n)}">${mon(m.c,m.k,46)}</div>`}).join("");
- const cards=LESSONS.map(l=>{const p=me.p[l.id],m=monOf(l);return `<div class="card stage"><div class="mon ${got(l)?"":"sil"}">${mon(m.c,m.k,84)}</div><div class="grow"><h2>${esc(l.title)}</h2><span class="tag">${esc(l.subject)}</span> ${p?`<span class="tag ok">${TEKS.skorTerbaik} ${p.s}/${p.t}</span>`:""} ${got(l)?`<span class="tag ok">${TEKS.ditangkap}</span>`:""}</div><button onclick="openL('${l.id}')">${p?TEKS.cubaLagi:TEKS.bertarung}</button></div>`}).join("");
- return topBar(TEKS.helo+" "+me.n,TEKS.kelas+" "+me.c)+
- `<div class="card"><div class="hud"><div class="avatar">🧒</div><div class="grow"><b>${TEKS.tahap} ${lv} · XP ${xp}</b><div class="bar xp"><i style="width:${xp%30/30*100}%"></i></div><small class="mut">${TEKS.kemajuanAnda} ${pct(me)}%</small></div></div><div class="strip" aria-label="${TEKS.koleksi}">${strip}</div></div>`+cards;
+ const strip=LESSONS.map(l=>{const m=monOf(l);return `<div class="mon ${got(l)?"float":"sil"}" title="${esc(m.n)} (${got(l)?"Ditangkap!":"Belum ditangkap"})" onclick="${got(l)?"sfx('pet')":"sfx('click')"}">${mon(m.c,m.k,50)}</div>`}).join("");
+ const cards=LESSONS.map((l,idx)=>{
+  const p=me.p[l.id],m=monOf(l);
+  return `<div class="card stage">
+    <div class="mon ${got(l)?"float":"sil"}">${mon(m.c,m.k,84)}</div>
+    <div class="grow">
+      <div style="margin-bottom:.25rem"><span class="tag zone">${esc(l.zone||("Zon "+(idx+1)))}</span> <span class="tag">${esc(l.subject)}</span></div>
+      <h2>${esc(l.title)} · <small style="color:var(--pri)">${esc(m.n)}</small></h2>
+      ${p?`<span class="tag ok">${TEKS.skorTerbaik} ${p.s}/${p.t}</span>`:""}
+      ${got(l)?`<span class="tag ok">💎 ${TEKS.ditangkap}</span>`:""}
+    </div>
+    <button class="${got(l)?"ghost":"cyan"}" onclick="openL('${l.id}')">${p?TEKS.cubaLagi:"⚔️ "+TEKS.bertarung}</button>
+  </div>`}).join("");
+ return topBar("🔦 "+TEKS.helo+" "+me.n,"Kelas "+me.c+" · Penjelajah Gua Kristal")+
+ `<div class="card">
+   <div class="hud">
+     <div class="avatar">🧝</div>
+     <div class="grow">
+       <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem">
+         <b>⭐ ${TEKS.tahap} ${lv} · XP ${xp}</b>
+         <span class="tag ok">🏆 Koleksi: ${capturedCount}/${LESSONS.length}</span>
+       </div>
+       <div class="bar xp" style="margin:.35rem 0"><i style="width:${xp%30/30*100}%"></i></div>
+       <small class="mut">${TEKS.kemajuanAnda} ${pct(me)}%</small>
+     </div>
+   </div>
+   <div class="strip" aria-label="${TEKS.koleksi}">${strip}</div>
+ </div>
+ <div class="quest-trail">${cards}</div>`;
 }
+
 function lessonView(){
  const L=lessonObj(),m=monOf(L),mm=mon(m.c,m.k,120);
- if(B.ph==="learn")return `<button class="ghost" onclick="closeL()">${TEKS.kembali}</button>
- <div class="card center" style="margin-top:1rem"><div class="mon float" style="width:130px;margin:0 auto">${mon(m.c,m.k,130)}</div><h2>${esc(m.n)} ${TEKS.liarMuncul}</h2><span class="tag">${esc(L.title)}</span>
- <p class="bubble">${esc(L.text)}</p><p class="mut">${TEKS.syarat}</p><button onclick="startB()">${TEKS.mulaB}</button></div>`;
- if(B.ph==="end"){const won=B.ok>=need(L);
-  return `<div class="card center"><h2>${esc(L.title)}</h2><div class="big">${B.ok}/${L.q.length}</div>`+
-  (won?`<div class="capt"><div class="orb"></div><div class="mon">${mm}</div><span class="spark" style="left:18%;top:10%">✨</span><span class="spark" style="right:18%;top:20%">⭐</span></div><p><b>${TEKS.berjaya}</b></p>`
-      :`<div class="mon flee">${mm}</div><p>${TEKS.gagal}</p>`)+
-  `<button onclick="closeL()">${TEKS.kembaliSenarai}</button></div>`}
- const q=L.q[B.q],fb=B.fb,hp=Math.round((1-B.ok/L.q.length)*100);
- return `<div class="arena${fb&&!fb.right?" miss":""}"><i class="cloud">☁️</i>
- <div class="plate en"><b>${esc(m.n)}</b> <small>HP</small><div class="bar hp${hp<40?" low":""}"><i style="width:${hp}%"></i></div></div>
- <div class="enemy"><div class="${fb&&fb.right?"hit":""}">${mm}</div>${fb&&fb.right?`<span class="dmg">-${Math.round(100/L.q.length)}</span>`:""}</div>
- <div class="trainer">🧒</div><div class="plate me">${"❤️".repeat(B.hp)}${"🖤".repeat(3-B.hp)}</div></div>
- <div class="card"><span class="tag">${TEKS.soalan} ${B.q+1}/${L.q.length}</span><h2 style="margin-top:.5rem">${esc(q.q)}</h2>
- <div class="opts${fb?" lock":""}">`+q.o.map((o,j)=>`<button class="${fb?(j===q.a?"ok":j===fb.j?"no":"dim"):""}" onclick="answer(${j})">${esc(o)}</button>`).join("")+`</div></div>`;
+ if(B.ph==="learn"){
+  return `<button class="ghost" onclick="closeL()">⬅️ ${TEKS.kembali}</button>
+  <div class="card center" style="margin-top:1rem">
+    <span class="tag zone">${esc(L.zone||"Gua Rahsia")}</span>
+    <div class="mon float" style="width:130px;margin:.6rem auto">${mon(m.c,m.k,130)}</div>
+    <h2>${esc(m.n)} ${TEKS.liarMuncul}</h2>
+    <span class="tag">${esc(L.title)} (${esc(L.subject)})</span>
+    <p class="bubble">📜 <b>Skrol Ilmu Purba:</b><br>${esc(L.text)}</p>
+    <p class="mut">${TEKS.syarat}</p>
+    <button class="cyan" data-no-click-sfx="1" onclick="startB()">${TEKS.mulaB}</button>
+  </div>`;
+ }
+ if(B.ph==="end"){
+  const won=B.ok>=need(L);
+  return `<div class="card center">
+    <span class="tag zone">${esc(L.zone||"Gua Rahsia")}</span>
+    <h2 style="margin-top:.4rem">${esc(L.title)}</h2>
+    <div class="big">${B.ok}/${L.q.length}</div>`+
+    (won?`<div class="capt"><div class="orb"></div><div class="mon">${mm}</div><span class="spark" style="left:18%;top:10%">✨</span><span class="spark" style="right:18%;top:20%">💎</span></div>
+          <p><b style="color:var(--grn)">${TEKS.berjaya}</b></p><p class="mut">+${B.ok*10} XP diperolehi!</p>`
+        :`<div class="mon flee">${mm}</div><p style="color:var(--red)">${TEKS.gagal}</p>`)+
+    `<button class="cyan" onclick="closeL()">🗺️ ${TEKS.kembaliSenarai}</button></div>`;
+ }
+ const q=L.q[B.q],fb=B.fb,hp=Math.max(0,Math.round((1-B.ok/L.q.length)*100));
+ return `<div class="arena${fb&&!fb.right?" miss":""}">
+   <div class="arena-stalactites"></div>
+   <i class="cave-bat">🦇</i>
+   <span class="cave-gem" style="left:6%;bottom:24px">💎</span>
+   <span class="cave-gem" style="right:5%;top:42%;animation-delay:1s">🔮</span>
+   <div class="plate en">
+     <b>${esc(m.n)}</b> <small class="mut">HP</small>
+     <div class="bar hp${hp<40?" low":""}"><i style="width:${hp}%"></i></div>
+   </div>
+   <div class="enemy">
+     <div class="${fb&&fb.right?"hit":""}">${mm}</div>
+     ${fb&&fb.right?`<span class="dmg">-${Math.round(100/L.q.length)} CRIT!</span>`:""}
+   </div>
+   ${fb&&fb.right?`<span class="bolt">⚡</span>`:""}
+   <div class="trainer">🧝</div>
+   ${B.combo>1?`<div class="combo-badge">🔥 KOMBO x${B.combo}</div>`:""}
+   <div class="plate me">${"❤️".repeat(B.hp)}${"🖤".repeat(3-B.hp)}</div>
+ </div>
+ <div class="card">
+   <span class="tag">${TEKS.soalan} ${B.q+1}/${L.q.length}</span>
+   <h2 style="margin-top:.55rem;color:var(--ink)">${esc(q.q)}</h2>
+   <div class="opts${fb?" lock":""}">`+
+   q.o.map((o,j)=>`<button data-no-click-sfx="1" class="${fb?(j===q.a?"ok":j===fb.j?"no":"dim"):""}" onclick="answer(${j})">${esc(o)}</button>`).join("")+
+   `</div>
+ </div>`;
 }
 
 function render(){
@@ -316,17 +706,17 @@ function render(){
 const pick=r=>{loginRole=r;msg="";render()};
 const demoFill=(r,u,p)=>{loginRole=r;prefill={u:u,p:p};msg="";render();window.scrollTo(0,0)};
 const back=()=>{loginRole=null;render()};
-const logout=()=>{loginRole=null;lesson=null;B=null;result=null;setS(null)};
+const logout=()=>{loginRole=null;lesson=null;B=null;setS(null)};
 function login(e){
  e.preventDefault();const f=e.target,p=f.p.value,u=f.u?f.u.value.trim().toLowerCase():"";
  if(loginRole==="admin"){if(p===ADMIN_PASS)return setS({role:"admin"})}
  else{const x=(loginRole==="guru"?db.teachers:db.students).find(t=>t.u===u&&t.p0===p);if(x)return setS({role:loginRole,id:x.id})}
- msg=TEKS.salahLogin;render();
+ sfx("miss");msg=TEKS.salahLogin;render();
 }
 function addT(e){
  e.preventDefault();const f=e.target,u=f.u.value.trim().toLowerCase();
- if(db.teachers.some(t=>t.u===u)){msg=TEKS.guruSama;return render()}
- db.teachers.push({id:uid(),n:f.n.value.trim(),u,p0:f.p.value});save();render();
+ if(db.teachers.some(t=>t.u===u)){sfx("miss");msg=TEKS.guruSama;return render()}
+ db.teachers.push({id:uid(),n:f.n.value.trim(),u,p0:f.p.value});save();sfx("start");render();
 }
 function delT(id){
  if(!confirm(TEKS.buangGuruTanya))return;
@@ -334,27 +724,31 @@ function delT(id){
 }
 function addS(e){
  e.preventDefault();const f=e.target,u=f.u.value.trim().toLowerCase();
- if(db.students.some(s=>s.u===u)){msg=TEKS.muridSama;return render()}
- db.students.push({id:uid(),t:S.id,n:f.n.value.trim(),u,p0:f.p.value,c:f.c.value.trim(),p:{}});save();render();
+ if(db.students.some(s=>s.u===u)){sfx("miss");msg=TEKS.muridSama;return render()}
+ db.students.push({id:uid(),t:S.id,n:f.n.value.trim(),u,p0:f.p.value,c:f.c.value.trim(),p:{}});save();sfx("start");render();
 }
 function delS(id){
  const s=db.students.find(x=>x.id===id);if(!s||s.t!==S.id)return;
  if(!confirm(TEKS.buangMuridTanya))return;
  db.students=db.students.filter(x=>x.id!==id);save();render();
 }
-function openL(id){lesson=id;B={ph:"learn",q:0,ok:0,hp:3,fb:null};render();window.scrollTo(0,0)}
+function openL(id){lesson=id;B={ph:"learn",q:0,ok:0,hp:3,combo:0,fb:null};render();window.scrollTo(0,0)}
 function closeL(){lesson=null;B=null;render()}
-function startB(){bip(520);B.ph="fight";render()}
+function startB(){sfx("start");B.ph="fight";render()}
 function answer(j){
  if(!B||B.fb)return;const L=lessonObj(),q=L.q[B.q],right=j===q.a;
- B.fb={j,right};if(right){B.ok++;bip(880,.15)}else{B.hp--;bip(150,.25)}
+ B.fb={j,right};
+ if(right){B.ok++;B.combo++;sfx("hit");}
+ else{B.hp--;B.combo=0;sfx("miss");}
  render();
- setTimeout(()=>{if(!B)return;B.fb=null;B.q++;if(B.q>=L.q.length||B.hp<=0)finishB();else render()},900);
+ setTimeout(()=>{if(!B)return;B.fb=null;B.q++;if(B.q>=L.q.length||B.hp<=0)finishB();else render()},950);
 }
 function finishB(){
  const L=lessonObj(),me=db.students.find(s=>s.id===S.id),old=me.p[L.id];
  if(!old||B.ok>old.s)me.p[L.id]={s:B.ok,t:L.q.length};
- save();B.ph="end";render();window.scrollTo(0,0);
+ save();B.ph="end";
+ sfx(B.ok>=need(L)?"win":"lose");
+ render();window.scrollTo(0,0);
 }
 seedDemo();
 render();
