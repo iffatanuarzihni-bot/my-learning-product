@@ -63,6 +63,285 @@ const PAPAR_DEMO = true;
    Guru: [nama, nama pengguna, kata laluan]
    Murid: [nama, nama pengguna, kata laluan, nama pengguna guru, kelas, kemajuan]  */
 const DEMO = {
+ guru:[["Cikgu Aminah","guru1","guru123"],["Cikgu Raju","guru2","guru123"]],
+ murid:[["Ali bin Ahmad","murid1","murid123","guru1","4 Bestari",{}],
+        ["Siti Nur","murid2","murid123","guru1","4 Bestari",{m1:[3,3],s1:[2,3]}],
+        ["Kumar a/l Raj","murid3","murid123","guru2","5 Cerdik",{e1:[3,3]}]]
+};
+
+/* =====================================================================
+   2) TEKS: semua perkataan yang dipaparkan di laman web ada di sini.
+   Tukar ejaan atau ayat DI ANTARA tanda petikan sahaja ("...").
+   ===================================================================== */
+const TEKS = {
+ memuat:"Memuatkan Belajar Digital... Jika mesej ini kekal, skrip tidak berjalan.",
+ ralat:"Sesuatu tidak kena:",
+ tajuk:"Belajar Digital",
+ pilih:"Pilih siapa anda untuk meneruskan.",
+ admin:"Admin", adminHuraian:"Sediakan sekolah dan tambah Guru",
+ guru:"Guru", guruHuraian:"Tambah Murid, susun kelas dan lihat kemajuan",
+ murid:"Murid", muridHuraian:"Belajar pelajaran dan jawab kuiz",
+ kembali:"Kembali",
+ logMasuk:"Log masuk", logKeluar:"Log keluar",
+ namaPengguna:"Nama pengguna", kataLaluan:"Kata laluan",
+ salahLogin:"Nama pengguna atau kata laluan salah. Semak dan cuba lagi.",
+ adminSub:"Urus Guru di sekolah anda",
+ tambahGuru:"Tambah Guru", namaPenuh:"Nama penuh",
+ senaraiGuru:"Guru di sekolah anda",
+ kolNama:"Nama", kolPengguna:"Nama pengguna", kolMurid:"Murid", buang:"Buang",
+ tiadaGuru:"Belum ada Guru. Tambah yang pertama di atas.",
+ guruSama:"Nama pengguna ini sudah digunakan oleh Guru lain. Pilih yang lain.",
+ buangGuruTanya:"Buang Guru ini dan semua Murid mereka?",
+ cikgu:"Cikgu", guruSub:"Kelas dan murid anda",
+ tambahMurid:"Tambah Murid", kelas:"Kelas", contohKelas:"cth: 4 Bestari",
+ bilMurid:"murid",
+ kolPenggunaKata:"Nama pengguna / kata laluan", kolKemajuan:"Kemajuan", kolSkor:"Skor kuiz",
+ pelajaran:"pelajaran", tiadaKuiz:"Belum ada kuiz",
+ tiadaMurid:"Belum ada murid. Tambah murid pertama anda di atas dan berikan kelas.",
+ muridSama:"Nama pengguna ini sudah digunakan oleh Murid lain. Pilih yang lain.",
+ buangMuridTanya:"Buang Murid ini?",
+ helo:"Helo,", kemajuanAnda:"Kemajuan anda:", skorTerbaik:"Skor terbaik",
+ cubaLagi:"Cuba lagi", mulaPelajaran:"Mulakan pelajaran",
+ kuiz:"Kuiz", semak:"Semak jawapan",
+ sempurna:"Sempurna! Syabas.",
+ cubaSemula:"Cubaan yang baik. Baca pelajaran sekali lagi dan cuba semula.",
+ kembaliSenarai:"Kembali ke senarai pelajaran",
+ demoTajuk:"Akaun demo untuk pensyarah",
+ demoHuraian:"Gunakan akaun ini untuk mencuba semua fungsi. Klik \"Isi\" untuk mengisi borang log masuk secara automatik, atau salin nama pengguna dan kata laluan.",
+ kolPeranan:"Peranan", isi:"Isi"
+};
+
+/* =====================================================================
+   3) PELAJARAN: tambah atau ubah pelajaran dan soalan kuiz di sini.
+   a = nombor jawapan betul (0 = pilihan pertama, 1 = kedua, 2 = ketiga)
+   ===================================================================== */
+const LESSONS = [
+ {id:"m1",title:"Tambah",subject:"Matematik",
+  text:"Tambah bermaksud menggabungkan nombor. Jika anda ada 5 biji epal dan dapat 3 biji lagi, anda mengira 5 + 3 = 8 biji epal.",
+  q:[{q:"4 + 6 = ?",o:["8","10","12"],a:1},{q:"7 + 5 = ?",o:["11","12","13"],a:1},{q:"9 + 9 = ?",o:["17","18","19"],a:1}]},
+ {id:"s1",title:"Tumbuhan",subject:"Sains",
+  text:"Tumbuhan memerlukan cahaya matahari, air dan udara untuk membuat makanan sendiri. Akar menyerap air daripada tanah. Daun menggunakan cahaya matahari untuk membuat makanan.",
+  q:[{q:"Bahagian manakah yang menyerap air?",o:["Akar","Daun","Bunga"],a:0},{q:"Bahagian manakah yang membuat makanan menggunakan cahaya matahari?",o:["Akar","Daun","Batang"],a:1},{q:"Apakah yang diperlukan tumbuhan untuk membuat makanan?",o:["Cahaya matahari","Gula","Plastik"],a:0}]},
+ {id:"e1",title:"Kata Nama",subject:"Bahasa Melayu",
+  text:"Kata nama ialah nama bagi orang, tempat atau benda. Guru ialah orang. Kuala Lumpur ialah tempat. Buku ialah benda.",
+  q:[{q:"Perkataan manakah ialah kata nama?",o:["Lari","Guru","Cepat"],a:1},{q:"Kuala Lumpur ialah...",o:["orang","tempat","benda"],a:1},{q:"Perkataan manakah ialah benda?",o:["Buku","Menyanyi","Gembira"],a:0}]}
+];
+
+/* =====================================================================
+   4) KOD APLIKASI: tidak perlu diubah
+   ===================================================================== */
+const KEY="belajar_digital_v1";
+let db;try{db=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+db=db||{teachers:[],students:[]};
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}};
+const uid=()=>Math.random().toString(36).slice(2,10);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const $=s=>document.querySelector(s);
+
+let S=null;try{S=JSON.parse(sessionStorage.getItem("bd_s"))}catch(e){}
+let loginRole=null,lesson=null,result=null,msg="",prefill={u:"",p:""};
+function setS(v){S=v;try{v?sessionStorage.setItem("bd_s",JSON.stringify(v)):sessionStorage.removeItem("bd_s")}catch(e){}render()}
+const note=()=>msg?`<div class="err" role="alert">${esc(msg)}</div>`:"";
+
+function seedDemo(){
+ if(!PAPAR_DEMO||db.demo)return;
+ const tid={};
+ DEMO.guru.forEach(g=>{let t=db.teachers.find(x=>x.u===g[1]);if(!t){t={id:uid(),n:g[0],u:g[1],p0:g[2]};db.teachers.push(t)}tid[g[1]]=t.id});
+ DEMO.murid.forEach(m=>{
+  if(db.students.some(x=>x.u===m[1]))return;
+  const p={};for(const k in m[5])p[k]={s:m[5][k][0],t:m[5][k][1]};
+  db.students.push({id:uid(),t:tid[m[3]],n:m[0],u:m[1],p0:m[2],c:m[4],p});
+ });
+ db.demo=1;save();
+}
+function demoBox(){
+ if(!PAPAR_DEMO)return "";
+ const rows=[["admin",TEKS.admin,"-",ADMIN_PASS]]
+  .concat(DEMO.guru.map(g=>["guru",TEKS.guru+" ("+g[0]+")",g[1],g[2]]))
+  .concat(DEMO.murid.map(m=>["murid",TEKS.murid+" ("+m[0]+")",m[1],m[2]]));
+ return `<div class="card" style="margin-top:2rem"><h2>${TEKS.demoTajuk}</h2><p class="mut">${TEKS.demoHuraian}</p><div class="scroll"><table><tr><th>${TEKS.kolPeranan}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kataLaluan}</th><th></th></tr>`+
+ rows.map(r=>`<tr><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td><button class="ghost" onclick="demoFill('${r[0]}','${r[2]==="-"?"":esc(r[2])}','${esc(r[3])}')">${TEKS.isi}</button></td></tr>`).join("")+`</table></div></div>`;
+}
+
+const ROLES=[
+ ["admin",TEKS.admin,"🛠️","#17233a","#fff",TEKS.adminHuraian],
+ ["guru",TEKS.guru,"👩‍🏫","#2b5fd9","#fff",TEKS.guruHuraian],
+ ["murid",TEKS.murid,"🎒","#ffc933","#17233a",TEKS.muridHuraian]];
+
+function home(){
+ return `<h1>${TEKS.tajuk}</h1><p class="mut">${TEKS.pilih}</p><div class="roles">`+
+ ROLES.map(r=>`<button class="role" onclick="pick('${r[0]}')"><b style="background:${r[3]};color:${r[4]}">${r[2]}</b><span><strong>${r[1]}</strong><span class="mut" style="padding:0">${r[5]}</span></span></button>`).join("")+`</div>`+demoBox();
+}
+function loginView(){
+ const r=ROLES.find(x=>x[0]===loginRole);
+ return `<button class="ghost" onclick="back()">${TEKS.kembali}</button><div class="card" style="max-width:420px;margin:1.5rem auto"><h2>${TEKS.logMasuk} ${r[1]}</h2>${note()}
+ <form onsubmit="login(event)">${loginRole==="admin"?"":`<div class="q"><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" autocomplete="username" value="${esc(prefill.u)}" required></div>`}
+ <div class="q"><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" type="password" autocomplete="current-password" value="${esc(prefill.p)}" required></div>
+ <button type="submit">${TEKS.logMasuk}</button></form></div>`;
+}
+function topBar(title,sub){
+ return `<div class="top"><div><h1 style="font-size:2rem">${esc(title)}</h1><div class="mut">${esc(sub)}</div></div><button class="ghost" onclick="logout()">${TEKS.logKeluar}</button></div>`;
+}
+const pct=s=>Math.round(Object.keys(s.p).length/LESSONS.length*100);
+const avg=s=>{let a=0,b=0;for(const k in s.p){a+=s.p[k].s;b+=s.p[k].t}return b?Math.round(a/b*100)+"%":TEKS.tiadaKuiz};
+
+function adminView(){
+ const rows=db.teachers.map(t=>`<tr><td>${esc(t.n)}</td><td>${esc(t.u)}</td><td>${db.students.filter(s=>s.t===t.id).length}</td><td><button class="ghost" onclick="delT('${t.id}')">${TEKS.buang}</button></td></tr>`).join("")
+  ||`<tr><td colspan="4" class="mut">${TEKS.tiadaGuru}</td></tr>`;
+ return topBar(TEKS.admin,TEKS.adminSub)+note()+
+ `<div class="card"><h2>${TEKS.tambahGuru}</h2><form onsubmit="addT(event)" class="grid">
+ <div><label for="n">${TEKS.namaPenuh}</label><input id="n" name="n" required></div>
+ <div><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" required></div>
+ <div><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" required></div>
+ <button type="submit">${TEKS.tambahGuru}</button></form></div>
+ <div class="card"><h2>${TEKS.senaraiGuru}</h2><div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kolMurid}</th><th></th></tr>${rows}</table></div></div>`;
+}
+function guruView(){
+ const me=db.teachers.find(t=>t.id===S.id);if(!me){setTimeout(logout);return ""}
+ const mine=db.students.filter(s=>s.t===me.id);
+ const classes=[...new Set(mine.map(s=>s.c))].sort();
+ const blocks=classes.map(c=>{
+  const rows=mine.filter(s=>s.c===c).map(s=>`<tr><td>${esc(s.n)}</td><td>${esc(s.u)} / ${esc(s.p0)}</td>
+  <td><div class="bar" title="${pct(s)}%"><i style="width:${pct(s)}%"></i></div><small class="mut">${Object.keys(s.p).length}/${LESSONS.length} ${TEKS.pelajaran}</small></td>
+  <td>${avg(s)}</td><td><button class="ghost" onclick="delS('${s.id}')">${TEKS.buang}</button></td></tr>`).join("");
+  return `<div class="card"><h2>${TEKS.kelas} ${esc(c)} <span class="tag">${mine.filter(s=>s.c===c).length} ${TEKS.bilMurid}</span></h2><div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPenggunaKata}</th><th>${TEKS.kolKemajuan}</th><th>${TEKS.kolSkor}</th><th></th></tr>${rows}</table></div></div>`}).join("")
+  ||`<div class="card mut">${TEKS.tiadaMurid}</div>`;
+ return topBar(TEKS.cikgu+" "+me.n,TEKS.guruSub)+note()+
+ `<div class="card"><h2>${TEKS.tambahMurid}</h2><form onsubmit="addS(event)" class="grid">
+ <div><label for="n">${TEKS.namaPenuh}</label><input id="n" name="n" required></div>
+ <div><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" required></div>
+ <div><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" required></div>
+ <div><label for="c">${TEKS.kelas}</label><input id="c" name="c" list="cls" placeholder="${TEKS.contohKelas}" required><datalist id="cls">${classes.map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div>
+ <button type="submit">${TEKS.tambahMurid}</button></form></div>`+blocks;
+}
+function muridView(){
+ const me=db.students.find(s=>s.id===S.id);if(!me){setTimeout(logout);return ""}
+ const cards=LESSONS.map(l=>{const p=me.p[l.id];return `<div class="card"><div class="top" style="margin:0"><div><h2>${esc(l.title)}</h2><span class="tag">${esc(l.subject)}</span> ${p?`<span class="tag ok">${TEKS.skorTerbaik} ${p.s}/${p.t}</span>`:""}</div><button onclick="openL('${l.id}')">${p?TEKS.cubaLagi:TEKS.mulaPelajaran}</button></div></div>`}).join("");
+ return topBar(TEKS.helo+" "+me.n,TEKS.kelas+" "+me.c)+`<div class="card"><b>${TEKS.kemajuanAnda} ${pct(me)}%</b><div class="bar" style="margin-top:.5rem"><i style="width:${pct(me)}%"></i></div></div>`+cards;
+}
+function lessonView(){
+ const L=LESSONS.find(l=>l.id===lesson);
+ if(result!==null)return `<div class="card" style="text-align:center"><h2>${esc(L.title)}</h2><div class="big">${result}/${L.q.length}</div><p>${result===L.q.length?TEKS.sempurna:TEKS.cubaSemula}</p><button onclick="closeL()">${TEKS.kembaliSenarai}</button></div>`;
+ return `<button class="ghost" onclick="closeL()">${TEKS.kembali}</button><div class="card" style="margin-top:1rem"><h2>${esc(L.title)}</h2><p>${esc(L.text)}</p></div>
+ <form class="card" onsubmit="submitQ(event)"><h2>${TEKS.kuiz}</h2>`+L.q.map((q,i)=>`<div class="q"><label>${i+1}. ${esc(q.q)}</label>`+q.o.map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}" required> ${esc(o)}</label>`).join("")+`</div>`).join("")+`<button type="submit">${TEKS.semak}</button></form>`;
+}
+
+function render(){
+ const a=$("#app");
+ if(!S)a.innerHTML=loginRole?loginView():home();
+ else if(S.role==="admin")a.innerHTML=adminView();
+ else if(S.role==="guru")a.innerHTML=guruView();
+ else a.innerHTML=lesson?lessonView():muridView();
+ msg="";prefill={u:"",p:""};
+}
+const pick=r=>{loginRole=r;msg="";render()};
+const demoFill=(r,u,p)=>{loginRole=r;prefill={u:u,p:p};msg="";render();window.scrollTo(0,0)};
+const back=()=>{loginRole=null;render()};
+const logout=()=>{loginRole=null;lesson=null;result=null;setS(null)};
+function login(e){
+ e.preventDefault();const f=e.target,p=f.p.value,u=f.u?f.u.value.trim().toLowerCase():"";
+ if(loginRole==="admin"){if(p===ADMIN_PASS)return setS({role:"admin"})}
+ else{const x=(loginRole==="guru"?db.teachers:db.students).find(t=>t.u===u&&t.p0===p);if(x)return setS({role:loginRole,id:x.id})}
+ msg=TEKS.salahLogin;render();
+}
+function addT(e){
+ e.preventDefault();const f=e.target,u=f.u.value.trim().toLowerCase();
+ if(db.teachers.some(t=>t.u===u)){msg=TEKS.guruSama;return render()}
+ db.teachers.push({id:uid(),n:f.n.value.trim(),u,p0:f.p.value});save();render();
+}
+function delT(id){
+ if(!confirm(TEKS.buangGuruTanya))return;
+ db.teachers=db.teachers.filter(t=>t.id!==id);db.students=db.students.filter(s=>s.t!==id);save();render();
+}
+function addS(e){
+ e.preventDefault();const f=e.target,u=f.u.value.trim().toLowerCase();
+ if(db.students.some(s=>s.u===u)){msg=TEKS.muridSama;return render()}
+ db.students.push({id:uid(),t:S.id,n:f.n.value.trim(),u,p0:f.p.value,c:f.c.value.trim(),p:{}});save();render();
+}
+function delS(id){
+ const s=db.students.find(x=>x.id===id);if(!s||s.t!==S.id)return;
+ if(!confirm(TEKS.buangMuridTanya))return;
+ db.students=db.students.filter(x=>x.id!==id);save();render();
+}
+const openL=id=>{lesson=id;result=null;render();window.scrollTo(0,0)};
+const closeL=()=>{lesson=null;result=null;render()};
+function submitQ(e){
+ e.preventDefault();const L=LESSONS.find(l=>l.id===lesson);let sc=0;
+ L.q.forEach((q,i)=>{const c=e.target.querySelector(`input[name=q${i}]:checked`);if(c&&+c.value===q.a)sc++});
+ const me=db.students.find(s=>s.id===S.id),old=me.p[L.id];
+ if(!old||sc>old.s)me.p[L.id]={s:sc,t:L.q.length};
+ save();result=sc;render();window.scrollTo(0,0);
+}
+seedDemo();
+render();
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Belajar Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#17233a;--mut:#5d6b82;--bg:#f2f5fb;--card:#fff;--line:#dbe2ef;--blue:#2b5fd9;--yel:#ffc933;--grn:#1f9d62;--red:#c93a3a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.15;margin:0 0 .5rem}
+h1{font-size:2.6rem;font-weight:800}h2{font-size:1.4rem}
+.wrap{max-width:860px;margin:0 auto;padding:1.5rem 1rem 3rem}
+.mut{color:var(--mut)}
+button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:.6rem 1rem;background:var(--ink);color:#fff;font-weight:600}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+button.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+button.ghost:hover{border-color:var(--ink)}
+input{font:inherit;padding:.6rem .7rem;border:1.5px solid var(--line);border-radius:10px;width:100%;background:#fff}
+label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.2rem}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;align-items:end}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.tag{display:inline-block;padding:.1rem .6rem;border-radius:99px;font-size:.85rem;font-weight:700;background:#e4ecff;color:var(--blue)}
+.tag.ok{background:#dcf5e7;color:var(--grn)}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:.55rem .4rem;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:.9rem;color:var(--mut);font-weight:600}
+.scroll{overflow-x:auto}
+.bar{height:10px;background:#e8edf6;border-radius:9px;min-width:90px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--grn)}
+.err{background:#fde8e8;color:var(--red);padding:.6rem .8rem;border-radius:10px;margin-bottom:1rem;font-weight:600}
+.roles{display:grid;gap:.9rem;margin-top:2rem}
+.role{display:flex;align-items:stretch;text-align:left;padding:0;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
+.role:hover{border-color:var(--ink)}
+.role b{display:flex;align-items:center;justify-content:center;width:84px;font-size:2rem;flex:none}
+.role span{padding:1rem 1.2rem;display:block}
+.role strong{font:800 1.35rem "Baloo 2",system-ui,sans-serif;display:block}
+.q{margin:1.2rem 0}.q label{font-size:1rem}
+.opt{display:flex;gap:.6rem;align-items:center;font-weight:400;padding:.5rem .7rem;border:1.5px solid var(--line);border-radius:10px;margin:.4rem 0;cursor:pointer}
+.opt input{width:auto}
+.big{font:800 3rem "Baloo 2",system-ui,sans-serif}
+@media (max-width:520px){h1{font-size:2rem}.role b{width:64px}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><p>Memuatkan Belajar Digital... Jika mesej ini kekal, skrip tidak berjalan.</p></div>
+<noscript>Sila hidupkan JavaScript untuk menggunakan laman ini.</noscript>
+<script>
+window.onerror=function(m,s,l){var a=document.getElementById("app");if(a)a.innerHTML='<div style="padding:1rem;background:#fde8e8;color:#c93a3a;border-radius:10px"><b>'+TEKS.ralat+'</b> '+m+' ('+l+')</div>'};
+
+/* =====================================================================
+   1) TETAPAN: tukar kata laluan Admin di sini (WAJIB tukar sebelum kongsi!)
+   ===================================================================== */
+const ADMIN_PASS = "admin123";
+
+/* Papar kotak "Akaun demo" di muka depan untuk pensyarah? true = papar, false = sembunyi.
+   Tukar kepada false apabila laman ini digunakan sebenar di sekolah. */
+const PAPAR_DEMO = true;
+
+/* Akaun demo (dicipta sekali sahaja pada kali pertama laman dibuka).
+   Guru: [nama, nama pengguna, kata laluan]
+   Murid: [nama, nama pengguna, kata laluan, nama pengguna guru, kelas, kemajuan]  */
+const DEMO = {
  guru:[["Cikgu Aminah","Cikgu Aminah","guru123"],["Cikgu Raju","Cikgu Raju","guru123"]],
  murid:[["Ali bin Ahmad","Ali bin Ahmad","murid123","Cikgu Aminah","4 Bestari",{}],
         ["Siti Nur binti Jazlan","Siti Nur binti Jazlan","murid123","Cikgu Aminah","4 Bestari",{m1:[3,3],s1:[2,3]}],
