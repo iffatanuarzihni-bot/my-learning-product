@@ -1,36 +1,353 @@
-:root{--ink:#17233a;--mut:#5d6b82;--bg:#f2f5fb;--card:#fff;--line:#dbe2ef;--blue:#2b5fd9;--yel:#ffc933;--grn:#1f9d62;--red:#c93a3a}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-h1,h2,h3{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.15;margin:0 0 .5rem}
-h1{font-size:2.6rem;font-weight:800}h2{font-size:1.4rem}
-.wrap{max-width:860px;margin:0 auto;padding:1.5rem 1rem 3rem}
-.mut{color:var(--mut)}
-button{font:inherit;cursor:pointer;border:0;border-radius:10px;padding:.6rem 1rem;background:var(--ink);color:#fff;font-weight:600}
-button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
-button.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-button.ghost:hover{border-color:var(--ink)}
-input{font:inherit;padding:.6rem .7rem;border:1.5px solid var(--line);border-radius:10px;width:100%;background:#fff}
-label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.2rem}
-.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:1.2rem;margin-bottom:1.2rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;align-items:end}
-.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap}
-.tag{display:inline-block;padding:.1rem .6rem;border-radius:99px;font-size:.85rem;font-weight:700;background:#e4ecff;color:var(--blue)}
-.tag.ok{background:#dcf5e7;color:var(--grn)}
-table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:.55rem .4rem;border-bottom:1px solid var(--line);vertical-align:middle}
-th{font-size:.9rem;color:var(--mut);font-weight:600}
-.scroll{overflow-x:auto}
-.bar{height:10px;background:#e8edf6;border-radius:9px;min-width:90px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--grn)}
-.err{background:#fde8e8;color:var(--red);padding:.6rem .8rem;border-radius:10px;margin-bottom:1rem;font-weight:600}
-.roles{display:grid;gap:.9rem;margin-top:2rem}
-.role{display:flex;align-items:stretch;text-align:left;padding:0;background:var(--card);color:var(--ink);border:1.5px solid var(--line);border-radius:16px;overflow:hidden}
-.role:hover{border-color:var(--ink)}
-.role b{display:flex;align-items:center;justify-content:center;width:84px;font-size:2rem;flex:none}
-.role span{padding:1rem 1.2rem;display:block}
-.role strong{font:800 1.35rem "Baloo 2",system-ui,sans-serif;display:block}
-.q{margin:1.2rem 0}.q label{font-size:1rem}
-.opt{display:flex;gap:.6rem;align-items:center;font-weight:400;padding:.5rem .7rem;border:1.5px solid var(--line);border-radius:10px;margin:.4rem 0;cursor:pointer}
-.opt input{width:auto}
-.big{font:800 3rem "Baloo 2",system-ui,sans-serif}
-@media (max-width:520px){h1{font-size:2rem}.role b{width:64px}}
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Fredoka:wght@400;600&display=swap');
+
+:root {
+  --ink: #eef2ff;        /* Teks terang seperti cahaya kristal */
+  --mut: #94a3b8;        /* Abu-abu kabut gua */
+  --bg: #0b0e17;         /* Gelap dasar bawah tanah */
+  --card: #151b2b;       /* Warna batu obsidian panel */
+  --line: #2b3654;       /* Garis ukiran batu */
+  --blue: #38bdf8;       /* Biru kristal mana / bioluminescent */
+  --yel: #fbbf24;        /* Emas obor / harta karun */
+  --grn: #2dd4bf;        /* Hijau lumut bercahaya / XP */
+  --red: #fb7185;        /* Merah magma / bahaya */
+  --glow: 0 0 18px rgba(56, 189, 248, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Animasi Tema Bawah Tanah */
+@keyframes cavernBreath {
+  0%, 100% { background-position: 0% 50%, 100% 0%; }
+  50% { background-position: 10% 60%, 90% 10%; }
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+@keyframes manaShine {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+body {
+  margin: 0;
+  color: var(--ink);
+  font: 16px/1.55 "Fredoka", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  /* Latar gua bawah tanah dengan cahaya obor & kristal */
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(56, 189, 248, 0.14) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, rgba(251, 191, 36, 0.12) 0%, transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(45, 212, 191, 0.10) 0%, transparent 50%);
+  background-attachment: fixed;
+  animation: cavernBreath 12s ease-in-out infinite;
+}
+
+h1, h2, h3 {
+  font-family: "Baloo 2", system-ui, sans-serif;
+  line-height: 1.15;
+  margin: 0 0 .5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+}
+
+h1 {
+  font-size: 2.6rem;
+  font-weight: 800;
+  background: linear-gradient(90deg, #fff, var(--yel), var(--blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+h2 { font-size: 1.45rem; color: var(--yel); }
+
+.wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem 3rem;
+  animation: fadeIn .5s ease-out;
+}
+
+.mut { color: var(--mut); }
+
+/* Tombol Bergaya Game RPG 3D */
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  padding: .65rem 1.2rem;
+  background: linear-gradient(180deg, #38bdf8, #0284c7);
+  color: #081226;
+  font-weight: 700;
+  box-shadow: 0 4px 0 #075985, 0 6px 15px rgba(56, 189, 248, 0.3);
+  transition: transform .15s ease, box-shadow .15s ease, filter .2s ease;
+}
+
+button:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #075985, 0 10px 22px rgba(56, 189, 248, 0.45);
+}
+
+button:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #075985;
+}
+
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--yel);
+  outline-offset: 2px;
+}
+
+button.ghost {
+  background: rgba(21, 27, 43, 0.8);
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  box-shadow: 0 4px 0 #0b0e17;
+}
+
+button.ghost:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 4px 0 #0b0e17, var(--glow);
+}
+
+/* Input Gaya Gulungan / Panel Batu */
+input, select {
+  font: inherit;
+  padding: .65rem .8rem;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  width: 100%;
+  background: #0d1220;
+  color: var(--ink);
+  transition: border-color .2s, box-shadow .2s;
+}
+
+input:focus, select:focus {
+  border-color: var(--blue);
+  box-shadow: var(--glow);
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  font-size: .9rem;
+  margin-bottom: .3rem;
+  color: #cbd5e1;
+}
+
+/* Panel / Kartu Batu Bawah Tanah */
+.card {
+  background: linear-gradient(160deg, rgba(28, 36, 58, 0.92), rgba(15, 20, 34, 0.96));
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  padding: 1.3rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  transition: border-color .25s ease, transform .25s ease;
+}
+
+.card:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: .8rem;
+  align-items: end;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Badge / Rune Status */
+.tag {
+  display: inline-block;
+  padding: .2rem .7rem;
+  border-radius: 99px;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .3px;
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--blue);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.15);
+}
+
+.tag.ok {
+  background: rgba(45, 212, 191, 0.15);
+  color: var(--grn);
+  border-color: rgba(45, 212, 191, 0.45);
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.2);
+}
+
+/* Tabel Papan Peringkat / Inventaris */
+table { width: 100%; border-collapse: collapse; }
+
+th, td {
+  text-align: left;
+  padding: .65rem .5rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+
+th {
+  font-size: .85rem;
+  color: var(--yel);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+tr:hover td {
+  background: rgba(56, 189, 248, 0.05);
+}
+
+.scroll { overflow-x: auto; }
+
+/* Progress Bar Kristal / HP / XP dengan Efek Cahaya Berjalan */
+.bar {
+  height: 12px;
+  background: #0a0e18;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  min-width: 90px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.bar i {
+  display: block;
+  height: 100%;
+  border-radius: 9px;
+  background: linear-gradient(90deg, var(--grn), #5eead4, var(--blue), var(--grn));
+  background-size: 200% 100%;
+  animation: manaShine 2.5s linear infinite;
+  box-shadow: 0 0 10px rgba(45, 212, 191, 0.6);
+  transition: width .4s ease;
+}
+
+.err {
+  background: rgba(251, 113, 133, 0.15);
+  color: var(--red);
+  border: 1px solid rgba(251, 113, 133, 0.45);
+  padding: .7rem .9rem;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+/* Pilihan Karakter / Peran Petualang */
+.roles {
+  display: grid;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.role {
+  display: flex;
+  align-items: stretch;
+  text-align: left;
+  padding: 0;
+  background: linear-gradient(145deg, #171f33, #101524);
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 0 #090c15;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.role:hover {
+  border-color: var(--yel);
+  transform: translateY(-3px);
+  box-shadow: 0 9px 0 #090c15, 0 0 20px rgba(251, 191, 36, 0.2);
+}
+
+.role b {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  font-size: 2.2rem;
+  flex: none;
+  background: linear-gradient(180deg, rgba(251, 191, 36, 0.18), rgba(56, 189, 248, 0.1));
+  border-right: 1px solid var(--line);
+}
+
+.role:hover b {
+  animation: floatIcon 1.2s ease-in-out infinite;
+}
+
+.role span { padding: 1rem 1.2rem; display: block; }
+
+.role strong {
+  font: 800 1.35rem "Baloo 2", system-ui, sans-serif;
+  display: block;
+  color: var(--yel);
+}
+
+/* Pertanyaan / Pilihan Dialog Cerita Game */
+.q { margin: 1.2rem 0; }
+.q label { font-size: 1.05rem; color: var(--ink); }
+
+.opt {
+  display: flex;
+  gap: .7rem;
+  align-items: center;
+  font-weight: 500;
+  padding: .65rem .85rem;
+  background: rgba(13, 18, 32, 0.7);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  margin: .45rem 0;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.opt:hover {
+  border-color: var(--blue);
+  background: rgba(56, 189, 248, 0.08);
+  transform: translateX(4px);
+}
+
+.opt:has(input:checked) {
+  border-color: var(--yel);
+  background: rgba(251, 191, 36, 0.12);
+  box-shadow: 0 0 12px rgba(251, 191, 36, 0.2);
+}
+
+.opt input {
+  width: auto;
+  accent-color: var(--yel);
+}
+
+.big {
+  font: 800 3rem "Baloo 2", system-ui, sans-serif;
+  color: var(--yel);
+  text-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+}
+
+@media (max-width: 520px) {
+  h1 { font-size: 2rem; }
+  .role b { width: 64px; font-size: 1.7rem; }
+}
