@@ -1,173 +1,282 @@
-HTML
 <!DOCTYPE html>
 <html lang="ms">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pokémon Academy | Dunia Pembelajaran</title>
+<title>Pokémon Academy | Dunia Pembelajaran 8-Bit</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#1b1740;--paper:#fff8e7;--pri:#7c4dff;--gold:#ffc933;--grn:#2ecc71;--red:#ff4d6d;--mut:#5b5680}
+/* ==================== SISTEM REKA BENTUK POKÉMON RPG ==================== */
+:root{
+  --ink:#101c36;
+  --navy:#192b4d;
+  --paper:#fffdf4;
+  --panel:#f3f7ff;
+  --pri:#2c6bed;
+  --gold:#ffcb05;
+  --gold-dark:#e0a800;
+  --grn:#35c46a;
+  --red:#ef3e4a;
+  --mut:#5d6c89;
+  --sky-top:#0d1630;
+  --sky-mid:#1a2f5a;
+}
+
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:var(--ink);font:600 16px/1.5 "Baloo 2",system-ui,sans-serif;background:linear-gradient(#25156b,#4a2fb0 50%,#1e7fd6) fixed;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(2px 2px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 140px 90px,#ffe9a0,transparent),radial-gradient(1.5px 1.5px at 80px 160px,#fff,transparent),radial-gradient(2px 2px at 200px 40px,#fff,transparent);background-size:240px 200px;animation:twinkle 2.5s ease-in-out infinite alternate}
-@keyframes twinkle{to{opacity:.25}}
-.wrap{position:relative;max-width:900px;margin:0 auto;padding:1.2rem 1rem 3rem;animation:pop .35s ease-out}
-@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.97)}}
+
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font:600 16px/1.5 "Baloo 2",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255,203,5,.14), transparent 38%),
+    radial-gradient(circle at 80% 15%, rgba(44,107,237,.22), transparent 40%),
+    linear-gradient(180deg, #101b38 0%, #1c3566 48%, #24578a 100%) fixed;
+  overflow-x:hidden;
+}
+
+/* Corak grid retro halus */
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    radial-gradient(2px 2px at 25px 35px,#fff,transparent),
+    radial-gradient(2px 2px at 140px 85px,#ffe57f,transparent),
+    radial-gradient(1.5px 1.5px at 80px 160px,#90caf9,transparent),
+    radial-gradient(2px 2px at 210px 45px,#fff,transparent);
+  background-size:240px 200px;
+  opacity:.55;
+  animation:twinkle 3s ease-in-out infinite alternate;
+  z-index:0;
+}
+@keyframes twinkle{to{opacity:.2}}
+
+.wrap{
+  position:relative;
+  z-index:2;
+  max-width:980px;
+  margin:0 auto;
+  padding:1.2rem 1rem 3.5rem;
+  animation:pop .32s ease-out;
+  pointer-events:none;
+}
+.wrap>*{pointer-events:auto}
+@keyframes pop{from{opacity:0;transform:translateY(12px) scale(.98)}}
+
+/* Bar Kawalan Audio Terapung */
+.audio-dock{
+  position:fixed;
+  top:14px;
+  right:14px;
+  z-index:50;
+  display:flex;
+  gap:.45rem;
+}
+.audio-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  padding:.45rem .8rem;
+  font:400 .62rem "Press Start 2P",monospace;
+  border:3px solid var(--ink);
+  border-radius:12px;
+  background:var(--paper);
+  color:var(--ink);
+  box-shadow:0 4px 0 var(--ink);
+  cursor:pointer;
+}
+.audio-btn.on{
+  background:var(--gold);
+}
+.audio-btn:hover{transform:translateY(-2px)}
+.audio-btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--ink)}
+
+/* Tipografi & Elemen Asas */
 h1,h2{margin:0 0 .5rem;line-height:1.3}
-h1{font:400 1.2rem/1.6 "Press Start 2P","Courier New",monospace;color:var(--gold);text-shadow:3px 3px 0 var(--ink),-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink)}
-h1.logo{font-size:1.5rem;text-align:center;animation:glow 2s ease-in-out infinite alternate}
-@keyframes glow{to{transform:scale(1.04) rotate(-1deg)}}
-h2{font-size:1.3rem;font-weight:800}
-.sub{color:#e6defc;text-align:center;margin:.2rem 0 1rem}
-.mut{color:var(--mut)}.top .mut{color:#e6defc}
-button{font:inherit;font-weight:800;cursor:pointer;border:3px solid var(--ink);border-radius:12px;padding:.55rem 1rem;background:var(--gold);color:var(--ink);box-shadow:0 5px 0 var(--ink);transition:transform .1s,box-shadow .1s}
-button:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--ink)}
+h1{
+  font:400 1.2rem/1.55 "Press Start 2P",monospace;
+  color:var(--gold);
+  text-shadow:3px 3px 0 var(--ink),-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink);
+}
+h1.logo{
+  font-size:clamp(1.25rem,3.6vw,2rem);
+  text-align:center;
+  text-shadow:3px 3px 0 #1f4ca8, 5px 5px 0 var(--ink);
+  animation:glowTitle 2.2s ease-in-out infinite alternate;
+}
+@keyframes glowTitle{to{transform:scale(1.03)}}
+h2{font-size:1.3rem;font-weight:800;color:var(--navy)}
+.sub{color:#dce9ff;text-align:center;margin:.2rem 0 1.1rem;font-size:1.05rem}
+.mut{color:var(--mut)}
+.top .mut{color:#cfe0ff}
+
+/* Butang Gaya Konsol */
+button{
+  font:inherit;
+  font-weight:800;
+  cursor:pointer;
+  border:3px solid var(--ink);
+  border-radius:14px;
+  padding:.58rem 1.05rem;
+  background:linear-gradient(180deg,#ffe054,var(--gold));
+  color:var(--ink);
+  box-shadow:0 5px 0 var(--ink);
+  transition:transform .1s,box-shadow .1s,filter .15s;
+}
+button:hover{transform:translateY(-2px);box-shadow:0 7px 0 var(--ink);filter:brightness(1.04)}
 button:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
-button.ghost{background:#fff}
-button:focus-visible,input:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
-input{font:inherit;padding:.55rem .7rem;border:3px solid var(--ink);border-radius:10px;width:100%;background:#fff;color:var(--ink)}
-label{display:block;font-weight:800;font-size:.9rem;margin-bottom:.2rem}
-.card{background:var(--paper);border:3px solid var(--ink);border-radius:18px;padding:1.1rem;margin-bottom:1.2rem;box-shadow:0 6px 0 rgba(0,0,0,.35)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem;align-items:end}
+button.ghost{background:#fff;color:var(--navy)}
+button.danger{background:var(--red);color:#fff}
+button:focus-visible,input:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+input{
+  font:inherit;
+  padding:.58rem .75rem;
+  border:3px solid var(--ink);
+  border-radius:12px;
+  width:100%;
+  background:#fff;
+  color:var(--ink);
+}
+label{display:block;font-weight:800;font-size:.9rem;margin-bottom:.2rem;color:var(--navy)}
+
+/* Kad RPG / Pokédex */
+.card{
+  position:relative;
+  background:var(--paper);
+  border:4px solid var(--ink);
+  border-radius:22px;
+  padding:1.2rem;
+  margin-bottom:1.25rem;
+  box-shadow:0 8px 0 rgba(10,18,38,.45), inset 0 0 0 3px #e8eefc;
+}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:.85rem;align-items:end}
 .top{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap}
-.tag{display:inline-block;padding:0 .6rem;border:2px solid var(--ink);border-radius:99px;font-size:.8rem;font-weight:800;background:#d9ccff}
-.tag.ok{background:#b8f2cd}
+
+.tag{
+  display:inline-block;
+  padding:.08rem .65rem;
+  border:2px solid var(--ink);
+  border-radius:99px;
+  font-size:.78rem;
+  font-weight:800;
+  background:#dce8ff;
+  color:var(--navy);
+}
+.tag.ok{background:#c5f7d5;color:#11572b}
+
 table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:.5rem .4rem;border-bottom:2px dashed #d9cfb5;vertical-align:middle}
-th{font-size:.85rem;color:var(--mut)}
+th,td{text-align:left;padding:.55rem .45rem;border-bottom:2px dashed #d3dced;vertical-align:middle}
+th{font-size:.82rem;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
 .scroll{overflow-x:auto}
-.bar{height:16px;background:#e5dcc3;border:3px solid var(--ink);border-radius:99px;overflow:hidden;min-width:90px}
-.bar i{display:block;height:100%;background:linear-gradient(#5df29a,#1fb86b);transition:width .6s}
-.xp i{background:linear-gradient(#ffe066,#ffb300)}.hp.low i{background:linear-gradient(#ff8fa3,#ff4d6d)}
-.err{background:#ffe0e6;color:#b3173a;border:3px solid var(--ink);padding:.6rem .8rem;border-radius:12px;margin-bottom:1rem}
+
+.bar{
+  height:17px;
+  background:#dce4f2;
+  border:3px solid var(--ink);
+  border-radius:99px;
+  overflow:hidden;
+  min-width:95px;
+}
+.bar i{display:block;height:100%;background:linear-gradient(#5cf297,#22b862);transition:width .55s ease}
+.xp i{background:linear-gradient(#ffe36e,#f5a600)}
+.hp.mid i{background:linear-gradient(#ffe066,#f7b500)}
+.hp.low i{background:linear-gradient(#ff8fa3,#ef3e4a)}
+
+.err{
+  background:#ffe2e6;
+  color:#9c142a;
+  border:3px solid var(--ink);
+  padding:.65rem .9rem;
+  border-radius:14px;
+  margin-bottom:1rem;
+  font-weight:800;
+}
 .q{margin:1rem 0}
-.mon svg{display:block;margin:auto;max-width:100%;height:auto;filter:drop-shadow(0 6px 0 rgba(0,0,0,.2))}
-.sil svg{filter:brightness(0) opacity(.35)}
+
+/* Sprite Pokémon */
+.mon{display:flex;align-items:center;justify-content:center;flex:none}
+.mon img,.pokemon-sprite{
+  display:block;
+  max-width:100%;
+  height:auto;
+  object-fit:contain;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 6px 2px rgba(16,28,54,.28));
+}
+.sil img{filter:brightness(0) opacity(.35)}
 .float{animation:bob 2.2s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-10px)}}
-.parade{display:flex;justify-content:center;gap:1rem;margin:.5rem 0 1rem}.parade .mon{width:90px}
-.roles{display:grid;gap:1rem;margin-top:1rem}
-.role{display:flex;align-items:center;gap:1rem;width:100%;text-align:left;padding:.7rem 1rem;background:var(--paper);box-shadow:0 6px 0 rgba(0,0,0,.35);border-radius:18px}
-.role .mon{width:80px;flex:none}.role strong{font-size:1.4rem;display:block}
-.role:hover .mon{animation:jump .5s}
-@keyframes jump{40%{transform:translateY(-16px) scale(1.08)}}
-.stage{display:flex;align-items:center;gap:1rem}.stage .mon{width:84px;flex:none}.grow{flex:1;min-width:0}
-.hud{display:flex;gap:1rem;align-items:center}.avatar{font-size:2.6rem}
-.strip{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.7rem}.strip .mon{width:46px}
-.arena{position:relative;height:290px;margin-bottom:1.2rem;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:linear-gradient(#8fd3ff 0 58%,#6fcf6f 58%);box-shadow:0 6px 0 rgba(0,0,0,.35)}
-.cloud{position:absolute;top:14%;font-size:2rem;animation:drift 16s linear infinite}
-@keyframes drift{from{left:-10%}to{left:105%}}
-.enemy{position:absolute;right:9%;top:48px;width:130px}
-.enemy:after{content:"";position:absolute;left:5%;right:5%;bottom:-8px;height:16px;border-radius:50%;background:rgba(0,0,0,.2);z-index:-1}
-.enemy .mon{animation:bob 2s ease-in-out infinite}
-.trainer{position:absolute;left:10%;bottom:14px;font-size:4rem;animation:bob 3s ease-in-out infinite}
-.plate{position:absolute;background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:.2rem .6rem;box-shadow:0 3px 0 rgba(0,0,0,.3)}
-.plate.en{left:4%;top:12px;width:46%}.plate.me{right:4%;bottom:12px}
-.hit{animation:hit .5s}.miss{animation:hit .4s}
-@keyframes hit{20%{transform:translateX(-12px);filter:brightness(2)}40%{transform:translateX(12px)}60%{transform:translateX(-8px)}}
-.miss:after{content:"";position:absolute;inset:0;background:rgba(255,0,60,.35);animation:flash .5s forwards}
-@keyframes flash{to{opacity:0}}
-.dmg{position:absolute;left:30%;top:-8px;font:400 1.2rem "Press Start 2P",monospace;color:var(--red);text-shadow:2px 2px 0 var(--ink);animation:up .9s forwards}
-@keyframes up{to{opacity:0;transform:translateY(-50px)}}
-.opts{display:grid;gap:.6rem;margin-top:.6rem}.opts.lock{pointer-events:none}
-.opts button{text-align:left;background:#fff}
-.opts .ok{background:var(--grn);color:#fff}.opts .no{background:var(--red);color:#fff}.opts .dim{opacity:.5}
-.bubble{background:#fff;border:3px solid var(--ink);border-radius:14px;padding:.8rem 1rem;margin:.8rem 0;text-align:left}
-.center{text-align:center}.big{font:400 2.2rem "Press Start 2P",monospace;margin:.4rem 0}
-.capt{position:relative;height:150px;display:grid;place-items:center}
-.capt .mon{width:120px;opacity:0;animation:appear .5s 2s forwards}
-@keyframes appear{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
-.orb{position:absolute;width:72px;height:72px;border-radius:50%;border:4px solid var(--ink);background:linear-gradient(var(--pri) 0 44%,var(--ink) 44% 56%,#fff 56%);animation:orb 2s ease-in-out forwards}
-.orb:after{content:"";position:absolute;left:50%;top:50%;width:18px;height:18px;margin:-9px;border-radius:50%;background:var(--gold);border:3px solid var(--ink)}
-@keyframes orb{0%{transform:translateY(-130px) scale(.5);opacity:0}20%{transform:none;opacity:1}35%{transform:rotate(-25deg)}50%{transform:rotate(25deg)}65%{transform:rotate(-25deg)}80%{transform:rotate(0)}100%{transform:scale(1.9);opacity:0}}
-.spark{position:absolute;font-size:1.6rem;opacity:0;animation:appear .6s 2.1s forwards,twinkle 1s 2.7s infinite alternate}
-.flee{width:120px;margin:0 auto;animation:flee 1.2s forwards}
-@keyframes flee{to{transform:translateX(220px) rotate(25deg);opacity:0}}
-@media (max-width:520px){h1.logo{font-size:1.05rem}.enemy{width:105px}.role .mon{width:64px}}
-@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 
-/* ==================== TEMA POKÉMON ACADEMY ==================== */
-:root{--ink:#19324d;--paper:#fffdf3;--pri:#2a75bb;--gold:#ffcb05;--grn:#54b96b;--red:#e63946;--mut:#63758a;--poke-blue:#2a75bb;--poke-red:#e63946}
-body{background:linear-gradient(180deg,#80d6ff 0%,#b8edff 34%,#e7f8d8 70%,#a5d989 100%) fixed;color:var(--ink)}
-body:before{background-image:radial-gradient(3px 3px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 140px 90px,#fff6bd,transparent),radial-gradient(2px 2px at 80px 160px,#fff,transparent),radial-gradient(3px 3px at 200px 40px,#fff,transparent);background-size:240px 200px;opacity:.8}
-.wrap{z-index:1;max-width:980px;padding-top:1.35rem}
-.pokemon-background{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.bg-pokemon{position:absolute;width:clamp(72px,10vw,132px);height:auto;image-rendering:pixelated;opacity:.55;filter:drop-shadow(0 7px 4px #28506b33);animation:bgFloat 7s ease-in-out infinite}
-.bg-pikachu{left:1.2%;top:19%;animation-delay:-1s}.bg-jigglypuff{right:1.2%;top:43%;width:clamp(70px,8vw,108px);animation-delay:-3s}.bg-eevee{left:4%;bottom:2%;width:clamp(86px,11vw,142px);animation-delay:-5s}
-@keyframes bgFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-22px) rotate(5deg)}}
-.bg-cloud{position:absolute;width:115px;height:35px;border-radius:50px;background:#fff;opacity:.5;filter:blur(1px);animation:cloudMove 34s linear infinite}
-.bg-cloud:before,.bg-cloud:after{content:"";position:absolute;bottom:9px;background:#fff;border-radius:50%}.bg-cloud:before{width:48px;height:48px;left:17px}.bg-cloud:after{width:58px;height:58px;right:15px}
-.cloud-one{top:13%;left:-140px}.cloud-two{top:60%;left:-220px;animation-delay:-17s;transform:scale(.75)}
-@keyframes cloudMove{to{left:110%}}
-.bg-pokeball{position:absolute;right:7%;bottom:7%;width:54px;height:54px;border:4px solid #19324d;border-radius:50%;background:linear-gradient(#e63946 0 46%,#19324d 46% 54%,#fff 54%);opacity:.16;animation:slowSpin 12s linear infinite}
-.bg-pokeball:after{content:"";position:absolute;width:14px;height:14px;left:50%;top:50%;transform:translate(-50%,-50%);border:3px solid #19324d;border-radius:50%;background:#fff}
-@keyframes slowSpin{to{transform:rotate(360deg)}}
-h1{color:#ffcb05;text-shadow:3px 3px 0 #19324d,-2px -2px 0 #19324d,2px -2px 0 #19324d,-2px 2px 0 #19324d}
-h1.logo{font-size:clamp(1.05rem,3vw,1.55rem);letter-spacing:.02em;text-shadow:3px 3px 0 #1b3552,5px 5px 0 #e63946}
-.sub{color:#214a69;font-size:1.05rem;font-weight:800;text-shadow:0 1px 0 #fff9}
-.card{background:rgba(255,253,243,.96);border:3px solid #244764;border-radius:20px;box-shadow:0 7px 0 #24476433,0 14px 28px #21445b14}
-button{border-color:#19324d;background:#ffcb05;box-shadow:0 5px 0 #19324d;color:#19324d}
-button:hover{filter:saturate(1.08)}button.ghost{background:#fff;border-color:#2a75bb;color:#214b6c}
-input{border-color:#7195aa}
-.top{align-items:center}.top h1{color:#ffcb05}
-.tag{background:#d8efff;border-color:#244764;color:#214b6c}.tag.ok{background:#d7f6d9;color:#225c37}
-.bar{border-color:#244764;background:#e2edf0}.bar i{background:linear-gradient(#84e59a,#36a85b)}
-.err{border-color:#9c2632}
-.mon{display:flex;align-items:center;justify-content:center;flex:none}
-.mon img,.pokemon-sprite{display:block;max-width:100%;height:auto;object-fit:contain;image-rendering:pixelated;filter:drop-shadow(0 7px 3px #18324a2b)}
-.mon img{width:100%;height:100%}.sil img{filter:grayscale(1) brightness(.25);opacity:.45}
-.float{animation:bob 2.2s ease-in-out infinite}
-@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-
-/* ==================== SKRIN MULA (GAME START SCREEN) ==================== */
+/* ==================== SKRIN MULA (PIKACHU THUNDERBOLT SHOWCASE) ==================== */
 .start-screen{
   position:relative;
-  min-height:82vh;
+  min-height:84vh;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:2rem 1.4rem 2.4rem;
-  border:5px solid #19324d;
-  border-radius:28px;
-  background:radial-gradient(circle at 50% 35%, #2b4c7e 0%, #162447 65%, #0d1326 100%);
-  box-shadow:0 12px 0 #19324d, 0 24px 48px rgba(13,19,38,.45);
+  padding:2.2rem 1.4rem 2.3rem;
+  border:5px solid var(--ink);
+  border-radius:30px;
+  background:
+    radial-gradient(circle at 50% 25%, #2b4e94 0%, #162852 55%, #0c142b 100%);
+  box-shadow:0 12px 0 var(--ink), 0 25px 50px rgba(0,0,0,.55);
   overflow:hidden;
   color:#fff;
 }
+/* Garisan scanline CRT halus */
 .start-screen:before{
   content:"";
   position:absolute;
   inset:0;
-  background:repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 2px, transparent 2px, transparent 4px);
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.025) 0 2px, transparent 2px 4px);
   pointer-events:none;
   z-index:1;
 }
+.start-grid-floor{
+  position:absolute;
+  left:-20%;
+  right:-20%;
+  bottom:-45px;
+  height:180px;
+  background:
+    linear-gradient(transparent 0%, rgba(44,107,237,.35) 100%),
+    repeating-linear-gradient(90deg, rgba(255,203,5,.15) 0 2px, transparent 2px 48px),
+    repeating-linear-gradient(0deg, rgba(255,203,5,.15) 0 2px, transparent 2px 32px);
+  transform:perspective(220px) rotateX(55deg);
+  pointer-events:none;
+  z-index:1;
+}
+
 .start-badge{
   position:relative;
   z-index:3;
   display:inline-flex;
   align-items:center;
   gap:.5rem;
-  padding:.35rem .9rem;
-  border:2px solid #ffcb05;
+  padding:.38rem .95rem;
+  border:2px solid var(--gold);
   border-radius:99px;
-  background:rgba(25,50,77,.85);
-  color:#ffcb05;
-  font:400 .65rem "Press Start 2P", monospace;
+  background:rgba(16,28,54,.85);
+  color:var(--gold);
+  font:400 .62rem "Press Start 2P",monospace;
   letter-spacing:.08em;
-  margin-bottom:1rem;
-  box-shadow:0 4px 0 #0d1326;
+  margin-bottom:.95rem;
+  box-shadow:0 4px 0 #091020;
 }
+
 .start-title{
   position:relative;
   z-index:3;
-  font:400 clamp(1.5rem, 4.5vw, 2.5rem)/1.35 "Press Start 2P", monospace;
-  color:#ffcb05;
-  text-shadow:4px 4px 0 #2a75bb, 7px 7px 0 #0d1326;
-  margin-bottom:.6rem;
+  font:400 clamp(1.45rem,4.6vw,2.6rem)/1.35 "Press Start 2P",monospace;
+  color:var(--gold);
+  text-shadow:4px 4px 0 #2157c2, 7px 7px 0 #091020;
+  margin:0 0 .55rem;
   animation:titleFloat 2.8s ease-in-out infinite;
 }
 @keyframes titleFloat{
@@ -177,70 +286,119 @@ input{border-color:#7195aa}
 .start-sub{
   position:relative;
   z-index:3;
-  max-width:540px;
-  color:#cde4ff;
-  font-size:1.1rem;
+  max-width:580px;
+  color:#d7e7ff;
+  font-size:1.08rem;
   margin:0 auto 1.2rem;
 }
 
-/* PENTAS ANIMASI PERTARUNGAN PIKACHU */
+/* PENTAS ANIMASI PERTARUNGAN EPIK */
 .battle-stage{
   position:relative;
   z-index:3;
   width:100%;
-  max-width:660px;
-  height:235px;
-  margin:.5rem auto 1.6rem;
-  border:4px solid #19324d;
-  border-radius:22px;
-  background:linear-gradient(180deg, #1b2845 0%, #274060 58%, #3c8d40 58%, #28662e 100%);
-  box-shadow:inset 0 0 30px rgba(0,0,0,.4), 0 8px 0 #0d1326;
+  max-width:720px;
+  height:265px;
+  margin:.4rem auto 1.65rem;
+  border:4px solid var(--ink);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 22% 55%, rgba(255,220,50,.18), transparent 45%),
+    linear-gradient(180deg, #1b2f61 0%, #2b4c8c 54%, #3c9b52 54%, #256e38 100%);
+  box-shadow:inset 0 0 32px rgba(0,0,0,.45), 0 9px 0 #091020;
   overflow:hidden;
-  animation:stageShake 3.4s infinite;
+  animation:stageShake 3.6s infinite;
 }
 @keyframes stageShake{
-  0%, 42%, 65%, 100%{transform:translate(0,0)}
-  45%{transform:translate(-6px, 4px)}
-  48%{transform:translate(6px, -4px)}
-  51%{transform:translate(-5px, -3px)}
-  54%{transform:translate(5px, 3px)}
-  57%{transform:translate(-3px, 2px)}
+  0%, 40%, 66%, 100%{transform:translate(0,0)}
+  43%{transform:translate(-7px, 5px)}
+  46%{transform:translate(7px, -5px)}
+  49%{transform:translate(-6px, -4px)}
+  52%{transform:translate(6px, 4px)}
+  55%{transform:translate(-4px, 2px)}
 }
+
+/* Awan & bintang arena mula */
+.stage-cloud{
+  position:absolute;
+  top:14%;
+  font-size:1.7rem;
+  opacity:.35;
+  animation:driftSlow 18s linear infinite;
+}
+.stage-cloud.c2{top:27%;font-size:1.25rem;animation-delay:-9s}
+@keyframes driftSlow{from{left:-12%}to{left:108%}}
+
+/* HUD mini dalam pentas animasi */
+.stage-hud{
+  position:absolute;
+  padding:.35rem .6rem;
+  background:rgba(255,253,244,.94);
+  color:var(--ink);
+  border:3px solid var(--ink);
+  border-radius:10px;
+  font:400 .55rem "Press Start 2P",monospace;
+  z-index:6;
+  text-align:left;
+  box-shadow:0 3px 0 rgba(0,0,0,.35);
+}
+.stage-hud.hero{left:14px;top:12px}
+.stage-hud.foe{right:14px;top:12px;min-width:165px}
+.mini-hp{
+  height:8px;
+  margin-top:5px;
+  border:2px solid var(--ink);
+  border-radius:99px;
+  background:#d8e0ef;
+  overflow:hidden;
+}
+.mini-hp i{display:block;height:100%;background:#35c46a}
+.foe-hp-bar{
+  animation:foeHpDrop 3.6s infinite;
+}
+@keyframes foeHpDrop{
+  0%, 40%{width:100%;background:#35c46a}
+  48%, 78%{width:18%;background:#ef3e4a}
+  92%, 100%{width:100%;background:#35c46a}
+}
+
 .stage-flash{
   position:absolute;
   inset:0;
   background:#fffbe0;
   opacity:0;
   pointer-events:none;
-  z-index:5;
-  animation:thunderFlash 3.4s infinite;
+  z-index:7;
+  animation:thunderFlash 3.6s infinite;
 }
 @keyframes thunderFlash{
-  0%, 41%, 52%, 100%{opacity:0}
-  43%{opacity:.75}
-  46%{opacity:.15}
-  48%{opacity:.6}
+  0%, 39%, 55%, 100%{opacity:0}
+  41%{opacity:.82}
+  44%{opacity:.15}
+  47%{opacity:.65}
 }
+
 .stage-platform{
   position:absolute;
-  bottom:22px;
-  width:140px;
-  height:32px;
+  bottom:24px;
+  width:155px;
+  height:36px;
   border-radius:50%;
-  background:rgba(13,19,38,.45);
-  border:3px solid rgba(255,255,255,.18);
+  background:radial-gradient(ellipse, rgba(16,28,54,.65), rgba(16,28,54,.25));
+  border:3px solid rgba(255,255,255,.22);
 }
-.plat-left{left:8%}
-.plat-right{right:8%}
+.plat-left{left:7%}
+.plat-right{right:7%}
 
+/* Pikachu Hero */
 .hero-pikachu{
   position:absolute;
   left:9%;
-  bottom:26px;
-  width:130px;
-  height:130px;
+  bottom:30px;
+  width:132px;
+  height:132px;
   z-index:4;
-  animation:pikaAttackCycle 3.4s infinite;
+  animation:pikaAttackCycle 3.6s infinite;
 }
 .hero-pikachu img{
   width:100%;
@@ -249,52 +407,64 @@ input{border-color:#7195aa}
   filter:drop-shadow(0 6px 0 rgba(0,0,0,.45));
 }
 @keyframes pikaAttackCycle{
-  0%, 15%{transform:translateX(0) scale(1)}
-  25%{transform:translateX(-12px) scale(1.08, .92)}
-  35%{transform:translateY(-28px) translateX(18px) scale(1.12)}
-  45%{transform:translateY(0) translateX(12px) scale(1.05)}
-  65%, 100%{transform:translateX(0) scale(1)}
+  0%, 14%{transform:translateX(0) scale(1)}
+  24%{transform:translateX(-14px) scale(1.1, .9)}
+  34%{transform:translateY(-30px) translateX(22px) scale(1.14)}
+  44%{transform:translateY(0) translateX(14px) scale(1.06)}
+  68%, 100%{transform:translateX(0) scale(1)}
 }
 .electric-aura{
   position:absolute;
-  inset:-15px;
+  inset:-18px;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(255,235,59,.85) 0%, rgba(255,193,7,.35) 50%, transparent 72%);
+  background:radial-gradient(circle, rgba(255,235,59,.9) 0%, rgba(255,193,7,.4) 48%, transparent 72%);
   opacity:0;
-  animation:auraCharge 3.4s infinite;
+  animation:auraCharge 3.6s infinite;
 }
 @keyframes auraCharge{
-  0%, 15%, 55%, 100%{opacity:0;transform:scale(.6)}
-  30%, 45%{opacity:1;transform:scale(1.25)}
+  0%, 14%, 56%, 100%{opacity:0;transform:scale(.55)}
+  28%, 44%{opacity:1;transform:scale(1.3)}
+}
+.charge-ring{
+  position:absolute;
+  inset:-24px;
+  border:4px dashed #ffeb3b;
+  border-radius:50%;
+  opacity:0;
+  animation:ringSpin 3.6s infinite;
+}
+@keyframes ringSpin{
+  0%, 16%, 52%, 100%{opacity:0;transform:rotate(0deg) scale(.6)}
+  30%, 44%{opacity:.95;transform:rotate(180deg) scale(1.15)}
 }
 
-/* PANAHAN PETIR SVG */
+/* Panahan Petir Ganda SVG */
 .lightning-beam{
   position:absolute;
-  left:24%;
-  top:26%;
-  width:52%;
-  height:110px;
-  z-index:4;
+  left:23%;
+  top:27%;
+  width:54%;
+  height:120px;
+  z-index:5;
   opacity:0;
   transform-origin:left center;
-  animation:boltShoot 3.4s infinite;
+  animation:boltShoot 3.6s infinite;
 }
 @keyframes boltShoot{
-  0%, 36%{opacity:0;transform:scaleX(0)}
-  40%{opacity:1;transform:scaleX(1)}
+  0%, 35%{opacity:0;transform:scaleX(0)}
+  39%{opacity:1;transform:scaleX(1)}
   54%{opacity:1;transform:scaleX(1)}
   62%, 100%{opacity:0;transform:scaleX(1)}
 }
 
 .target-dummy{
   position:absolute;
-  right:10%;
-  bottom:30px;
-  width:115px;
-  height:115px;
-  z-index:3;
-  animation:dummyHit 3.4s infinite;
+  right:9%;
+  bottom:32px;
+  width:120px;
+  height:120px;
+  z-index:4;
+  animation:dummyHit 3.6s infinite;
 }
 .target-dummy img{
   width:100%;
@@ -303,626 +473,1282 @@ input{border-color:#7195aa}
   filter:drop-shadow(0 6px 0 rgba(0,0,0,.45));
 }
 @keyframes dummyHit{
-  0%, 40%{transform:translateX(0) filter:brightness(1)}
-  43%{transform:translateX(14px) rotate(8deg);filter:brightness(2.5) sepia(1) hue-rotate(15deg)}
-  48%{transform:translateX(-10px) rotate(-6deg);filter:brightness(2)}
-  53%{transform:translateX(8px);filter:brightness(1.5)}
-  65%, 100%{transform:translateX(0) rotate(0);filter:brightness(1)}
-}
-.attack-label{
-  position:absolute;
-  top:12px;
-  left:50%;
-  transform:translateX(-50%);
-  background:#ffcb05;
-  color:#19324d;
-  border:3px solid #19324d;
-  border-radius:10px;
-  padding:.25rem .75rem;
-  font:400 .65rem "Press Start 2P", monospace;
-  z-index:6;
-  opacity:0;
-  white-space:nowrap;
-  animation:labelPop 3.4s infinite;
-}
-@keyframes labelPop{
-  0%, 34%{opacity:0;transform:translate(-50%, 8px) scale(.8)}
-  39%, 56%{opacity:1;transform:translate(-50%, 0) scale(1)}
-  64%, 100%{opacity:0;transform:translate(-50%, -6px)}
-}
-.spark-burst{
-  position:absolute;
-  right:13%;
-  top:28%;
-  font-size:2rem;
-  z-index:6;
-  opacity:0;
-  animation:burstPop 3.4s infinite;
-}
-@keyframes burstPop{
-  0%, 40%, 60%, 100%{opacity:0;transform:scale(.4) rotate(0deg)}
-  46%{opacity:1;transform:scale(1.35) rotate(25deg)}
+  0%, 39%{transform:translateX(0);filter:brightness(1)}
+  42%{transform:translateX(16px) rotate(9deg);filter:brightness(2.8) sepia(1) hue-rotate(15deg)}
+  47%{transform:translateX(-11px) rotate(-7deg);filter:brightness(2.2)}
+  52%{transform:translateX(9px);filter:brightness(1.6)}
+  66%, 100%{transform:translateX(0) rotate(0);filter:brightness(1)}
 }
 
-/* BUTANG MULA UTAMA */
+.attack-label{
+  position:absolute;
+  bottom:12px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--gold);
+  color:var(--ink);
+  border:3px solid var(--ink);
+  border-radius:12px;
+  padding:.32rem .85rem;
+  font:400 .62rem "Press Start 2P",monospace;
+  z-index:8;
+  opacity:0;
+  white-space:nowrap;
+  box-shadow:0 4px 0 var(--ink);
+  animation:labelPop 3.6s infinite;
+}
+@keyframes labelPop{
+  0%, 32%{opacity:0;transform:translate(-50%, 10px) scale(.85)}
+  38%, 58%{opacity:1;transform:translate(-50%, 0) scale(1)}
+  66%, 100%{opacity:0;transform:translate(-50%, -6px)}
+}
+
+.spark-burst{
+  position:absolute;
+  right:12%;
+  top:26%;
+  font-size:2.1rem;
+  z-index:8;
+  opacity:0;
+  animation:burstPop 3.6s infinite;
+}
+@keyframes burstPop{
+  0%, 39%, 62%, 100%{opacity:0;transform:scale(.4) rotate(0deg)}
+  45%{opacity:1;transform:scale(1.4) rotate(25deg)}
+}
+.crit-dmg{
+  position:absolute;
+  right:15%;
+  top:22%;
+  font:400 .95rem "Press Start 2P",monospace;
+  color:#ffeb3b;
+  text-shadow:3px 3px 0 #ef3e4a, -2px -2px 0 var(--ink);
+  z-index:8;
+  opacity:0;
+  animation:critPop 3.6s infinite;
+}
+@keyframes critPop{
+  0%, 40%{opacity:0;transform:translateY(10px) scale(.6)}
+  46%{opacity:1;transform:translateY(-16px) scale(1.15)}
+  62%{opacity:1;transform:translateY(-30px) scale(1)}
+  70%, 100%{opacity:0;transform:translateY(-40px)}
+}
+
+/* Butang MULA Utama */
 .btn-start-game{
   position:relative;
   z-index:4;
   display:inline-flex;
   align-items:center;
-  gap:.8rem;
-  padding:1rem 2.4rem;
-  font:400 1.25rem "Press Start 2P", monospace;
-  color:#19324d;
-  background:linear-gradient(180deg, #ffe347 0%, #ffcb05 55%, #f2a900 100%);
-  border:4px solid #19324d;
+  gap:.85rem;
+  padding:1.05rem 2.6rem;
+  font:400 1.25rem "Press Start 2P",monospace;
+  color:var(--ink);
+  background:linear-gradient(180deg, #ffe85e 0%, #ffcb05 55%, #f0a500 100%);
+  border:4px solid var(--ink);
   border-radius:18px;
-  box-shadow:0 8px 0 #19324d, 0 0 25px rgba(255,203,5,.65);
+  box-shadow:0 8px 0 var(--ink), 0 0 28px rgba(255,203,5,.65);
   animation:pulseBtn 1.5s ease-in-out infinite;
 }
 .btn-start-game:hover{
-  transform:translateY(-4px) scale(1.03);
-  box-shadow:0 12px 0 #19324d, 0 0 35px rgba(255,203,5,.95);
+  transform:translateY(-4px) scale(1.04);
+  box-shadow:0 12px 0 var(--ink), 0 0 40px rgba(255,203,5,.95);
 }
 .btn-start-game:active{
   transform:translateY(5px);
-  box-shadow:0 3px 0 #19324d;
+  box-shadow:0 3px 0 var(--ink);
 }
 @keyframes pulseBtn{
-  0%,100%{box-shadow:0 8px 0 #19324d, 0 0 18px rgba(255,203,5,.5)}
-  50%{box-shadow:0 8px 0 #19324d, 0 0 36px rgba(255,203,5,.95)}
+  0%,100%{box-shadow:0 8px 0 var(--ink), 0 0 18px rgba(255,203,5,.55)}
+  50%{box-shadow:0 8px 0 var(--ink), 0 0 38px rgba(255,203,5,.95)}
 }
 .start-hint{
   position:relative;
   z-index:3;
-  margin-top:1rem;
-  font:400 .65rem "Press Start 2P", monospace;
-  color:#90b4de;
+  margin-top:1.05rem;
+  font:400 .6rem "Press Start 2P",monospace;
+  color:#9fc0ff;
   letter-spacing:.06em;
   animation:blinkText 1.2s step-end infinite;
 }
-@keyframes blinkText{50%{opacity:.35}}
+@keyframes blinkText{50%{opacity:.3}}
 
-/* ==================== BANNER & PERANAN ==================== */
-.world-banner{position:relative;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;min-height:255px;margin:1.25rem 0 1.4rem;padding:1.25rem 1.5rem;border:4px solid #244764;border-radius:26px;overflow:hidden;background:linear-gradient(115deg,#fff8d9 0%,#fff 49%,#c8f0ff 100%);box-shadow:0 8px 0 #24476433,0 18px 34px #17476a20}
-.world-banner:before{content:"";position:absolute;left:-7%;right:-5%;bottom:-60px;height:125px;border-radius:50% 50% 0 0;background:linear-gradient(#85d77c,#4cae63);transform:rotate(-3deg)}
-.world-banner:after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:repeating-linear-gradient(90deg,#4cae63 0 18px,#70c96c 18px 36px)}
-.world-copy{position:relative;z-index:2;max-width:470px}.world-kicker{display:inline-block;padding:.25rem .6rem;border-radius:99px;background:#2a75bb;color:#fff;font-size:.72rem;font-weight:900;letter-spacing:.1em}
-.world-copy h2{font-size:clamp(1.35rem,3.3vw,2.15rem);line-height:1.15;margin:.7rem 0;color:#1c4666}.world-copy p{max-width:430px;margin:.4rem 0 .8rem;color:#4e6372}
-.world-stats{display:flex;flex-wrap:wrap;gap:.4rem}.world-stats span{font-size:.78rem;font-weight:800;background:#fff;border:2px solid #c4d9e4;border-radius:30px;padding:.2rem .55rem}
-.world-characters{position:relative;z-index:2;min-height:210px;display:flex;align-items:flex-end;justify-content:center}
-.world-poke{position:absolute;display:grid;place-items:center;filter:drop-shadow(0 8px 5px #1d405633)}
-.world-poke img{image-rendering:pixelated}.world-eevee{left:5%;bottom:23px;animation:characterBob 3.4s ease-in-out infinite}.world-pikachu{z-index:2;left:31%;bottom:14px;animation:characterBob 2.2s ease-in-out infinite}.world-bulba{right:0;bottom:18px;animation:characterBob 3s ease-in-out infinite reverse}
-@keyframes characterBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-13px) rotate(2deg)}}
-.world-spark{position:absolute;color:#f5b700;font-size:2rem;animation:sparkPulse 1.5s ease-in-out infinite alternate}.spark-a{top:12px;left:23%}.spark-b{right:18%;top:36px;animation-delay:-.7s}@keyframes sparkPulse{to{transform:scale(1.5) rotate(25deg);opacity:.45}}
-.world-pokeball{position:absolute;right:4%;top:3px;width:38px;height:38px;border:3px solid #19324d;border-radius:50%;background:linear-gradient(#e63946 0 45%,#19324d 45% 55%,#fff 55%);animation:slowSpin 9s linear infinite}
-.world-pokeball:after{content:"";position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%);background:#fff;border:2px solid #19324d;border-radius:50%}
-.section-heading{display:flex;justify-content:center;align-items:center;gap:.65rem;margin:1rem 0 .7rem;color:#214b6c}.section-heading h2{margin:0;font-size:1.35rem}.section-heading span{font-size:1.4rem}
-.roles{grid-template-columns:repeat(3,minmax(0,1fr));gap:.85rem;margin:0 0 1.2rem}
-.role{position:relative;min-height:145px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.25rem;text-align:center;padding:1rem .75rem;background:linear-gradient(145deg,#fff,#eff9ff);border:3px solid #244764;border-radius:20px;box-shadow:0 6px 0 #24476433;transition:transform .2s,box-shadow .2s}
-.role:hover{transform:translateY(-5px);box-shadow:0 11px 0 #24476433}.role .mon{width:86px;height:86px}.role strong{font-size:1.22rem;color:#1c4666}.role .mut{font-size:.87rem;line-height:1.3}.role-arrow{position:absolute;right:12px;top:12px;color:#2a75bb;font-size:1.1rem}
-.role-admin{background:linear-gradient(145deg,#f2eaff,#fff)}.role-guru{background:linear-gradient(145deg,#fff0e4,#fff)}.role-murid{background:linear-gradient(145deg,#fff8d8,#fff)}
-.stage{border-radius:19px}.stage .mon{width:88px;height:88px}.stage .grow h2{color:#214b6c}
-.hud{align-items:center}.avatar{position:relative;font-size:2.3rem;width:70px;height:70px;display:grid;place-items:center;background:#e8f5ff;border:2px solid #9ac4dd;border-radius:18px}.avatar-pokemon{position:absolute;right:-25px;bottom:-12px;width:48px;height:48px}.avatar-pokemon img{width:100%;height:100%;image-rendering:pixelated}
-.arena{height:315px;border:4px solid #244764;border-radius:22px;background:linear-gradient(#83d9ff 0%,#d6f6ff 55%,#8fda78 55%,#59b95d 100%);box-shadow:0 7px 0 #24476433;isolation:isolate}
-.arena:before{content:"";position:absolute;left:-8%;right:-8%;bottom:42px;height:76px;border-radius:50%;background:#79cb6d;z-index:-1}
-.arena-hills{position:absolute;left:-8%;right:-8%;bottom:-72px;height:150px;border-radius:50% 50% 0 0;background:linear-gradient(#58b961,#319c50);z-index:-1}
-.arena-deco{position:absolute;width:75px;height:75px;object-fit:contain;image-rendering:pixelated;opacity:.72;filter:drop-shadow(0 5px 3px #214b6c33);animation:bgFloat 5s ease-in-out infinite;z-index:0}
-.arena-deco-left{left:13%;bottom:57px}.arena-deco-right{right:9%;bottom:50px;animation-delay:-2.5s}
-.cloud{z-index:0}.cloud-second{top:30%;font-size:1.45rem;animation-delay:-8s;opacity:.8}
-.enemy{z-index:2;top:55px;right:11%;width:140px}.enemy .mon{width:120px;height:120px}.enemy .pokemon-sprite{width:100%;height:100%}
-.trainer{z-index:2;left:8%;bottom:12px;display:flex;align-items:flex-end;gap:3px;font-size:2.8rem;text-shadow:0 3px 0 #fff8}
-.trainer-cap{animation:trainerHop 2.6s ease-in-out infinite}.trainer-word{position:absolute;left:0;bottom:0;transform:translateY(19px);font-size:.58rem;font-weight:900;letter-spacing:.08em;color:#fff;text-shadow:1px 2px 2px #19324d}
-.trainer-pokemon{display:inline-flex;width:66px;height:66px;margin-left:-8px;animation:bob 2s ease-in-out infinite}.trainer-pokemon img{width:100%;height:100%}
+/* ==================== HUB PILIHAN PERANAN ==================== */
+.hub-nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:.9rem;
+  gap:.6rem;
+  flex-wrap:wrap;
+}
+.world-banner{
+  position:relative;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  align-items:center;
+  min-height:240px;
+  margin:1rem 0 1.4rem;
+  padding:1.35rem 1.6rem;
+  border:4px solid var(--ink);
+  border-radius:26px;
+  overflow:hidden;
+  background:linear-gradient(125deg,#fff8d6 0%,#ffffff 52%,#cce8ff 100%);
+  box-shadow:0 9px 0 rgba(10,18,38,.45);
+}
+.world-banner:before{
+  content:"";
+  position:absolute;
+  left:-6%;
+  right:-6%;
+  bottom:-58px;
+  height:122px;
+  border-radius:50% 50% 0 0;
+  background:linear-gradient(#6ed676,#3ea859);
+  border-top:4px solid var(--ink);
+  transform:rotate(-2deg);
+}
+.world-copy{position:relative;z-index:2;max-width:480px}
+.world-kicker{
+  display:inline-block;
+  padding:.26rem .7rem;
+  border:2px solid var(--ink);
+  border-radius:99px;
+  background:var(--pri);
+  color:#fff;
+  font:400 .58rem "Press Start 2P",monospace;
+}
+.world-copy h2{font-size:clamp(1.35rem,3.2vw,2.05rem);line-height:1.18;margin:.7rem 0 .4rem;color:var(--ink)}
+.world-copy p{max-width:430px;margin:.3rem 0 .85rem;color:#3c4f6e}
+.world-stats{display:flex;flex-wrap:wrap;gap:.45rem}
+.world-stats span{
+  font-size:.8rem;
+  font-weight:800;
+  background:#fff;
+  border:2px solid var(--ink);
+  border-radius:99px;
+  padding:.2rem .65rem;
+}
+.world-characters{
+  position:relative;
+  z-index:2;
+  min-height:195px;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.world-poke{position:absolute;display:grid;place-items:center}
+.world-eevee{left:6%;bottom:20px;animation:bob 3.2s ease-in-out infinite}
+.world-pikachu{z-index:2;left:32%;bottom:12px;animation:bob 2.2s ease-in-out infinite}
+.world-bulba{right:2%;bottom:16px;animation:bob 2.9s ease-in-out infinite reverse}
+
+.section-heading{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:.65rem;
+  margin:1.2rem 0 .85rem;
+  color:#fff;
+}
+.section-heading h2{
+  margin:0;
+  font:400 1rem "Press Start 2P",monospace;
+  color:var(--gold);
+  text-shadow:2px 2px 0 var(--ink);
+}
+.section-heading span{font-size:1.4rem}
+
+.roles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;margin:0 0 1.4rem}
+.role{
+  position:relative;
+  min-height:175px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:.35rem;
+  text-align:center;
+  padding:1.15rem .85rem;
+  background:var(--paper);
+  border:4px solid var(--ink);
+  border-radius:22px;
+  box-shadow:0 8px 0 var(--ink);
+  transition:transform .16s,box-shadow .16s;
+}
+.role:hover{transform:translateY(-6px);box-shadow:0 12px 0 var(--ink)}
+.role:hover .mon{animation:jump .48s}
+@keyframes jump{40%{transform:translateY(-14px) scale(1.1)}}
+.role .mon{width:90px;height:90px}
+.role strong{font-size:1.3rem;color:var(--ink)}
+.role .mut{font-size:.86rem;line-height:1.3}
+.role-arrow{
+  position:absolute;
+  right:12px;
+  top:12px;
+  width:28px;
+  height:28px;
+  display:grid;
+  place-items:center;
+  border:2px solid var(--ink);
+  border-radius:50%;
+  background:var(--gold);
+  font-size:.9rem;
+}
+.role-admin{background:linear-gradient(155deg,#efe6ff,#ffffff)}
+.role-guru{background:linear-gradient(155deg,#ffe9dc,#ffffff)}
+.role-murid{background:linear-gradient(155deg,#fff5cc,#ffffff)}
+
+/* ==================== HUD MURID & ARENA PERTARUNGAN ==================== */
+.stage{display:flex;align-items:center;gap:1rem;border-radius:22px}
+.stage .mon{width:88px;height:88px}
+.grow{flex:1;min-width:0}
+.hud{display:flex;gap:1rem;align-items:center}
+.avatar{
+  position:relative;
+  font-size:2.3rem;
+  width:72px;
+  height:72px;
+  display:grid;
+  place-items:center;
+  background:#dcecff;
+  border:3px solid var(--ink);
+  border-radius:18px;
+}
+.avatar-pokemon{position:absolute;right:-20px;bottom:-10px;width:48px;height:48px}
+.avatar-pokemon img{width:100%;height:100%;image-rendering:pixelated}
+.strip{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:.85rem;padding-top:.75rem;border-top:2px dashed #d3dced}
+.strip .mon{
+  width:54px;
+  height:54px;
+  padding:4px;
+  border:2px solid var(--ink);
+  border-radius:14px;
+  background:#eef4ff;
+}
+
+.arena{
+  position:relative;
+  height:325px;
+  margin-bottom:1.2rem;
+  border:4px solid var(--ink);
+  border-radius:24px;
+  overflow:hidden;
+  background:linear-gradient(180deg, #72ceff 0%, #c8f1ff 55%, #84db70 55%, #43ad54 100%);
+  box-shadow:0 9px 0 rgba(10,18,38,.45);
+  isolation:isolate;
+}
+.arena-hills{
+  position:absolute;
+  left:-8%;
+  right:-8%;
+  bottom:-70px;
+  height:150px;
+  border-radius:50% 50% 0 0;
+  background:linear-gradient(#53bd62,#2b9446);
+  border-top:4px solid rgba(16,28,54,.2);
+  z-index:-1;
+}
+.cloud{position:absolute;top:12%;font-size:2rem;animation:drift 16s linear infinite;z-index:0}
+.cloud-second{top:28%;font-size:1.45rem;animation-delay:-8s;opacity:.85}
+@keyframes drift{from{left:-12%}to{left:108%}}
+
+.enemy{position:absolute;right:10%;top:55px;width:136px;z-index:2}
+.enemy:after{
+  content:"";
+  position:absolute;
+  left:5%;
+  right:5%;
+  bottom:-8px;
+  height:18px;
+  border-radius:50%;
+  background:rgba(0,0,0,.22);
+  z-index:-1;
+}
+.enemy .mon{width:124px;height:124px;animation:bob 2s ease-in-out infinite}
+.enemy .pokemon-sprite{width:100%;height:100%}
+
+.trainer{
+  position:absolute;
+  left:8%;
+  bottom:16px;
+  display:flex;
+  align-items:flex-end;
+  gap:4px;
+  font-size:2.9rem;
+  z-index:2;
+}
+.trainer-cap{animation:trainerHop 2.6s ease-in-out infinite}
+.trainer-word{
+  position:absolute;
+  left:0;
+  bottom:-10px;
+  font:400 .48rem "Press Start 2P",monospace;
+  color:#fff;
+  text-shadow:2px 2px 0 var(--ink);
+}
+.trainer-pokemon{display:inline-flex;width:68px;height:68px;margin-left:-6px;animation:bob 2s ease-in-out infinite}
+.trainer-pokemon img{width:100%;height:100%}
 @keyframes trainerHop{50%{transform:translateY(-8px) rotate(-8deg)}}
-.plate{z-index:3;background:#fffdf3;border-color:#244764}.plate.en{width:43%}.plate.me{z-index:4}
-.hit{animation:hit .5s}.hit .pokemon-sprite{animation:pokeAttack .5s}@keyframes pokeAttack{25%{transform:translateX(-20px) scale(1.12)}55%{transform:translateX(18px) scale(.96)}100%{transform:translateX(0) scale(1)}}
-.miss:after{z-index:6}.dmg{z-index:5;color:#e63946}
-.orb{border-color:#19324d;background:linear-gradient(#e63946 0 44%,#19324d 44% 56%,#fff 56%);box-shadow:0 5px 12px #19324d33}
-.orb:after{background:#fff;border-color:#19324d}.capt .mon{width:125px;height:125px}.capt .mon img{width:100%;height:100%}
-.opts button{background:#f7fcff;border-color:#6e9ab5}.opts button:hover{background:#e4f5ff}.opts .ok{background:#47ad65}.opts .no{background:#e63946}
-.big{color:#2a75bb;text-shadow:2px 2px 0 #cdeeff}
+
+.plate{
+  position:absolute;
+  background:var(--paper);
+  border:3px solid var(--ink);
+  border-radius:14px;
+  padding:.35rem .7rem;
+  box-shadow:0 4px 0 rgba(16,28,54,.35);
+  z-index:4;
+}
+.plate.en{left:4%;top:14px;width:44%}
+.plate.me{right:4%;bottom:14px}
+
+/* Kesan Serangan & Kilat Semasa Menjawab Betul */
+.battle-bolt{
+  position:absolute;
+  left:20%;
+  top:26%;
+  width:56%;
+  height:110px;
+  z-index:5;
+  pointer-events:none;
+  animation:arenaBolt .45s ease-out forwards;
+}
+@keyframes arenaBolt{
+  0%{opacity:0;transform:scaleX(.2)}
+  30%{opacity:1;transform:scaleX(1)}
+  100%{opacity:0;transform:scaleX(1)}
+}
+.hit{animation:hit .5s}
+.miss{animation:hit .4s}
+@keyframes hit{
+  20%{transform:translateX(-12px);filter:brightness(2.2)}
+  40%{transform:translateX(12px)}
+  60%{transform:translateX(-8px)}
+}
+.miss:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:rgba(239,62,74,.38);
+  animation:flash .5s forwards;
+  z-index:6;
+}
+@keyframes flash{to{opacity:0}}
+.dmg{
+  position:absolute;
+  left:25%;
+  top:-14px;
+  font:400 1.05rem "Press Start 2P",monospace;
+  color:var(--red);
+  text-shadow:2px 2px 0 #fff, 3px 3px 0 var(--ink);
+  animation:up .9s forwards;
+  z-index:6;
+}
+@keyframes up{to{opacity:0;transform:translateY(-48px)}}
+
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.7rem;margin-top:.8rem}
+.opts.lock{pointer-events:none}
+.opts button{text-align:left;background:#f4f8ff;padding:.75rem 1rem}
+.opts button:hover{background:#e2eeff}
+.opts .ok{background:var(--grn);color:#fff}
+.opts .no{background:var(--red);color:#fff}
+.opts .dim{opacity:.5}
+
+.bubble{
+  background:#f4f8ff;
+  border:3px solid var(--ink);
+  border-radius:16px;
+  padding:.9rem 1.1rem;
+  margin:.9rem 0;
+  text-align:left;
+}
+.center{text-align:center}
+.big{
+  font:400 2.2rem "Press Start 2P",monospace;
+  color:var(--pri);
+  text-shadow:3px 3px 0 #cfe0ff;
+  margin:.5rem 0;
+}
+
+/* Animasi Tangkap Pokéball */
+.capt{position:relative;height:155px;display:grid;place-items:center}
+.capt .mon{width:125px;height:125px;opacity:0;animation:appear .5s 2s forwards}
+.capt .mon img{width:100%;height:100%}
+@keyframes appear{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+.orb{
+  position:absolute;
+  width:74px;
+  height:74px;
+  border-radius:50%;
+  border:4px solid var(--ink);
+  background:linear-gradient(var(--red) 0 44%,var(--ink) 44% 56%,#fff 56%);
+  animation:orb 2s ease-in-out forwards;
+}
+.orb:after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:18px;
+  height:18px;
+  margin:-9px;
+  border-radius:50%;
+  background:#fff;
+  border:3px solid var(--ink);
+}
+@keyframes orb{
+  0%{transform:translateY(-130px) scale(.5);opacity:0}
+  20%{transform:none;opacity:1}
+  35%{transform:rotate(-25deg)}
+  50%{transform:rotate(25deg)}
+  65%{transform:rotate(-25deg)}
+  80%{transform:rotate(0)}
+  100%{transform:scale(1.85);opacity:0}
+}
+.spark{position:absolute;font-size:1.7rem;opacity:0;animation:appear .6s 2.1s forwards,twinkle 1s 2.7s infinite alternate}
+.flee{width:120px;margin:0 auto;animation:flee 1.2s forwards}
+@keyframes flee{to{transform:translateX(220px) rotate(25deg);opacity:0}}
+
+/* Pokémon Interaktif di Latar */
+.pokemon-background{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:1}
+.bg-pokemon{
+  position:absolute;
+  width:clamp(68px,9vw,116px);
+  height:auto;
+  image-rendering:pixelated;
+  opacity:.45;
+  pointer-events:auto;
+  cursor:pointer;
+  transition:opacity .2s,filter .2s;
+  animation:bgFloat 7s ease-in-out infinite;
+}
+.bg-pokemon:hover{opacity:.95;filter:drop-shadow(0 0 10px var(--gold))}
+.bg-pikachu{left:1%;top:20%}
+.bg-jigglypuff{right:1%;top:46%;animation-delay:-2.5s}
+.bg-eevee{left:3%;bottom:3%;animation-delay:-4.5s}
+@keyframes bgFloat{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-18px) rotate(4deg)}}
+
+.pokemon-bubble{
+  position:fixed;
+  z-index:30;
+  max-width:220px;
+  padding:.5rem .8rem;
+  color:var(--ink);
+  background:var(--paper);
+  border:3px solid var(--ink);
+  border-radius:14px;
+  box-shadow:0 5px 0 var(--ink);
+  font-weight:800;
+  font-size:.88rem;
+  text-align:center;
+  pointer-events:none;
+  animation:bubbleShow 2.2s ease forwards;
+}
+@keyframes bubbleShow{
+  0%{opacity:0;transform:translateY(8px) scale(.85)}
+  15%,75%{opacity:1;transform:translateY(0) scale(1)}
+  100%{opacity:0;transform:translateY(-10px) scale(.9)}
+}
+
+/* Responsif */
 @media(max-width:720px){
-  .world-banner{grid-template-columns:1fr;padding:1.1rem 1rem}.world-characters{min-height:155px;margin-top:.2rem}.world-pikachu{left:35%}.world-eevee{left:15%}.world-bulba{right:12%}.roles{grid-template-columns:1fr}.role{min-height:110px;flex-direction:row;justify-content:flex-start;text-align:left;padding:.55rem 1rem}.role .mon{width:76px;height:76px}.role-arrow{top:50%;transform:translateY(-50%)}.arena{height:285px}.enemy{right:5%;width:115px}.enemy .mon{width:105px;height:105px}.arena-deco-left{left:4%}.arena-deco-right{right:2%}
-  .battle-stage{height:200px}.hero-pikachu{width:105px;height:105px;left:5%}.target-dummy{width:95px;height:95px;right:5%}
+  .world-banner{grid-template-columns:1fr;padding:1.15rem}
+  .world-characters{min-height:150px}
+  .roles{grid-template-columns:1fr}
+  .role{min-height:110px;flex-direction:row;justify-content:flex-start;text-align:left;padding:.75rem 1rem}
+  .role .mon{width:76px;height:76px}
+  .role-arrow{top:50%;transform:translateY(-50%)}
+  .battle-stage{height:215px}
+  .hero-pikachu{width:102px;height:102px;left:5%}
+  .target-dummy{width:95px;height:95px;right:5%}
+  .stage-hud{display:none}
 }
 @media(max-width:520px){
-  .world-copy h2{font-size:1.5rem}.world-stats span{font-size:.7rem}.bg-pokemon{opacity:.45}.top h1{font-size:1.3rem!important}.stage{flex-wrap:wrap}.stage .grow{flex:1 1 calc(100% - 110px)}.stage button{width:100%}.plate.en{width:52%}.trainer{left:5%}.arena-deco{width:55px;height:55px}
-  .btn-start-game{font-size:1rem;padding:.85rem 1.8rem}
+  .btn-start-game{font-size:.98rem;padding:.9rem 1.7rem}
+  .arena{height:280px}
+  .enemy{right:4%;width:110px}
+  .enemy .mon{width:100px;height:100px}
+  .plate.en{width:54%}
+  .stage{flex-wrap:wrap}
+  .stage button{width:100%}
+  .audio-dock{top:8px;right:8px}
 }
-
-/* INTERAKSI POKÉMON LATAR */
-.pokemon-background { pointer-events: none; z-index: 0; }
-.bg-pokemon { pointer-events: auto; cursor: pointer; user-select: none; touch-action: manipulation; transition: filter .2s ease, opacity .2s ease; }
-.bg-pokemon:hover, .bg-pokemon:focus-visible { opacity: .9; filter: drop-shadow(0 0 10px #ffcb05) drop-shadow(0 7px 4px #28506b33); }
-.bg-pikachu.activity-bounce { animation: pikachuJump .8s cubic-bezier(.2,.8,.3,1); }
-@keyframes pikachuJump { 0%{transform:translateY(0) rotate(0) scale(1)} 25%{transform:translateY(-32px) rotate(-10deg) scale(1.12)} 50%{transform:translateY(-4px) rotate(10deg) scale(1.05)} 75%{transform:translateY(-18px) rotate(-5deg) scale(1.08)} 100%{transform:translateY(0) rotate(0) scale(1)} }
-.bg-jigglypuff.activity-spin { animation: jigglySpin .9s ease-in-out; }
-@keyframes jigglySpin { 0%{transform:rotate(0) scale(1)} 35%{transform:rotate(-18deg) scale(1.18)} 70%{transform:rotate(18deg) scale(1.12)} 100%{transform:rotate(0) scale(1)} }
-.bg-eevee.activity-wiggle { animation: eeveeWiggle .8s ease-in-out; }
-@keyframes eeveeWiggle { 0%,100%{transform:translateX(0) rotate(0)} 20%{transform:translateX(-14px) rotate(-8deg)} 40%{transform:translateX(14px) rotate(8deg)} 60%{transform:translateX(-10px) rotate(-5deg)} 80%{transform:translateX(10px) rotate(5deg)} }
-.pokemon-bubble { position: fixed; z-index: 20; max-width: 220px; padding: .55rem .8rem; color: #19324d; background: #fffdf3; border: 3px solid #244764; border-radius: 14px; box-shadow: 0 5px 0 #244764; font: 800 .9rem/1.25 "Baloo 2", system-ui, sans-serif; text-align: center; pointer-events: none; transform: translateY(8px) scale(.85); opacity: 0; animation: bubbleShow 2.2s ease forwards; }
-.pokemon-bubble:after { content: ""; position: absolute; left: 50%; bottom: -11px; width: 16px; height: 16px; background: #fffdf3; border-right: 3px solid #244764; border-bottom: 3px solid #244764; transform: translateX(-50%) rotate(45deg); }
-@keyframes bubbleShow { 0%{opacity:0;transform:translateY(8px) scale(.85)} 15%,75%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-10px) scale(.9)} }
-.pokemon-spark { position: fixed; z-index: 19; pointer-events: none; color: #ffcb05; font-size: 1.5rem; text-shadow: 2px 2px 0 #19324d; animation: sparkFly .8s ease-out forwards; }
-@keyframes sparkFly { 0%{opacity:1;transform:translate(0,0) scale(.5) rotate(0)} 100%{opacity:0;transform:translate(var(--spark-x),var(--spark-y)) scale(1.2) rotate(180deg)} }
-.wrap{pointer-events:none}
-.wrap>*{pointer-events:auto}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 <body>
-<div class="pokemon-background">
- <img id="bg-pikachu" class="bg-pokemon bg-pikachu" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu interaktif" tabindex="0" role="button" aria-label="Klik Pikachu untuk melihat aktivitinya">
- <img id="bg-jigglypuff" class="bg-pokemon bg-jigglypuff" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png" alt="Jigglypuff interaktif" tabindex="0" role="button" aria-label="Klik Jigglypuff untuk melihat aktivitinya">
- <img id="bg-eevee" class="bg-pokemon bg-eevee" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png" alt="Eevee interaktif" tabindex="0" role="button" aria-label="Klik Eevee untuk melihat aktivitinya">
- <span class="bg-cloud cloud-one"></span>
- <span class="bg-cloud cloud-two"></span>
- <span class="bg-pokeball"></span>
+
+<!-- Kawalan Muzik 8-Bit -->
+<div class="audio-dock">
+  <button id="musicBtn" class="audio-btn" onclick="toggleMusic()" aria-label="Hidupkan atau matikan muzik 8-bit">🎵 Muzik: OFF</button>
 </div>
-<div class="wrap" id="app"><p>Memuatkan Belajar Digital... Jika mesej ini kekal, skrip tidak berjalan.</p></div>
-<noscript>Sila hidupkan JavaScript untuk menggunakan laman ini.</noscript>
+
+<!-- Pokémon Interaktif Latar -->
+<div class="pokemon-background">
+  <img id="bg-pikachu" class="bg-pokemon bg-pikachu" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu interaktif" tabindex="0" role="button">
+  <img id="bg-jigglypuff" class="bg-pokemon bg-jigglypuff" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png" alt="Jigglypuff interaktif" tabindex="0" role="button">
+  <img id="bg-eevee" class="bg-pokemon bg-eevee" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png" alt="Eevee interaktif" tabindex="0" role="button">
+</div>
+
+<div class="wrap" id="app"><p style="color:#fff">Memuatkan Pokémon Academy...</p></div>
+<noscript>Sila hidupkan JavaScript untuk memainkan permainan ini.</noscript>
+
 <script>
-window.onerror=function(m,s,l){var a=document.getElementById("app");var label=(typeof TEKS!=="undefined"?TEKS.ralat:"Ralat aplikasi:");if(a)a.innerHTML='<div style="padding:1rem;background:#fde8e8;color:#c93a3a;border-radius:10px"><b>'+label+'</b> '+m+' ('+l+')</div>';};
+window.onerror = function(m,s,l){
+  var a = document.getElementById("app");
+  if(a) a.innerHTML = '<div class="err"><b>Ralat:</b> '+m+' ('+l+')</div>';
+};
 
 /* =====================================================================
-   0) SENARAI POKEDEX (Membaiki ralat ReferenceError: POKEDEX is not defined)
+   0) ENJIN MUZIK 8-BIT & KESAN BUNYI (WEB AUDIO API CHIPTUNE)
+   ===================================================================== */
+const Chiptune = (() => {
+  let ctx = null;
+  let enabled = false;
+  let currentTrack = "menu";
+  let step = 0;
+  let timer = null;
+  let noiseBuf = null;
+
+  // Frekuensi not muzik (Hz)
+  const N = {
+    _:0,
+    C3:130.81, D3:146.83, E3:164.81, F3:174.61, G3:196.00, A3:220.00, B3:246.94,
+    C4:261.63, D4:293.66, E4:329.63, F4:349.23, G4:392.00, Gs4:415.30, A4:440.00, Bb4:466.16, B4:493.88,
+    C5:523.25, D5:587.33, Eb5:622.25, E5:659.25, F5:698.46, Fs5:739.99, G5:783.99, Gs5:830.61, A5:880.00, B5:987.77, C6:1046.50
+  };
+
+  // Lagu 1: Tema Pengembaraan 8-Bit (Ceria ala Bandar Pokémon)
+  const MENU_TRACK = {
+    tempoMs: 145,
+    lead: [
+      "E5","G5","C6","G5","E5","G5","A5","G5",
+      "F5","A5","G5","E5","D5","E5","F5","D5",
+      "E5","G5","C6","G5","A5","B5","C6","G5",
+      "F5","E5","D5","G5","C5","_","G4","_"
+    ],
+    bass: [
+      "C3","G3","C3","G3","A3","E3","A3","E3",
+      "F3","C3","G3","D3","G3","D3","G3","B3",
+      "C3","G3","C3","G3","F3","C3","E3","C3",
+      "D3","G3","G3","G3","C3","G3","C3","_"
+    ]
+  };
+
+  // Lagu 2: Tema Pertarungan 8-Bit (Laju & Mendebarkan)
+  const BATTLE_TRACK = {
+    tempoMs: 112,
+    lead: [
+      "E5","Eb5","E5","Eb5","E5","G5","Fs5","E5",
+      "D5","F5","E5","D5","C5","E5","D5","B4",
+      "E5","G5","A5","G5","Fs5","E5","D5","E5",
+      "F5","G5","Gs5","A5","B5","G5","E5","_"
+    ],
+    bass: [
+      "E3","E3","B3","E3","E3","E3","B3","E3",
+      "D3","D3","A3","D3","C3","C3","G3","B3",
+      "E3","E3","B3","E3","D3","D3","A3","D3",
+      "F3","G3","Gs4","A3","B3","B3","E3","_"
+    ]
+  };
+
+  function ensureCtx(){
+    if(!ctx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if(!AC) return null;
+      ctx = new AC();
+      // Buffer bunyi 'noise' untuk dram 8-bit
+      const len = ctx.sampleRate * 0.08;
+      noiseBuf = ctx.createBuffer(1, len, ctx.sampleRate);
+      const data = noiseBuf.getChannelData(0);
+      for(let i=0;i<len;i++) data[i] = Math.random()*2 - 1;
+    }
+    if(ctx.state === "suspended") ctx.resume();
+    return ctx;
+  }
+
+  function playTone(freq, dur, type, vol){
+    if(!freq || !ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, now);
+    gain.gain.setValueAtTime(vol, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + dur + 0.01);
+  }
+
+  function playHitHat(vol){
+    if(!ctx || !noiseBuf) return;
+    const now = ctx.currentTime;
+    const src = ctx.createBufferSource();
+    src.buffer = noiseBuf;
+    const gain = ctx.createGain();
+    gain.gain.setValueAtTime(vol, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.045);
+    src.connect(gain);
+    gain.connect(ctx.destination);
+    src.start(now);
+  }
+
+  function tick(){
+    if(!enabled) return;
+    const tr = currentTrack === "battle" ? BATTLE_TRACK : MENU_TRACK;
+    const idx = step % tr.lead.length;
+    const leadNote = N[tr.lead[idx]];
+    const bassNote = N[tr.bass[idx]];
+    const dur = tr.tempoMs / 1000 * 0.88;
+
+    if(leadNote) playTone(leadNote, dur, "square", 0.032);
+    if(bassNote) playTone(bassNote, dur, "triangle", 0.055);
+    if(idx % 2 === 1) playHitHat(currentTrack === "battle" ? 0.024 : 0.014);
+    step++;
+  }
+
+  function startLoop(){
+    stopLoop();
+    const tr = currentTrack === "battle" ? BATTLE_TRACK : MENU_TRACK;
+    timer = setInterval(tick, tr.tempoMs);
+  }
+
+  function stopLoop(){
+    if(timer){ clearInterval(timer); timer = null; }
+  }
+
+  function updateUI(){
+    const btn = document.getElementById("musicBtn");
+    if(!btn) return;
+    btn.classList.toggle("on", enabled);
+    btn.textContent = enabled ? "🎵 Muzik 8-Bit: ON" : "🎵 Muzik: OFF";
+  }
+
+  return {
+    enable(){
+      ensureCtx();
+      if(!enabled){
+        enabled = true;
+        startLoop();
+        updateUI();
+      }
+    },
+    toggle(){
+      ensureCtx();
+      enabled = !enabled;
+      if(enabled) startLoop(); else stopLoop();
+      updateUI();
+    },
+    setTrack(name){
+      if(currentTrack === name) return;
+      currentTrack = name;
+      step = 0;
+      if(enabled) startLoop();
+    },
+    sfx(freq, dur=0.12, type="square", vol=0.055){
+      const c = ensureCtx();
+      if(c) playTone(freq, dur, type, vol);
+    },
+    fanfare(){
+      const c = ensureCtx();
+      if(!c) return;
+      [523.25, 659.25, 783.99, 1046.5].forEach((f, i) => {
+        setTimeout(() => playTone(f, 0.16, "square", 0.05), i * 110);
+      });
+    },
+    thunder(){
+      const c = ensureCtx();
+      if(!c) return;
+      [980, 740, 1120, 620].forEach((f, i) => {
+        setTimeout(() => playTone(f, 0.07, "sawtooth", 0.045), i * 45);
+      });
+    }
+  };
+})();
+
+const bip = (f, d) => Chiptune.sfx(f, d || 0.12);
+const toggleMusic = () => Chiptune.toggle();
+
+/* =====================================================================
+   1) DATA POKÉDEX, TETAPAN & TEKS
    ===================================================================== */
 const POKEDEX = [
-  { id: 25, name: "Pikachu" },     // k: 0
-  { id: 1,  name: "Bulbasaur" },   // k: 1
-  { id: 7,  name: "Squirtle" },    // k: 2
-  { id: 133, name: "Eevee" },      // k: 3
-  { id: 4,  name: "Charmander" },  // k: 4
-  { id: 39, name: "Jigglypuff" }   // k: 5
+  { id: 25,  name: "Pikachu" },
+  { id: 1,   name: "Bulbasaur" },
+  { id: 7,   name: "Squirtle" },
+  { id: 133, name: "Eevee" },
+  { id: 4,   name: "Charmander" },
+  { id: 39,  name: "Jigglypuff" }
 ];
 
-/* =====================================================================
-   1) TETAPAN
-   ===================================================================== */
 const ADMIN_PASS = "admin123";
 const PAPAR_DEMO = true;
 
 const DEMO = {
- guru:[["Cikgu Aminah","guru1","guru123"],["Cikgu Raju","guru2","guru123"]],
- murid:[["Ali bin Ahmad","murid1","murid123","guru1","4 Bestari",{}],
-        ["Siti Nur","murid2","murid123","guru1","4 Bestari",{m1:[3,3],s1:[2,3]}],
-        ["Kumar a/l Raj","murid3","murid123","guru2","5 Cerdik",{e1:[3,3]}]]
+  guru:[["Cikgu Aminah","guru1","guru123"],["Cikgu Raju","guru2","guru123"]],
+  murid:[
+    ["Ali bin Ahmad","murid1","murid123","guru1","4 Bestari",{}],
+    ["Siti Nur","murid2","murid123","guru1","4 Bestari",{m1:[3,3],s1:[2,3]}],
+    ["Kumar a/l Raj","murid3","murid123","guru2","5 Cerdik",{e1:[3,3]}]
+  ]
 };
 
-/* =====================================================================
-   2) TEKS
-   ===================================================================== */
 const TEKS = {
- memuat:"Memuatkan Belajar Digital... Jika mesej ini kekal, skrip tidak berjalan.",
- ralat:"Sesuatu tidak kena:",
- tajuk:"Pokémon Academy",
- pilih:"Pilih peranan anda dan mulakan pengembaraan ilmu bersama Pokémon!",
- admin:"Admin", adminHuraian:"Jaga dunia sekolah dan jemput Guru",
- guru:"Guru", guruHuraian:"Latih Murid, susun kelas dan pantau kemajuan",
- murid:"Murid", muridHuraian:"Belajar, jawab kuiz dan kumpulkan Pokémon!",
- kembali:"Kembali",
- logMasuk:"Log masuk", logKeluar:"Log keluar",
- namaPengguna:"Nama pengguna", kataLaluan:"Kata laluan",
- salahLogin:"Nama pengguna atau kata laluan salah. Semak dan cuba lagi.",
- adminSub:"Urus Guru di sekolah anda",
- tambahGuru:"Tambah Guru", namaPenuh:"Nama penuh",
- senaraiGuru:"Guru di sekolah anda",
- kolNama:"Nama", kolPengguna:"Nama pengguna", kolMurid:"Murid", buang:"Buang",
- tiadaGuru:"Belum ada Guru. Tambah yang pertama di atas.",
- guruSama:"Nama pengguna ini sudah digunakan oleh Guru lain. Pilih yang lain.",
- buangGuruTanya:"Buang Guru ini dan semua Murid mereka?",
- cikgu:"Cikgu", guruSub:"Kelas dan murid anda",
- tambahMurid:"Tambah Murid", kelas:"Kelas", contohKelas:"cth: 4 Bestari",
- bilMurid:"murid",
- kolPenggunaKata:"Nama pengguna / kata laluan", kolKemajuan:"Kemajuan", kolSkor:"Skor kuiz",
- pelajaran:"pelajaran", tiadaKuiz:"Belum ada kuiz",
- tiadaMurid:"Belum ada murid. Tambah murid pertama anda di atas dan berikan kelas.",
- muridSama:"Nama pengguna ini sudah digunakan oleh Murid lain. Pilih yang lain.",
- buangMuridTanya:"Buang Murid ini?",
- helo:"Helo,", kemajuanAnda:"Kemajuan anda:", skorTerbaik:"Skor terbaik",
- cubaLagi:"Cuba lagi", mulaPelajaran:"Mulakan pelajaran",
- kuiz:"Kuiz", semak:"Semak jawapan",
- sempurna:"Sempurna! Syabas.",
- cubaSemula:"Cubaan yang baik. Baca pelajaran sekali lagi dan cuba semula.",
- kembaliSenarai:"Kembali ke senarai pelajaran",
- demoTajuk:"Akaun demo untuk pensyarah",
- demoHuraian:"Gunakan akaun ini untuk mencuba semua fungsi. Klik \"Isi\" untuk mengisi borang log masuk secara automatik, atau salin nama pengguna dan kata laluan.",
- kolPeranan:"Peranan", isi:"Isi",
- tahap:"Tahap", koleksi:"Koleksi Pokémon", bertarung:"Bertarung!", mulaB:"Mula bertarung!",
- liarMuncul:"liar muncul!", soalan:"Soalan", ditangkap:"Ditangkap!",
- berjaya:"Hebat! Pokémon berjaya ditangkap!",
- gagal:"Pokémon itu melarikan diri... Ulang kaji pelajaran dan cuba lagi!",
- syarat:"Jawab sekurang-kurangnya dua pertiga soalan dengan betul untuk menangkap Pokémon."
+  ralat:"Sesuatu tidak kena:",
+  tajuk:"Pokémon Academy",
+  pilih:"Pilih peranan anda untuk memulakan pengembaraan ilmu bersama Pokémon!",
+  admin:"Admin", adminHuraian:"Urus dunia sekolah dan jemput Guru",
+  guru:"Guru", guruHuraian:"Latih Murid, susun kelas dan pantau kemajuan",
+  murid:"Murid", muridHuraian:"Belajar, jawab kuiz dan kumpul Pokémon!",
+  kembali:"Kembali",
+  logMasuk:"Log masuk", logKeluar:"Log keluar",
+  namaPengguna:"Nama pengguna", kataLaluan:"Kata laluan",
+  salahLogin:"Nama pengguna atau kata laluan salah. Semak dan cuba lagi.",
+  adminSub:"Konsol Pengurusan Guru Sekolah",
+  tambahGuru:"Tambah Guru", namaPenuh:"Nama penuh",
+  senaraiGuru:"Guru di sekolah anda",
+  kolNama:"Nama", kolPengguna:"Nama pengguna", kolMurid:"Murid", buang:"Buang",
+  tiadaGuru:"Belum ada Guru. Tambah yang pertama di atas.",
+  guruSama:"Nama pengguna ini sudah digunakan oleh Guru lain.",
+  buangGuruTanya:"Buang Guru ini dan semua Murid mereka?",
+  cikgu:"Cikgu", guruSub:"Kelas dan murid di bawah jagaan anda",
+  tambahMurid:"Tambah Murid", kelas:"Kelas", contohKelas:"cth: 4 Bestari",
+  bilMurid:"murid",
+  kolPenggunaKata:"Nama pengguna / kata laluan", kolKemajuan:"Kemajuan", kolSkor:"Skor kuiz",
+  pelajaran:"pelajaran", tiadaKuiz:"Belum ada kuiz",
+  tiadaMurid:"Belum ada murid. Tambah murid pertama anda di atas dan berikan kelas.",
+  muridSama:"Nama pengguna ini sudah digunakan oleh Murid lain.",
+  buangMuridTanya:"Buang Murid ini?",
+  helo:"Helo,", kemajuanAnda:"Kemajuan Pengembaraan:", skorTerbaik:"Skor terbaik",
+  cubaLagi:"Lawan Lagi", bertarung:"Bertarung!",
+  sempurna:"Sempurna! Syabas.",
+  kembaliSenarai:"Kembali ke Peta Misi",
+  demoTajuk:"Akaun Demo Pantas",
+  demoHuraian:"Klik \"Isi\" untuk mengisi borang log masuk secara automatik.",
+  kolPeranan:"Peranan", isi:"Isi",
+  tahap:"Tahap", koleksi:"Pokédex Saya", mulaB:"Mula Bertarung!",
+  liarMuncul:"liar muncul!", soalan:"Misi Soalan", ditangkap:"Ditangkap!",
+  berjaya:"Hebat! Pokémon berjaya ditangkap!",
+  gagal:"Pokémon itu melarikan diri... Ulang kaji pelajaran dan cuba lagi!",
+  syarat:"Jawab sekurang-kurangnya 2/3 soalan dengan betul untuk menangkap Pokémon ini."
 };
 
-/* =====================================================================
-   3) PELAJARAN
-   ===================================================================== */
 const LESSONS = [
- {id:"m1",mon:{n:"Pikachu",c:"#ffcf33",k:0},title:"Tambah bersama Pikachu",subject:"Matematik",
-  text:"Pikachu mengumpulkan 5 buah beri dan menemui 3 buah beri lagi. Jumlah semuanya ialah 5 + 3 = 8 buah beri. Operasi tambah digunakan untuk menggabungkan kuantiti.",
-  q:[{q:"4 + 6 = ?",o:["8","10","12"],a:1},{q:"7 + 5 = ?",o:["11","12","13"],a:1},{q:"9 + 9 = ?",o:["17","18","19"],a:1}]},
- {id:"s1",mon:{n:"Bulbasaur",c:"#4cd27a",k:1},title:"Tumbuhan bersama Bulbasaur",subject:"Sains",
-  text:"Bulbasaur ialah Pokémon yang mempunyai ciri tumbuhan. Tumbuhan memerlukan cahaya matahari, air dan udara untuk membuat makanan sendiri. Akar menyerap air daripada tanah, manakala daun menggunakan cahaya matahari untuk membuat makanan.",
-  q:[{q:"Bahagian manakah yang menyerap air?",o:["Akar","Daun","Bunga"],a:0},{q:"Bahagian manakah yang membuat makanan menggunakan cahaya matahari?",o:["Akar","Daun","Batang"],a:1},{q:"Apakah yang diperlukan tumbuhan untuk membuat makanan?",o:["Cahaya matahari","Gula","Plastik"],a:0}]},
- {id:"e1",mon:{n:"Eevee",c:"#a78bfa",k:3},title:"Kata Nama dalam Dunia Pokémon",subject:"Bahasa Melayu",
-  text:"Kata nama ialah perkataan yang merujuk orang, tempat atau benda. Ash ialah nama orang, Hutan Viridian ialah nama tempat dan Poké Ball ialah nama benda. Kenal pasti kata nama dalam setiap ayat.",
-  q:[{q:"Perkataan manakah ialah kata nama?",o:["Lari","Guru","Cepat"],a:1},{q:"Kuala Lumpur ialah...",o:["orang","tempat","benda"],a:1},{q:"Perkataan manakah ialah benda?",o:["Buku","Menyanyi","Gembira"],a:0}]}
+  {
+    id:"m1", mon:{n:"Pikachu",c:"#ffcf33",k:0},
+    title:"Tambah bersama Pikachu", subject:"Matematik",
+    text:"Pikachu mengumpulkan 5 buah beri dan menemui 3 buah beri lagi. Jumlah semuanya ialah 5 + 3 = 8 buah beri. Operasi tambah digunakan untuk menggabungkan kuantiti.",
+    q:[
+      {q:"4 + 6 = ?",o:["8","10","12"],a:1},
+      {q:"7 + 5 = ?",o:["11","12","13"],a:1},
+      {q:"9 + 9 = ?",o:["17","18","19"],a:1}
+    ]
+  },
+  {
+    id:"s1", mon:{n:"Bulbasaur",c:"#4cd27a",k:1},
+    title:"Tumbuhan bersama Bulbasaur", subject:"Sains",
+    text:"Bulbasaur ialah Pokémon yang mempunyai ciri tumbuhan. Tumbuhan memerlukan cahaya matahari, air dan udara untuk membuat makanan sendiri. Akar menyerap air daripada tanah, manakala daun menggunakan cahaya matahari untuk membuat makanan.",
+    q:[
+      {q:"Bahagian manakah yang menyerap air?",o:["Akar","Daun","Bunga"],a:0},
+      {q:"Bahagian manakah yang membuat makanan menggunakan cahaya matahari?",o:["Akar","Daun","Batang"],a:1},
+      {q:"Apakah yang diperlukan tumbuhan untuk membuat makanan?",o:["Cahaya matahari","Gula","Plastik"],a:0}
+    ]
+  },
+  {
+    id:"e1", mon:{n:"Eevee",c:"#a78bfa",k:3},
+    title:"Kata Nama dalam Dunia Pokémon", subject:"Bahasa Melayu",
+    text:"Kata nama ialah perkataan yang merujuk orang, tempat atau benda. Ash ialah nama orang, Hutan Viridian ialah nama tempat dan Poké Ball ialah nama benda. Kenal pasti kata nama dalam setiap ayat.",
+    q:[
+      {q:"Perkataan manakah ialah kata nama?",o:["Lari","Guru","Cepat"],a:1},
+      {q:"Kuala Lumpur ialah...",o:["orang","tempat","benda"],a:1},
+      {q:"Perkataan manakah ialah benda?",o:["Buku","Menyanyi","Gembira"],a:0}
+    ]
+  }
 ];
 
 /* =====================================================================
-   4) KOD APLIKASI
+   2) KEADAAN & PENYIMPANAN DATA
    ===================================================================== */
 const KEY="belajar_digital_v1";
-let db;try{db=JSON.parse(localStorage.getItem(KEY))}catch(e){}
+let db; try{db=JSON.parse(localStorage.getItem(KEY))}catch(e){}
 db=db||{teachers:[],students:[]};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}};
 const uid=()=>Math.random().toString(36).slice(2,10);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const $=s=>document.querySelector(s);
 
-let S=null;try{S=JSON.parse(sessionStorage.getItem("bd_s"))}catch(e){}
+let S=null; try{S=JSON.parse(sessionStorage.getItem("bd_s"))}catch(e){}
 let started=Boolean(S);
-let loginRole=null,lesson=null,result=null,msg="",prefill={u:"",p:""};
-function setS(v){S=v;if(v)started=true;try{v?sessionStorage.setItem("bd_s",JSON.stringify(v)):sessionStorage.removeItem("bd_s")}catch(e){}render()}
+let loginRole=null, lesson=null, msg="", prefill={u:"",p:""};
+let B=null;
+
+function setS(v){
+  S=v;
+  if(v) started=true;
+  try{v?sessionStorage.setItem("bd_s",JSON.stringify(v)):sessionStorage.removeItem("bd_s")}catch(e){}
+  render();
+}
 const note=()=>msg?`<div class="err" role="alert">${esc(msg)}</div>`:"";
 
 function seedDemo(){
- if(!PAPAR_DEMO||db.demo)return;
- const tid={};
- DEMO.guru.forEach(g=>{let t=db.teachers.find(x=>x.u===g[1]);if(!t){t={id:uid(),n:g[0],u:g[1],p0:g[2]};db.teachers.push(t)}tid[g[1]]=t.id});
- DEMO.murid.forEach(m=>{
-  if(db.students.some(x=>x.u===m[1]))return;
-  const p={};for(const k in m[5])p[k]={s:m[5][k][0],t:m[5][k][1]};
-  db.students.push({id:uid(),t:tid[m[3]],n:m[0],u:m[1],p0:m[2],c:m[4],p});
- });
- db.demo=1;save();
+  if(!PAPAR_DEMO||db.demo) return;
+  const tid={};
+  DEMO.guru.forEach(g=>{
+    let t=db.teachers.find(x=>x.u===g[1]);
+    if(!t){t={id:uid(),n:g[0],u:g[1],p0:g[2]}; db.teachers.push(t);}
+    tid[g[1]]=t.id;
+  });
+  DEMO.murid.forEach(m=>{
+    if(db.students.some(x=>x.u===m[1])) return;
+    const p={};
+    for(const k in m[5]) p[k]={s:m[5][k][0],t:m[5][k][1]};
+    db.students.push({id:uid(),t:tid[m[3]],n:m[0],u:m[1],p0:m[2],c:m[4],p});
+  });
+  db.demo=1; save();
 }
 
-function demoBox(){
- if(!PAPAR_DEMO)return "";
- const rows=[["admin",TEKS.admin,"-",ADMIN_PASS]]
-  .concat(DEMO.guru.map(g=>["guru",TEKS.guru+" ("+g[0]+")",g[1],g[2]]))
-  .concat(DEMO.murid.map(m=>["murid",TEKS.murid+" ("+m[0]+")",m[1],m[2]]));
- return `<div class="card" style="margin-top:2rem"><h2>${TEKS.demoTajuk}</h2><p class="mut">${TEKS.demoHuraian}</p><div class="scroll"><table><tr><th>${TEKS.kolPeranan}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kataLaluan}</th><th></th></tr>`+
- rows.map(r=>`<tr><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td><button class="ghost" onclick="demoFill('${r[0]}','${r[2]==="-"?"":esc(r[2])}','${esc(r[3])}')">${TEKS.isi}</button></td></tr>`).join("")+`</table></div></div>`;
+function pokemon(id,w,label){
+  const size=w||100;
+  const found=POKEDEX.find(p=>p.id===id);
+  const name=label||(found?found.name:"Pokémon");
+  return `<img class="pokemon-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png" alt="${esc(name)}" width="${size}" height="${size}" loading="lazy" decoding="async">`;
+}
+function mon(c,k,w){
+  const p=POKEDEX[k]||POKEDEX[0];
+  return pokemon(p.id,w,p.name);
 }
 
 const ROLES=[
- ["admin",TEKS.admin,"🛠️","#17233a","#fff",TEKS.adminHuraian,150,"Mewtwo"],
- ["guru",TEKS.guru,"👩‍🏫","#2b5fd9","#fff",TEKS.guruHuraian,6,"Charizard"],
- ["murid",TEKS.murid,"🎒","#ffc933","#17233a",TEKS.muridHuraian,25,"Pikachu"]];
+  ["admin",TEKS.admin,TEKS.adminHuraian,150,"Mewtwo"],
+  ["guru",TEKS.guru,TEKS.guruHuraian,6,"Charizard"],
+  ["murid",TEKS.murid,TEKS.muridHuraian,25,"Pikachu"]
+];
 
-/* ==================== MUKA DEPAN (SKRIN MULA GAME) ==================== */
+/* =====================================================================
+   3) PAPARAN SKRIN MULA (ANIMASI PIKACHU THUNDERBOLT)
+   ===================================================================== */
 function startView(){
- return `
- <section class="start-screen">
-  <div class="start-badge">⚡ EDISI INTERAKTIF · VER 2.0 ⚡</div>
-  <h1 class="start-title">${TEKS.tajuk}</h1>
-  <p class="start-sub">Kuasai ilmu, cabar minda dan tangkap Pokémon dalam pengembaraan pembelajaran digital!</p>
+  return `
+  <section class="start-screen">
+    <div class="start-grid-floor"></div>
+    <div class="start-badge">⚡ EDISI 8-BIT · POKÉMON ACADEMY ⚡</div>
+    <h1 class="start-title">${TEKS.tajuk}</h1>
+    <p class="start-sub">Kuasai matematik, sains & bahasa sambil bertarung dan menangkap Pokémon kegemaran anda!</p>
 
-  <div class="battle-stage" aria-label="Animasi Pikachu menyerang dengan elektrik">
-    <div class="stage-flash"></div>
-    <div class="attack-label">⚡ PIKACHU GUNAKAN THUNDERBOLT! ⚡</div>
+    <div class="battle-stage" aria-label="Animasi Pikachu melepaskan serangan Thunderbolt">
+      <div class="stage-flash"></div>
+      <span class="stage-cloud">☁️</span>
+      <span class="stage-cloud c2">☁️</span>
 
-    <div class="stage-platform plat-left"></div>
-    <div class="stage-platform plat-right"></div>
+      <div class="stage-hud hero">
+        <div>⚡ PIKACHU LV.25</div>
+        <div class="mini-hp"><i style="width:100%"></i></div>
+      </div>
+      <div class="stage-hud foe">
+        <div>😈 MEOWTH LV.18</div>
+        <div class="mini-hp"><i class="foe-hp-bar"></i></div>
+      </div>
 
-    <!-- PIKACHU MENYERANG -->
-    <div class="hero-pikachu">
-      <div class="electric-aura"></div>
-      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/25.gif"
-           onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'"
-           alt="Pikachu menyerang">
+      <div class="stage-platform plat-left"></div>
+      <div class="stage-platform plat-right"></div>
+
+      <!-- PIKACHU MENYERANG -->
+      <div class="hero-pikachu">
+        <div class="electric-aura"></div>
+        <div class="charge-ring"></div>
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/25.gif"
+             onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'"
+             alt="Pikachu menyerang">
+      </div>
+
+      <!-- PANAHAN PETIR SVG -->
+      <svg class="lightning-beam" viewBox="0 0 340 110" preserveAspectRatio="none">
+        <defs>
+          <filter id="glowBolt" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="4.5" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <polyline points="0,58 60,18 105,76 175,14 230,68 330,36"
+                  fill="none" stroke="#ff9100" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowBolt)"/>
+        <polyline points="0,58 60,18 105,76 175,14 230,68 330,36"
+                  fill="none" stroke="#ffea00" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="0,58 60,18 105,76 175,14 230,68 330,36"
+                  fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="15,65 85,82 145,40 220,86 320,48"
+                  fill="none" stroke="#fff59d" stroke-width="3" stroke-dasharray="10 6" stroke-linecap="round"/>
+      </svg>
+
+      <div class="spark-burst">💥⚡✨</div>
+      <div class="crit-dmg">-99 HP!</div>
+
+      <!-- LAWAN TERKENA SERANGAN -->
+      <div class="target-dummy">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/52.gif"
+             onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png'"
+             alt="Meowth terkena serangan">
+      </div>
+
+      <div class="attack-label">⚡ PIKACHU GUNAKAN THUNDERBOLT! ⚡</div>
     </div>
 
-    <!-- PANAHAN PETIR SVG -->
-    <svg class="lightning-beam" viewBox="0 0 320 100" preserveAspectRatio="none">
-      <defs>
-        <filter id="glowBolt" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="4" result="blur"/>
-          <feMerge>
-            <feMergeNode in="blur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      <polyline points="0,55 65,20 110,70 175,15 225,65 315,35"
-                fill="none" stroke="#ff9800" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowBolt)"/>
-      <polyline points="0,55 65,20 110,70 175,15 225,65 315,35"
-                fill="none" stroke="#ffeb3b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-      <polyline points="0,55 65,20 110,70 175,15 225,65 315,35"
-                fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-    </svg>
-
-    <div class="spark-burst">💥⚡✨</div>
-
-    <!-- SASARAN LATIHAN -->
-    <div class="target-dummy">
-      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/52.gif"
-           onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png'"
-           alt="Meowth terkena serangan">
-    </div>
-  </div>
-
-  <button class="btn-start-game" onclick="enterGame()">▶ MULA</button>
-  <div class="start-hint">TEKAN BUTANG MULA UNTUK MASUK KE DUNIA AKADEMI</div>
- </section>`;
+    <button class="btn-start-game" onclick="enterGame()">▶ MULA</button>
+    <div class="start-hint">TEKAN MULA UNTUK MASUK KE HALAMAN ADMIN, GURU &amp; PELAJAR</div>
+  </section>`;
 }
 
 function enterGame(){
- bip(523, .08);
- setTimeout(()=>bip(659, .08), 80);
- setTimeout(()=>bip(784, .14), 160);
- started = true;
- render();
- window.scrollTo(0,0);
+  Chiptune.thunder();
+  Chiptune.enable();
+  Chiptune.setTrack("menu");
+  started = true;
+  render();
+  window.scrollTo(0,0);
 }
 
 function backToStart(){
- bip(440, .08);
- started = false;
- loginRole = null;
- render();
+  bip(440,.08);
+  started = false;
+  loginRole = null;
+  render();
+}
+
+/* =====================================================================
+   4) HALAMAN PILIHAN PERANAN (ADMIN / GURU / MURID) & LOGIN
+   ===================================================================== */
+function demoBox(){
+  if(!PAPAR_DEMO) return "";
+  const rows=[["admin",TEKS.admin,"-",ADMIN_PASS]]
+    .concat(DEMO.guru.map(g=>["guru",TEKS.guru+" ("+g[0]+")",g[1],g[2]]))
+    .concat(DEMO.murid.map(m=>["murid",TEKS.murid+" ("+m[0]+")",m[1],m[2]]));
+  return `<div class="card" style="margin-top:1.5rem">
+    <h2>🎮 ${TEKS.demoTajuk}</h2>
+    <p class="mut">${TEKS.demoHuraian}</p>
+    <div class="scroll"><table>
+      <tr><th>${TEKS.kolPeranan}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kataLaluan}</th><th></th></tr>`+
+      rows.map(r=>`<tr><td>${esc(r[1])}</td><td>${esc(r[2])}</td><td>${esc(r[3])}</td><td><button class="ghost" onclick="demoFill('${r[0]}','${r[2]==="-"?"":esc(r[2])}','${esc(r[3])}')">${TEKS.isi}</button></td></tr>`).join("")+
+    `</table></div></div>`;
 }
 
 function home(){
- const ic=ROLES.map(r=>pokemon(r[6],86,r[7]));
- return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
-   <button class="ghost" style="padding:.35rem .75rem;font-size:.85rem" onclick="backToStart()">⬅ Skrin Mula</button>
-   <span class="tag">Mod Akademi</span>
- </div>
- <h1 class="logo">${TEKS.tajuk}</h1><p class="sub">${TEKS.pilih}</p>
- <section class="world-banner">
-  <div class="world-copy"><span class="world-kicker">POKÉMON · BELAJAR · TEROKA</span>
-   <h2>Selamat datang ke dunia Pokémon!</h2>
-   <p>Belajar bersama Pokémon, lengkapkan misi pelajaran dan kumpulkan ganjaran ilmu.</p>
-   <div class="world-stats"><span>⚡ Misi pembelajaran</span><span>⭐ Mata XP</span><span>🔴 Koleksi Pokémon</span></div>
+  return `
+  <div class="hub-nav">
+    <button class="ghost" onclick="backToStart()">⬅ Skrin Mula</button>
+    <span class="tag">Mod Akademi 8-Bit</span>
   </div>
-  <div class="world-characters"><div class="world-spark spark-a">✦</div><div class="world-spark spark-b">✧</div>
-   <div class="world-poke world-eevee">${pokemon(133,84,"Eevee")}</div>
-   <div class="world-poke world-pikachu">${pokemon(25,132,"Pikachu")}</div>
-   <div class="world-poke world-bulba">${pokemon(1,92,"Bulbasaur")}</div>
-   <div class="world-pokeball"></div>
-  </div>
- </section>
- <div class="section-heading"><span>🎮</span><h2>Pilih peranan anda</h2><span>🎒</span></div>
- <div class="roles">`+
- ROLES.map((r,i)=>`<button class="role role-${r[0]}" onclick="pick('${r[0]}');bip(660)"><div class="mon">${ic[i]}</div><span><strong>${r[1]}</strong><span class="mut">${r[5]}</span></span><span class="role-arrow">➜</span></button>`).join("")+`</div>`+demoBox();
+  <h1 class="logo">${TEKS.tajuk}</h1>
+  <p class="sub">${TEKS.pilih}</p>
+
+  <section class="world-banner">
+    <div class="world-copy">
+      <span class="world-kicker">POKÉMON · BELAJAR · TEROKA</span>
+      <h2>Selamat Datang ke Dunia Akademi!</h2>
+      <p>Pilih laluan anda sama ada sebagai Admin Sekolah, Guru Pembimbing atau Murid Pengembara.</p>
+      <div class="world-stats"><span>⚡ Kuiz Pertarungan</span><span>⭐ Tahap & XP</span><span>🔴 Pokédex Ganjaran</span></div>
+    </div>
+    <div class="world-characters">
+      <div class="world-poke world-eevee">${pokemon(133,86,"Eevee")}</div>
+      <div class="world-poke world-pikachu">${pokemon(25,130,"Pikachu")}</div>
+      <div class="world-poke world-bulba">${pokemon(1,94,"Bulbasaur")}</div>
+    </div>
+  </section>
+
+  <div class="section-heading"><span>🎮</span><h2>Pilih Peranan Anda</h2><span>🎒</span></div>
+  <div class="roles">`+
+  ROLES.map(r=>`
+    <button class="role role-${r[0]}" onclick="pick('${r[0]}');bip(660)">
+      <div class="mon">${pokemon(r[3],88,r[4])}</div>
+      <span><strong>${r[1]}</strong><span class="mut">${r[2]}</span></span>
+      <span class="role-arrow">➜</span>
+    </button>`).join("")+
+  `</div>`+demoBox();
 }
 
 function loginView(){
- const r=ROLES.find(x=>x[0]===loginRole);
- return `<button class="ghost" onclick="back()">${TEKS.kembali}</button><div class="card" style="max-width:420px;margin:1.5rem auto"><h2>${TEKS.logMasuk} ${r[1]}</h2>${note()}
- <form onsubmit="login(event)">${loginRole==="admin"?"":`<div class="q"><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" autocomplete="username" value="${esc(prefill.u)}" required></div>`}
- <div class="q"><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" type="password" autocomplete="current-password" value="${esc(prefill.p)}" required></div>
- <button type="submit">${TEKS.logMasuk}</button></form></div>`;
+  const r=ROLES.find(x=>x[0]===loginRole);
+  return `<button class="ghost" onclick="back()">⬅ ${TEKS.kembali}</button>
+  <div class="card" style="max-width:440px;margin:1.5rem auto">
+    <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem">
+      <div class="mon" style="width:60px">${pokemon(r[3],60,r[4])}</div>
+      <div><h2 style="margin:0">${TEKS.logMasuk} ${r[1]}</h2><small class="mut">Terminal Keselamatan Akademi</small></div>
+    </div>
+    ${note()}
+    <form onsubmit="login(event)">
+      ${loginRole==="admin"?"":`<div class="q"><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" autocomplete="username" value="${esc(prefill.u)}" required></div>`}
+      <div class="q"><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" type="password" autocomplete="current-password" value="${esc(prefill.p)}" required></div>
+      <button type="submit" style="width:100%">▶ ${TEKS.logMasuk}</button>
+    </form>
+  </div>`;
 }
 
+/* =====================================================================
+   5) PAPAN PEMUKA ADMIN, GURU & MURID
+   ===================================================================== */
 function topBar(title,sub){
- return `<div class="top"><div><h1 style="font-size:2rem">${esc(title)}</h1><div class="mut">${esc(sub)}</div></div><button class="ghost" onclick="logout()">${TEKS.logKeluar}</button></div>`;
+  return `<div class="top">
+    <div><h1 style="font-size:1.55rem">${esc(title)}</h1><div class="mut">${esc(sub)}</div></div>
+    <button class="ghost" onclick="logout()">${TEKS.logKeluar}</button>
+  </div>`;
 }
+
 const pct=s=>Math.round(Object.keys(s.p).length/LESSONS.length*100);
 const avg=s=>{let a=0,b=0;for(const k in s.p){a+=s.p[k].s;b+=s.p[k].t}return b?Math.round(a/b*100)+"%":TEKS.tiadaKuiz};
 
 function adminView(){
- const rows=db.teachers.map(t=>`<tr><td>${esc(t.n)}</td><td>${esc(t.u)}</td><td>${db.students.filter(s=>s.t===t.id).length}</td><td><button class="ghost" onclick="delT('${t.id}')">${TEKS.buang}</button></td></tr>`).join("")
-  ||`<tr><td colspan="4" class="mut">${TEKS.tiadaGuru}</td></tr>`;
- return topBar(TEKS.admin,TEKS.adminSub)+note()+
- `<div class="card"><h2>${TEKS.tambahGuru}</h2><form onsubmit="addT(event)" class="grid">
- <div><label for="n">${TEKS.namaPenuh}</label><input id="n" name="n" required></div>
- <div><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" required></div>
- <div><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" required></div>
- <button type="submit">${TEKS.tambahGuru}</button></form></div>
- <div class="card"><h2>${TEKS.senaraiGuru}</h2><div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kolMurid}</th><th></th></tr>${rows}</table></div></div>`;
+  const rows=db.teachers.map(t=>`
+    <tr>
+      <td><b>${esc(t.n)}</b></td>
+      <td>${esc(t.u)}</td>
+      <td><span class="tag">${db.students.filter(s=>s.t===t.id).length} murid</span></td>
+      <td><button class="ghost" onclick="delT('${t.id}')">${TEKS.buang}</button></td>
+    </tr>`).join("") || `<tr><td colspan="4" class="mut">${TEKS.tiadaGuru}</td></tr>`;
+
+  return topBar(TEKS.admin,TEKS.adminSub)+note()+
+  `<div class="card"><h2>🛠️ ${TEKS.tambahGuru}</h2>
+    <form onsubmit="addT(event)" class="grid">
+      <div><label for="n">${TEKS.namaPenuh}</label><input id="n" name="n" required></div>
+      <div><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" required></div>
+      <div><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" required></div>
+      <button type="submit">+ ${TEKS.tambahGuru}</button>
+    </form>
+  </div>
+  <div class="card"><h2>👩‍🏫 ${TEKS.senaraiGuru}</h2>
+    <div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kolMurid}</th><th></th></tr>${rows}</table></div>
+  </div>`;
 }
 
 function guruView(){
- const me=db.teachers.find(t=>t.id===S.id);if(!me){setTimeout(logout);return ""}
- const mine=db.students.filter(s=>s.t===me.id);
- const classes=[...new Set(mine.map(s=>s.c))].sort();
- const blocks=classes.map(c=>{
-  const rows=mine.filter(s=>s.c===c).map(s=>`<tr><td>${esc(s.n)}</td><td>${esc(s.u)} / ${esc(s.p0)}</td>
-  <td><div class="bar" title="${pct(s)}%"><i style="width:${pct(s)}%"></i></div><small class="mut">${Object.keys(s.p).length}/${LESSONS.length} ${TEKS.pelajaran}</small></td>
-  <td>${avg(s)}</td><td><button class="ghost" onclick="delS('${s.id}')">${TEKS.buang}</button></td></tr>`).join("");
-  return `<div class="card"><h2>${TEKS.kelas} ${esc(c)} <span class="tag">${mine.filter(s=>s.c===c).length} ${TEKS.bilMurid}</span></h2><div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPenggunaKata}</th><th>${TEKS.kolKemajuan}</th><th>${TEKS.kolSkor}</th><th></th></tr>${rows}</table></div></div>`}).join("")
-  ||`<div class="card mut">${TEKS.tiadaMurid}</div>`;
- return topBar(TEKS.cikgu+" "+me.n,TEKS.guruSub)+note()+
- `<div class="card"><h2>${TEKS.tambahMurid}</h2><form onsubmit="addS(event)" class="grid">
- <div><label for="n">${TEKS.namaPenuh}</label><input id="n" name="n" required></div>
- <div><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" required></div>
- <div><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" required></div>
- <div><label for="c">${TEKS.kelas}</label><input id="c" name="c" list="cls" placeholder="${TEKS.contohKelas}" required><datalist id="cls">${classes.map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div>
- <button type="submit">${TEKS.tambahMurid}</button></form></div>`+blocks;
-}
+  const me=db.teachers.find(t=>t.id===S.id); if(!me){setTimeout(logout);return ""}
+  const mine=db.students.filter(s=>s.t===me.id);
+  const classes=[...new Set(mine.map(s=>s.c))].sort();
+  const blocks=classes.map(c=>{
+    const rows=mine.filter(s=>s.c===c).map(s=>`
+      <tr>
+        <td><b>${esc(s.n)}</b></td>
+        <td>${esc(s.u)} / ${esc(s.p0)}</td>
+        <td><div class="bar" title="${pct(s)}%"><i style="width:${pct(s)}%"></i></div><small class="mut">${Object.keys(s.p).length}/${LESSONS.length} ${TEKS.pelajaran}</small></td>
+        <td><span class="tag ok">${avg(s)}</span></td>
+        <td><button class="ghost" onclick="delS('${s.id}')">${TEKS.buang}</button></td>
+      </tr>`).join("");
+    return `<div class="card"><h2>🏫 ${TEKS.kelas} ${esc(c)} <span class="tag">${mine.filter(s=>s.c===c).length} ${TEKS.bilMurid}</span></h2>
+      <div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPenggunaKata}</th><th>${TEKS.kolKemajuan}</th><th>${TEKS.kolSkor}</th><th></th></tr>${rows}</table></div></div>`;
+  }).join("") || `<div class="card mut">${TEKS.tiadaMurid}</div>`;
 
-let AC;
-function bip(f,d){
-  try{
-    AC=AC||new (window.AudioContext||window.webkitAudioContext)();
-    const o=AC.createOscillator(),
-    g=AC.createGain();
-    o.type="square";
-    o.frequency.value=f;
-    g.gain.value=.05;
-    o.connect(g);
-    g.connect(AC.destination);
-    o.start();
-    o.stop(AC.currentTime+(d||.12))
-  }catch(e){}
-}
-
-function pokemon(id,w,label){
- const size=w||100;
- const found=POKEDEX.find(p=>p.id===id);
- const name=label||(found?found.name:"Pokémon");
- return `<img class="pokemon-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png" alt="${esc(name)}" width="${size}" height="${size}" loading="lazy" decoding="async">`;
-}
-
-function mon(c,k,w){
- const p=POKEDEX[k]||POKEDEX[0];
- return pokemon(p.id,w,p.name);
+  return topBar(TEKS.cikgu+" "+me.n,TEKS.guruSub)+note()+
+  `<div class="card"><h2>🎒 ${TEKS.tambahMurid}</h2>
+    <form onsubmit="addS(event)" class="grid">
+      <div><label for="n">${TEKS.namaPenuh}</label><input id="n" name="n" required></div>
+      <div><label for="u">${TEKS.namaPengguna}</label><input id="u" name="u" required></div>
+      <div><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" required></div>
+      <div><label for="c">${TEKS.kelas}</label><input id="c" name="c" list="cls" placeholder="${TEKS.contohKelas}" required><datalist id="cls">${classes.map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div>
+      <button type="submit">+ ${TEKS.tambahMurid}</button>
+    </form>
+  </div>`+blocks;
 }
 
 const monOf=l=>l.mon||{n:"Pikachu",c:"#ffcf33",k:0};
 const need=L=>Math.ceil(L.q.length*2/3);
 const lessonObj=()=>LESSONS.find(l=>l.id===lesson);
-let B=null;
 
 function muridView(){
- const me=db.students.find(s=>s.id===S.id);if(!me){setTimeout(logout);return ""}
- const got=l=>me.p[l.id]&&me.p[l.id].s>=need(l);
- const xp=Object.values(me.p).reduce((a,x)=>a+x.s*10,0),lv=1+Math.floor(xp/30);
- const strip=LESSONS.map(l=>{const m=monOf(l);return `<div class="mon ${got(l)?"float":"sil"}" title="${esc(m.n)}">${mon(m.c,m.k,46)}</div>`}).join("");
- const cards=LESSONS.map(l=>{const p=me.p[l.id],m=monOf(l);return `<div class="card stage"><div class="mon ${got(l)?"":"sil"}">${mon(m.c,m.k,84)}</div><div class="grow"><h2>${esc(l.title)}</h2><span class="tag">${esc(l.subject)}</span> ${p?`<span class="tag ok">${TEKS.skorTerbaik} ${p.s}/${p.t}</span>`:""} ${got(l)?`<span class="tag ok">${TEKS.ditangkap}</span>`:""}</div><button onclick="openL('${l.id}')">${p?TEKS.cubaLagi:TEKS.bertarung}</button></div>`}).join("");
- return topBar(TEKS.helo+" "+me.n,TEKS.kelas+" "+me.c)+
- `<div class="card"><div class="hud"><div class="avatar">🧢<span class="avatar-pokemon">${pokemon(25,54,"Pikachu")}</span></div><div class="grow"><b>${TEKS.tahap} ${lv} · XP ${xp}</b><div class="bar xp"><i style="width:${xp%30/30*100}%"></i></div><small class="mut">${TEKS.kemajuanAnda} ${pct(me)}%</small></div></div><div class="strip" aria-label="${TEKS.koleksi}">${strip}</div></div>`+cards;
+  const me=db.students.find(s=>s.id===S.id); if(!me){setTimeout(logout);return ""}
+  const got=l=>me.p[l.id]&&me.p[l.id].s>=need(l);
+  const xp=Object.values(me.p).reduce((a,x)=>a+x.s*10,0), lv=1+Math.floor(xp/30);
+  const strip=LESSONS.map(l=>{const m=monOf(l);return `<div class="mon ${got(l)?"float":"sil"}" title="${esc(m.n)}">${mon(m.c,m.k,46)}</div>`}).join("");
+  const cards=LESSONS.map(l=>{
+    const p=me.p[l.id], m=monOf(l);
+    return `<div class="card stage">
+      <div class="mon ${got(l)?"":"sil"}">${mon(m.c,m.k,84)}</div>
+      <div class="grow">
+        <h2>${esc(l.title)}</h2>
+        <span class="tag">${esc(l.subject)}</span>
+        ${p?`<span class="tag ok">${TEKS.skorTerbaik} ${p.s}/${p.t}</span>`:""}
+        ${got(l)?`<span class="tag ok">${TEKS.ditangkap}</span>`:""}
+      </div>
+      <button onclick="openL('${l.id}')">⚔️ ${p?TEKS.cubaLagi:TEKS.bertarung}</button>
+    </div>`;
+  }).join("");
+
+  return topBar(TEKS.helo+" "+me.n,TEKS.kelas+" "+me.c)+
+  `<div class="card">
+    <div class="hud">
+      <div class="avatar">🧢<span class="avatar-pokemon">${pokemon(25,52,"Pikachu")}</span></div>
+      <div class="grow">
+        <b>⭐ ${TEKS.tahap} ${lv} · XP ${xp}</b>
+        <div class="bar xp" style="margin:.35rem 0"><i style="width:${xp%30/30*100}%"></i></div>
+        <small class="mut">${TEKS.kemajuanAnda} ${pct(me)}%</small>
+      </div>
+    </div>
+    <div class="strip" aria-label="${TEKS.koleksi}">${strip}</div>
+  </div>`+cards;
 }
 
 function lessonView(){
- const L=lessonObj(),m=monOf(L),mm=mon(m.c,m.k,120);
- if(B.ph==="learn")return `<button class="ghost" onclick="closeL()">${TEKS.kembali}</button>
- <div class="card center" style="margin-top:1rem"><div class="mon float" style="width:130px;margin:0 auto">${mon(m.c,m.k,130)}</div><h2>${esc(m.n)} ${TEKS.liarMuncul}</h2><span class="tag">${esc(L.title)}</span>
- <p class="bubble">${esc(L.text)}</p><p class="mut">${TEKS.syarat}</p><button onclick="startB()">${TEKS.mulaB}</button></div>`;
- if(B.ph==="end"){const won=B.ok>=need(L);
-  return `<div class="card center"><h2>${esc(L.title)}</h2><div class="big">${B.ok}/${L.q.length}</div>`+
-  (won?`<div class="capt"><div class="orb"></div><div class="mon">${mm}</div><span class="spark" style="left:18%;top:10%">✨</span><span class="spark" style="right:18%;top:20%">⭐</span></div><p><b>${TEKS.berjaya}</b></p>`
-      :`<div class="mon flee">${mm}</div><p>${TEKS.gagal}</p>`)+
-  `<button onclick="closeL()">${TEKS.kembaliSenarai}</button></div>`}
- const q=L.q[B.q],fb=B.fb,hp=Math.round((1-B.ok/L.q.length)*100);
- return `<div class="arena${fb&&!fb.right?" miss":""}">
- <div class="arena-hills"></div><img class="arena-deco arena-deco-left" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png" alt="Squirtle" loading="lazy">
- <img class="arena-deco arena-deco-right" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png" alt="Jigglypuff" loading="lazy">
- <i class="cloud">☁️</i><i class="cloud cloud-second">☁️</i>
- <div class="plate en"><b>${esc(m.n)}</b> <small>HP</small><div class="bar hp${hp<40?" low":""}"><i style="width:${hp}%"></i></div></div>
- <div class="enemy"><div class="${fb&&fb.right?"hit":""}">${mm}</div>${fb&&fb.right?`<span class="dmg">-${Math.round(100/L.q.length)}</span>`:""}</div>
- <div class="trainer"><span class="trainer-cap">🧢</span><span class="trainer-word">JURULATIH</span><span class="trainer-pokemon">${pokemon(25,58,"Pikachu")}</span></div><div class="plate me">${"❤️".repeat(B.hp)}${"🖤".repeat(3-B.hp)}</div></div>
- <div class="card"><span class="tag">${TEKS.soalan} ${B.q+1}/${L.q.length}</span><h2 style="margin-top:.5rem">${esc(q.q)}</h2>
- <div class="opts${fb?" lock":""}">`+q.o.map((o,j)=>`<button class="${fb?(j===q.a?"ok":j===fb.j?"no":"dim"):""}" onclick="answer(${j})">${esc(o)}</button>`).join("")+`</div></div>`;
+  const L=lessonObj(), m=monOf(L), mm=mon(m.c,m.k,124);
+  if(B.ph==="learn"){
+    return `<button class="ghost" onclick="closeL()">⬅ ${TEKS.kembali}</button>
+    <div class="card center" style="margin-top:1rem">
+      <div class="mon float" style="width:130px;margin:0 auto">${mon(m.c,m.k,130)}</div>
+      <h2>${esc(m.n)} ${TEKS.liarMuncul}</h2>
+      <span class="tag">${esc(L.title)}</span>
+      <p class="bubble">${esc(L.text)}</p>
+      <p class="mut">${TEKS.syarat}</p>
+      <button onclick="startB()">⚡ ${TEKS.mulaB}</button>
+    </div>`;
+  }
+  if(B.ph==="end"){
+    const won=B.ok>=need(L);
+    return `<div class="card center">
+      <h2>${esc(L.title)}</h2>
+      <div class="big">${B.ok}/${L.q.length}</div>`+
+      (won ? `<div class="capt"><div class="orb"></div><div class="mon">${mm}</div><span class="spark" style="left:18%;top:10%">✨</span><span class="spark" style="right:18%;top:20%">⭐</span></div><p><b>${TEKS.berjaya}</b></p>`
+           : `<div class="mon flee">${mm}</div><p>${TEKS.gagal}</p>`)+
+      `<button onclick="closeL()">${TEKS.kembaliSenarai}</button>
+    </div>`;
+  }
+
+  const q=L.q[B.q], fb=B.fb, hp=Math.round((1-B.ok/L.q.length)*100);
+  const hpClass = hp<35 ? " low" : hp<65 ? " mid" : "";
+  return `
+  <div class="arena${fb&&!fb.right?" miss":""}">
+    <div class="arena-hills"></div>
+    <i class="cloud">☁️</i><i class="cloud cloud-second">☁️</i>
+    <div class="plate en">
+      <b>${esc(m.n)}</b> <small>HP</small>
+      <div class="bar hp${hpClass}"><i style="width:${hp}%"></i></div>
+    </div>
+    ${fb&&fb.right ? `<svg class="battle-bolt" viewBox="0 0 300 100" preserveAspectRatio="none"><polyline points="0,65 70,22 120,74 195,18 295,40" fill="none" stroke="#ffeb3b" stroke-width="10" stroke-linecap="round"/><polyline points="0,65 70,22 120,74 195,18 295,40" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg>` : ""}
+    <div class="enemy">
+      <div class="${fb&&fb.right?"hit":""}">${mm}</div>
+      ${fb&&fb.right?`<span class="dmg">-${Math.round(100/L.q.length)}</span>`:""}
+    </div>
+    <div class="trainer">
+      <span class="trainer-cap">🧢</span>
+      <span class="trainer-word">JURULATIH</span>
+      <span class="trainer-pokemon">${pokemon(25,58,"Pikachu")}</span>
+    </div>
+    <div class="plate me">${"❤️".repeat(B.hp)}${"🖤".repeat(3-B.hp)}</div>
+  </div>
+  <div class="card">
+    <span class="tag">${TEKS.soalan} ${B.q+1}/${L.q.length}</span>
+    <h2 style="margin-top:.55rem">${esc(q.q)}</h2>
+    <div class="opts${fb?" lock":""}">`+
+      q.o.map((o,j)=>`<button class="${fb?(j===q.a?"ok":j===fb.j?"no":"dim"):""}" onclick="answer(${j})">${esc(o)}</button>`).join("")+
+    `</div>
+  </div>`;
 }
 
+/* =====================================================================
+   6) LOGIK KAWALAN & INTERAKSI
+   ===================================================================== */
 function render(){
- const a=$("#app");
- if(!S){
-   if(!started) a.innerHTML=startView();
-   else a.innerHTML=loginRole?loginView():home();
- }
- else if(S.role==="admin")a.innerHTML=adminView();
- else if(S.role==="guru")a.innerHTML=guruView();
- else a.innerHTML=lesson?lessonView():muridView();
- msg="";prefill={u:"",p:""};
+  const a=$("#app");
+  if(!S){
+    Chiptune.setTrack("menu");
+    a.innerHTML = !started ? startView() : (loginRole ? loginView() : home());
+  } else if(S.role==="admin"){
+    Chiptune.setTrack("menu");
+    a.innerHTML=adminView();
+  } else if(S.role==="guru"){
+    Chiptune.setTrack("menu");
+    a.innerHTML=guruView();
+  } else {
+    Chiptune.setTrack(lesson && B && B.ph==="fight" ? "battle" : "menu");
+    a.innerHTML = lesson ? lessonView() : muridView();
+  }
+  msg=""; prefill={u:"",p:""};
 }
 
-const pick=r=>{loginRole=r;msg="";render()};
-const demoFill=(r,u,p)=>{started=true;loginRole=r;prefill={u:u,p:p};msg="";render();window.scrollTo(0,0)};
+const pick=r=>{Chiptune.enable();loginRole=r;msg="";render()};
+const demoFill=(r,u,p)=>{Chiptune.enable();started=true;loginRole=r;prefill={u,p};msg="";render();window.scrollTo(0,0)};
 const back=()=>{loginRole=null;render()};
-const logout=()=>{loginRole=null;lesson=null;B=null;result=null;setS(null)};
+const logout=()=>{loginRole=null;lesson=null;B=null;setS(null)};
 
 function login(e){
- e.preventDefault();const f=e.target,p=f.p.value,u=f.u?f.u.value.trim().toLowerCase():"";
- if(loginRole==="admin"){if(p===ADMIN_PASS)return setS({role:"admin"})}
- else{const x=(loginRole==="guru"?db.teachers:db.students).find(t=>t.u===u&&t.p0===p);if(x)return setS({role:loginRole,id:x.id})}
- msg=TEKS.salahLogin;render();
+  e.preventDefault();
+  Chiptune.enable();
+  const f=e.target, p=f.p.value, u=f.u?f.u.value.trim().toLowerCase():"";
+  if(loginRole==="admin"){if(p===ADMIN_PASS) return setS({role:"admin"})}
+  else{
+    const x=(loginRole==="guru"?db.teachers:db.students).find(t=>t.u===u&&t.p0===p);
+    if(x) return setS({role:loginRole,id:x.id});
+  }
+  bip(160,.2);
+  msg=TEKS.salahLogin; render();
 }
+
 function addT(e){
- e.preventDefault();const f=e.target,u=f.u.value.trim().toLowerCase();
- if(db.teachers.some(t=>t.u===u)){msg=TEKS.guruSama;return render()}
- db.teachers.push({id:uid(),n:f.n.value.trim(),u,p0:f.p.value});save();render();
+  e.preventDefault(); const f=e.target, u=f.u.value.trim().toLowerCase();
+  if(db.teachers.some(t=>t.u===u)){msg=TEKS.guruSama;return render()}
+  db.teachers.push({id:uid(),n:f.n.value.trim(),u,p0:f.p.value}); save(); bip(700,.1); render();
 }
 function delT(id){
- if(!confirm(TEKS.buangGuruTanya))return;
- db.teachers=db.teachers.filter(t=>t.id!==id);db.students=db.students.filter(s=>s.t!==id);save();render();
+  if(!confirm(TEKS.buangGuruTanya)) return;
+  db.teachers=db.teachers.filter(t=>t.id!==id);
+  db.students=db.students.filter(s=>s.t!==id);
+  save(); render();
 }
 function addS(e){
- e.preventDefault();const f=e.target,u=f.u.value.trim().toLowerCase();
- if(db.students.some(s=>s.u===u)){msg=TEKS.muridSama;return render()}
- db.students.push({id:uid(),t:S.id,n:f.n.value.trim(),u,p0:f.p.value,c:f.c.value.trim(),p:{}});save();render();
+  e.preventDefault(); const f=e.target, u=f.u.value.trim().toLowerCase();
+  if(db.students.some(s=>s.u===u)){msg=TEKS.muridSama;return render()}
+  db.students.push({id:uid(),t:S.id,n:f.n.value.trim(),u,p0:f.p.value,c:f.c.value.trim(),p:{}}); save(); bip(700,.1); render();
 }
 function delS(id){
- const s=db.students.find(x=>x.id===id);if(!s||s.t!==S.id)return;
- if(!confirm(TEKS.buangMuridTanya))return;
- db.students=db.students.filter(x=>x.id!==id);save();render();
+  const s=db.students.find(x=>x.id===id); if(!s||s.t!==S.id) return;
+  if(!confirm(TEKS.buangMuridTanya)) return;
+  db.students=db.students.filter(x=>x.id!==id); save(); render();
 }
+
 function openL(id){lesson=id;B={ph:"learn",q:0,ok:0,hp:3,fb:null};render();window.scrollTo(0,0)}
 function closeL(){lesson=null;B=null;render()}
-function startB(){bip(520);B.ph="fight";render()}
+function startB(){bip(560,.1);B.ph="fight";render()}
+
 function answer(j){
- if(!B||B.fb)return;const L=lessonObj(),q=L.q[B.q],right=j===q.a;
- B.fb={j,right};if(right){B.ok++;bip(880,.15)}else{B.hp--;bip(150,.25)}
- render();
- setTimeout(()=>{if(!B)return;B.fb=null;B.q++;if(B.q>=L.q.length||B.hp<=0)finishB();else render()},900);
+  if(!B||B.fb) return;
+  const L=lessonObj(), q=L.q[B.q], right=j===q.a;
+  B.fb={j,right};
+  if(right){B.ok++; Chiptune.thunder();}
+  else{B.hp--; bip(140,.25);}
+  render();
+  setTimeout(()=>{
+    if(!B) return;
+    B.fb=null; B.q++;
+    if(B.q>=L.q.length||B.hp<=0) finishB();
+    else render();
+  },900);
 }
+
 function finishB(){
- const L=lessonObj(),me=db.students.find(s=>s.id===S.id),old=me.p[L.id];
- if(!old||B.ok>old.s)me.p[L.id]={s:B.ok,t:L.q.length};
- save();B.ph="end";render();window.scrollTo(0,0);
+  const L=lessonObj(), me=db.students.find(s=>s.id===S.id), old=me.p[L.id];
+  if(!old||B.ok>old.s) me.p[L.id]={s:B.ok,t:L.q.length};
+  save(); B.ph="end";
+  if(B.ok>=need(L)) Chiptune.fanfare(); else bip(180,.3);
+  render(); window.scrollTo(0,0);
 }
 
-/* AKTIVITI POKÉMON LATAR */
-const BG_POKEMON_ACTIVITY = {
-  "bg-pikachu": { message: "Pikachu menggunakan Thunder Shock! ⚡", className: "activity-bounce", sound: 880 },
-  "bg-jigglypuff": { message: "Jigglypuff menyanyi untuk anda! 🎵", className: "activity-spin", sound: 660 },
-  "bg-eevee": { message: "Eevee sedang bergembira! ✨", className: "activity-wiggle", sound: 520 }
+/* Interaksi Pokémon Latar */
+const BG_ACTIVITY={
+  "bg-pikachu":{msg:"Pikachu menggunakan Thunderbolt! ⚡",sound:880},
+  "bg-jigglypuff":{msg:"Jigglypuff menyanyikan lagu 8-bit! 🎵",sound:660},
+  "bg-eevee":{msg:"Eevee bersorak untuk anda! ✨",sound:520}
 };
-
-function showPokemonBubble(element, message) {
-  const oldBubble = document.querySelector(".pokemon-bubble");
-  if (oldBubble) oldBubble.remove();
-  const bubble = document.createElement("div");
-  bubble.className = "pokemon-bubble";
-  bubble.textContent = message;
-  document.body.appendChild(bubble);
-  const rect = element.getBoundingClientRect();
-  const bubbleWidth = 220;
-  let left = Math.max(8, Math.min(rect.left + rect.width / 2 - bubbleWidth / 2, window.innerWidth - bubbleWidth - 8));
-  let top = Math.max(8, rect.top - 60);
-  bubble.style.left = `${left}px`;
-  bubble.style.top = `${top}px`;
-  setTimeout(() => bubble.remove(), 2300);
-}
-
-function createPokemonSparks(element) {
-  const rect = element.getBoundingClientRect();
-  const symbols = ["✦", "✧", "⚡", "★", "✨"];
-  for (let i = 0; i < 5; i++) {
-    const spark = document.createElement("span");
-    spark.className = "pokemon-spark";
-    spark.textContent = symbols[i % symbols.length];
-    spark.style.left = `${rect.left + rect.width / 2}px`;
-    spark.style.top = `${rect.top + rect.height / 2}px`;
-    spark.style.setProperty("--spark-x", `${(Math.random() - .5) * 130}px`);
-    spark.style.setProperty("--spark-y", `${-30 - Math.random() * 90}px`);
-    document.body.appendChild(spark);
-    setTimeout(() => spark.remove(), 900);
-  }
-}
-
-function activateBackgroundPokemon(element) {
-  const activity = BG_POKEMON_ACTIVITY[element.id];
-  if (!activity) return;
-  element.classList.remove("activity-bounce", "activity-spin", "activity-wiggle");
-  void element.offsetWidth;
-  element.classList.add(activity.className);
-  showPokemonBubble(element, activity.message);
-  createPokemonSparks(element);
-  if (typeof bip === "function") bip(activity.sound, .14);
-  setTimeout(() => element.classList.remove(activity.className), 950);
-}
-
-function setupBackgroundPokemon() {
-  document.querySelectorAll(".bg-pokemon").forEach(element => {
-    element.addEventListener("click", event => {
-      event.preventDefault();
-      event.stopPropagation();
-      activateBackgroundPokemon(element);
-    });
-    element.addEventListener("keydown", event => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        event.stopPropagation();
-        activateBackgroundPokemon(element);
-      }
-    });
+function setupBackgroundPokemon(){
+  document.querySelectorAll(".bg-pokemon").forEach(el=>{
+    const act=()=>{
+      const a=BG_ACTIVITY[el.id]; if(!a) return;
+      const old=document.querySelector(".pokemon-bubble"); if(old) old.remove();
+      const b=document.createElement("div"); b.className="pokemon-bubble"; b.textContent=a.msg;
+      document.body.appendChild(b);
+      const r=el.getBoundingClientRect();
+      b.style.left=Math.max(8,Math.min(r.left,window.innerWidth-230))+"px";
+      b.style.top=Math.max(8,r.top-52)+"px";
+      bip(a.sound,.14);
+      setTimeout(()=>b.remove(),2200);
+    };
+    el.addEventListener("click",act);
+    el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" ") act();});
   });
 }
 
