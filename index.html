@@ -1,3 +1,4 @@
+HTML
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -92,7 +93,7 @@ body{background:linear-gradient(180deg,#80d6ff 0%,#b8edff 34%,#e7f8d8 70%,#a5d98
 body:before{background-image:radial-gradient(3px 3px at 20px 30px,#fff,transparent),radial-gradient(2px 2px at 140px 90px,#fff6bd,transparent),radial-gradient(2px 2px at 80px 160px,#fff,transparent),radial-gradient(3px 3px at 200px 40px,#fff,transparent);background-size:240px 200px;opacity:.8}
 .wrap{z-index:1;max-width:980px;padding-top:1.35rem}
 .pokemon-background{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-.bg-pokemon{position:absolute;width:clamp(72px,10vw,132px);height:auto;image-rendering:pixelated;opacity:.16;filter:drop-shadow(0 7px 4px #28506b33);animation:bgFloat 7s ease-in-out infinite}
+.bg-pokemon{position:absolute;width:clamp(72px,10vw,132px);height:auto;image-rendering:pixelated;opacity:.55;filter:drop-shadow(0 7px 4px #28506b33);animation:bgFloat 7s ease-in-out infinite}
 .bg-pikachu{left:1.2%;top:19%;animation-delay:-1s}.bg-jigglypuff{right:1.2%;top:43%;width:clamp(70px,8vw,108px);animation-delay:-3s}.bg-eevee{left:4%;bottom:2%;width:clamp(86px,11vw,142px);animation-delay:-5s}
 @keyframes bgFloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-22px) rotate(5deg)}}
 .bg-cloud{position:absolute;width:115px;height:35px;border-radius:50px;background:#fff;opacity:.5;filter:blur(1px);animation:cloudMove 34s linear infinite}
@@ -118,6 +119,271 @@ input{border-color:#7195aa}
 .mon img{width:100%;height:100%}.sil img{filter:grayscale(1) brightness(.25);opacity:.45}
 .float{animation:bob 2.2s ease-in-out infinite}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+/* ==================== SKRIN MULA (GAME START SCREEN) ==================== */
+.start-screen{
+  position:relative;
+  min-height:82vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:2rem 1.4rem 2.4rem;
+  border:5px solid #19324d;
+  border-radius:28px;
+  background:radial-gradient(circle at 50% 35%, #2b4c7e 0%, #162447 65%, #0d1326 100%);
+  box-shadow:0 12px 0 #19324d, 0 24px 48px rgba(13,19,38,.45);
+  overflow:hidden;
+  color:#fff;
+}
+.start-screen:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 2px, transparent 2px, transparent 4px);
+  pointer-events:none;
+  z-index:1;
+}
+.start-badge{
+  position:relative;
+  z-index:3;
+  display:inline-flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.35rem .9rem;
+  border:2px solid #ffcb05;
+  border-radius:99px;
+  background:rgba(25,50,77,.85);
+  color:#ffcb05;
+  font:400 .65rem "Press Start 2P", monospace;
+  letter-spacing:.08em;
+  margin-bottom:1rem;
+  box-shadow:0 4px 0 #0d1326;
+}
+.start-title{
+  position:relative;
+  z-index:3;
+  font:400 clamp(1.5rem, 4.5vw, 2.5rem)/1.35 "Press Start 2P", monospace;
+  color:#ffcb05;
+  text-shadow:4px 4px 0 #2a75bb, 7px 7px 0 #0d1326;
+  margin-bottom:.6rem;
+  animation:titleFloat 2.8s ease-in-out infinite;
+}
+@keyframes titleFloat{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-6px)}
+}
+.start-sub{
+  position:relative;
+  z-index:3;
+  max-width:540px;
+  color:#cde4ff;
+  font-size:1.1rem;
+  margin:0 auto 1.2rem;
+}
+
+/* PENTAS ANIMASI PERTARUNGAN PIKACHU */
+.battle-stage{
+  position:relative;
+  z-index:3;
+  width:100%;
+  max-width:660px;
+  height:235px;
+  margin:.5rem auto 1.6rem;
+  border:4px solid #19324d;
+  border-radius:22px;
+  background:linear-gradient(180deg, #1b2845 0%, #274060 58%, #3c8d40 58%, #28662e 100%);
+  box-shadow:inset 0 0 30px rgba(0,0,0,.4), 0 8px 0 #0d1326;
+  overflow:hidden;
+  animation:stageShake 3.4s infinite;
+}
+@keyframes stageShake{
+  0%, 42%, 65%, 100%{transform:translate(0,0)}
+  45%{transform:translate(-6px, 4px)}
+  48%{transform:translate(6px, -4px)}
+  51%{transform:translate(-5px, -3px)}
+  54%{transform:translate(5px, 3px)}
+  57%{transform:translate(-3px, 2px)}
+}
+.stage-flash{
+  position:absolute;
+  inset:0;
+  background:#fffbe0;
+  opacity:0;
+  pointer-events:none;
+  z-index:5;
+  animation:thunderFlash 3.4s infinite;
+}
+@keyframes thunderFlash{
+  0%, 41%, 52%, 100%{opacity:0}
+  43%{opacity:.75}
+  46%{opacity:.15}
+  48%{opacity:.6}
+}
+.stage-platform{
+  position:absolute;
+  bottom:22px;
+  width:140px;
+  height:32px;
+  border-radius:50%;
+  background:rgba(13,19,38,.45);
+  border:3px solid rgba(255,255,255,.18);
+}
+.plat-left{left:8%}
+.plat-right{right:8%}
+
+.hero-pikachu{
+  position:absolute;
+  left:9%;
+  bottom:26px;
+  width:130px;
+  height:130px;
+  z-index:4;
+  animation:pikaAttackCycle 3.4s infinite;
+}
+.hero-pikachu img{
+  width:100%;
+  height:100%;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 6px 0 rgba(0,0,0,.45));
+}
+@keyframes pikaAttackCycle{
+  0%, 15%{transform:translateX(0) scale(1)}
+  25%{transform:translateX(-12px) scale(1.08, .92)}
+  35%{transform:translateY(-28px) translateX(18px) scale(1.12)}
+  45%{transform:translateY(0) translateX(12px) scale(1.05)}
+  65%, 100%{transform:translateX(0) scale(1)}
+}
+.electric-aura{
+  position:absolute;
+  inset:-15px;
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,235,59,.85) 0%, rgba(255,193,7,.35) 50%, transparent 72%);
+  opacity:0;
+  animation:auraCharge 3.4s infinite;
+}
+@keyframes auraCharge{
+  0%, 15%, 55%, 100%{opacity:0;transform:scale(.6)}
+  30%, 45%{opacity:1;transform:scale(1.25)}
+}
+
+/* PANAHAN PETIR SVG */
+.lightning-beam{
+  position:absolute;
+  left:24%;
+  top:26%;
+  width:52%;
+  height:110px;
+  z-index:4;
+  opacity:0;
+  transform-origin:left center;
+  animation:boltShoot 3.4s infinite;
+}
+@keyframes boltShoot{
+  0%, 36%{opacity:0;transform:scaleX(0)}
+  40%{opacity:1;transform:scaleX(1)}
+  54%{opacity:1;transform:scaleX(1)}
+  62%, 100%{opacity:0;transform:scaleX(1)}
+}
+
+.target-dummy{
+  position:absolute;
+  right:10%;
+  bottom:30px;
+  width:115px;
+  height:115px;
+  z-index:3;
+  animation:dummyHit 3.4s infinite;
+}
+.target-dummy img{
+  width:100%;
+  height:100%;
+  image-rendering:pixelated;
+  filter:drop-shadow(0 6px 0 rgba(0,0,0,.45));
+}
+@keyframes dummyHit{
+  0%, 40%{transform:translateX(0) filter:brightness(1)}
+  43%{transform:translateX(14px) rotate(8deg);filter:brightness(2.5) sepia(1) hue-rotate(15deg)}
+  48%{transform:translateX(-10px) rotate(-6deg);filter:brightness(2)}
+  53%{transform:translateX(8px);filter:brightness(1.5)}
+  65%, 100%{transform:translateX(0) rotate(0);filter:brightness(1)}
+}
+.attack-label{
+  position:absolute;
+  top:12px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#ffcb05;
+  color:#19324d;
+  border:3px solid #19324d;
+  border-radius:10px;
+  padding:.25rem .75rem;
+  font:400 .65rem "Press Start 2P", monospace;
+  z-index:6;
+  opacity:0;
+  white-space:nowrap;
+  animation:labelPop 3.4s infinite;
+}
+@keyframes labelPop{
+  0%, 34%{opacity:0;transform:translate(-50%, 8px) scale(.8)}
+  39%, 56%{opacity:1;transform:translate(-50%, 0) scale(1)}
+  64%, 100%{opacity:0;transform:translate(-50%, -6px)}
+}
+.spark-burst{
+  position:absolute;
+  right:13%;
+  top:28%;
+  font-size:2rem;
+  z-index:6;
+  opacity:0;
+  animation:burstPop 3.4s infinite;
+}
+@keyframes burstPop{
+  0%, 40%, 60%, 100%{opacity:0;transform:scale(.4) rotate(0deg)}
+  46%{opacity:1;transform:scale(1.35) rotate(25deg)}
+}
+
+/* BUTANG MULA UTAMA */
+.btn-start-game{
+  position:relative;
+  z-index:4;
+  display:inline-flex;
+  align-items:center;
+  gap:.8rem;
+  padding:1rem 2.4rem;
+  font:400 1.25rem "Press Start 2P", monospace;
+  color:#19324d;
+  background:linear-gradient(180deg, #ffe347 0%, #ffcb05 55%, #f2a900 100%);
+  border:4px solid #19324d;
+  border-radius:18px;
+  box-shadow:0 8px 0 #19324d, 0 0 25px rgba(255,203,5,.65);
+  animation:pulseBtn 1.5s ease-in-out infinite;
+}
+.btn-start-game:hover{
+  transform:translateY(-4px) scale(1.03);
+  box-shadow:0 12px 0 #19324d, 0 0 35px rgba(255,203,5,.95);
+}
+.btn-start-game:active{
+  transform:translateY(5px);
+  box-shadow:0 3px 0 #19324d;
+}
+@keyframes pulseBtn{
+  0%,100%{box-shadow:0 8px 0 #19324d, 0 0 18px rgba(255,203,5,.5)}
+  50%{box-shadow:0 8px 0 #19324d, 0 0 36px rgba(255,203,5,.95)}
+}
+.start-hint{
+  position:relative;
+  z-index:3;
+  margin-top:1rem;
+  font:400 .65rem "Press Start 2P", monospace;
+  color:#90b4de;
+  letter-spacing:.06em;
+  animation:blinkText 1.2s step-end infinite;
+}
+@keyframes blinkText{50%{opacity:.35}}
+
+/* ==================== BANNER & PERANAN ==================== */
 .world-banner{position:relative;display:grid;grid-template-columns:1.1fr .9fr;align-items:center;min-height:255px;margin:1.25rem 0 1.4rem;padding:1.25rem 1.5rem;border:4px solid #244764;border-radius:26px;overflow:hidden;background:linear-gradient(115deg,#fff8d9 0%,#fff 49%,#c8f0ff 100%);box-shadow:0 8px 0 #24476433,0 18px 34px #17476a20}
 .world-banner:before{content:"";position:absolute;left:-7%;right:-5%;bottom:-60px;height:125px;border-radius:50% 50% 0 0;background:linear-gradient(#85d77c,#4cae63);transform:rotate(-3deg)}
 .world-banner:after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:repeating-linear-gradient(90deg,#4cae63 0 18px,#70c96c 18px 36px)}
@@ -156,248 +422,39 @@ input{border-color:#7195aa}
 .orb:after{background:#fff;border-color:#19324d}.capt .mon{width:125px;height:125px}.capt .mon img{width:100%;height:100%}
 .opts button{background:#f7fcff;border-color:#6e9ab5}.opts button:hover{background:#e4f5ff}.opts .ok{background:#47ad65}.opts .no{background:#e63946}
 .big{color:#2a75bb;text-shadow:2px 2px 0 #cdeeff}
-.demo-table-note{font-size:.9rem}
-@media(max-width:720px){.world-banner{grid-template-columns:1fr;padding:1.1rem 1rem}.world-characters{min-height:155px;margin-top:.2rem}.world-pikachu{left:35%}.world-eevee{left:15%}.world-bulba{right:12%}.roles{grid-template-columns:1fr}.role{min-height:110px;flex-direction:row;justify-content:flex-start;text-align:left;padding:.55rem 1rem}.role .mon{width:76px;height:76px}.role-arrow{top:50%;transform:translateY(-50%)}.arena{height:285px}.enemy{right:5%;width:115px}.enemy .mon{width:105px;height:105px}.arena-deco-left{left:4%}.arena-deco-right{right:2%}}
-@media(max-width:520px){.world-copy h2{font-size:1.5rem}.world-stats span{font-size:.7rem}.bg-pokemon{opacity:.1}.top h1{font-size:1.3rem!important}.stage{flex-wrap:wrap}.stage .grow{flex:1 1 calc(100% - 110px)}.stage button{width:100%}.plate.en{width:52%}.trainer{left:5%}.arena-deco{width:55px;height:55px}}
-@media(prefers-reduced-motion:reduce){.pokemon-background *, .world-banner *, .arena *, .role .mon{animation:none!important;transition:none!important}}
-
-/* ================================
-   INTERAKSI POKÉMON LATAR
-================================ */
-
-.pokemon-background {
-  pointer-events: none;
-  z-index: 0;
+@media(max-width:720px){
+  .world-banner{grid-template-columns:1fr;padding:1.1rem 1rem}.world-characters{min-height:155px;margin-top:.2rem}.world-pikachu{left:35%}.world-eevee{left:15%}.world-bulba{right:12%}.roles{grid-template-columns:1fr}.role{min-height:110px;flex-direction:row;justify-content:flex-start;text-align:left;padding:.55rem 1rem}.role .mon{width:76px;height:76px}.role-arrow{top:50%;transform:translateY(-50%)}.arena{height:285px}.enemy{right:5%;width:115px}.enemy .mon{width:105px;height:105px}.arena-deco-left{left:4%}.arena-deco-right{right:2%}
+  .battle-stage{height:200px}.hero-pikachu{width:105px;height:105px;left:5%}.target-dummy{width:95px;height:95px;right:5%}
+}
+@media(max-width:520px){
+  .world-copy h2{font-size:1.5rem}.world-stats span{font-size:.7rem}.bg-pokemon{opacity:.45}.top h1{font-size:1.3rem!important}.stage{flex-wrap:wrap}.stage .grow{flex:1 1 calc(100% - 110px)}.stage button{width:100%}.plate.en{width:52%}.trainer{left:5%}.arena-deco{width:55px;height:55px}
+  .btn-start-game{font-size:1rem;padding:.85rem 1.8rem}
 }
 
-.bg-pokemon {
-  pointer-events: auto;
-  cursor: pointer;
-  user-select: none;
-  touch-action: manipulation;
-  transition:
-    filter .2s ease,
-    opacity .2s ease;
-}
-
-.bg-pokemon:hover,
-.bg-pokemon:focus-visible {
-  opacity: .9;
-  filter:
-    drop-shadow(0 0 10px #ffcb05)
-    drop-shadow(0 7px 4px #28506b33);
-}
-
-.bg-pokemon:focus-visible {
-  outline: 4px solid #ffcb05;
-  outline-offset: 6px;
-  border-radius: 18px;
-}
-
-/* Aktiviti Pikachu: melompat dan menghasilkan percikan elektrik */
-.bg-pikachu.activity-bounce {
-  animation: pikachuJump .8s cubic-bezier(.2,.8,.3,1);
-}
-
-@keyframes pikachuJump {
-  0% {
-    transform: translateY(0) rotate(0) scale(1);
-  }
-
-  25% {
-    transform: translateY(-32px) rotate(-10deg) scale(1.12);
-  }
-
-  50% {
-    transform: translateY(-4px) rotate(10deg) scale(1.05);
-  }
-
-  75% {
-    transform: translateY(-18px) rotate(-5deg) scale(1.08);
-  }
-
-  100% {
-    transform: translateY(0) rotate(0) scale(1);
-  }
-}
-
-/* Aktiviti Jigglypuff: berpusing dan berdenyut */
-.bg-jigglypuff.activity-spin {
-  animation: jigglySpin .9s ease-in-out;
-}
-
-@keyframes jigglySpin {
-  0% {
-    transform: rotate(0) scale(1);
-  }
-
-  35% {
-    transform: rotate(-18deg) scale(1.18);
-  }
-
-  70% {
-    transform: rotate(18deg) scale(1.12);
-  }
-
-  100% {
-    transform: rotate(0) scale(1);
-  }
-}
-
-/* Aktiviti Eevee: bergoyang kiri dan kanan */
-.bg-eevee.activity-wiggle {
-  animation: eeveeWiggle .8s ease-in-out;
-}
-
-@keyframes eeveeWiggle {
-  0%, 100% {
-    transform: translateX(0) rotate(0);
-  }
-
-  20% {
-    transform: translateX(-14px) rotate(-8deg);
-  }
-
-  40% {
-    transform: translateX(14px) rotate(8deg);
-  }
-
-  60% {
-    transform: translateX(-10px) rotate(-5deg);
-  }
-
-  80% {
-    transform: translateX(10px) rotate(5deg);
-  }
-}
-
-/* Gelembung mesej */
-.pokemon-bubble {
-  position: fixed;
-  z-index: 20;
-  max-width: 220px;
-  padding: .55rem .8rem;
-  color: #19324d;
-  background: #fffdf3;
-  border: 3px solid #244764;
-  border-radius: 14px;
-  box-shadow: 0 5px 0 #244764;
-  font: 800 .9rem/1.25 "Baloo 2", system-ui, sans-serif;
-  text-align: center;
-  pointer-events: none;
-  transform: translateY(8px) scale(.85);
-  opacity: 0;
-  animation: bubbleShow 2.2s ease forwards;
-}
-
-.pokemon-bubble:after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -11px;
-  width: 16px;
-  height: 16px;
-  background: #fffdf3;
-  border-right: 3px solid #244764;
-  border-bottom: 3px solid #244764;
-  transform: translateX(-50%) rotate(45deg);
-}
-
-@keyframes bubbleShow {
-  0% {
-    opacity: 0;
-    transform: translateY(8px) scale(.85);
-  }
-
-  15%, 75% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(-10px) scale(.9);
-  }
-}
-
-/* Percikan kecil apabila Pokémon diklik */
-.pokemon-spark {
-  position: fixed;
-  z-index: 19;
-  pointer-events: none;
-  color: #ffcb05;
-  font-size: 1.5rem;
-  text-shadow: 2px 2px 0 #19324d;
-  animation: sparkFly .8s ease-out forwards;
-}
-
-@keyframes sparkFly {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0) scale(.5) rotate(0);
-  }
-
-  100% {
-    opacity: 0;
-    transform: translate(var(--spark-x), var(--spark-y)) scale(1.2) rotate(180deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bg-pokemon.activity-bounce,
-  .bg-pokemon.activity-spin,
-  .bg-pokemon.activity-wiggle,
-  .pokemon-bubble,
-  .pokemon-spark {
-    animation: none !important;
-  }
-
-  .pokemon-bubble {
-    opacity: 1;
-    transform: none;
-  }
-
-  .pokemon-spark {
-    display: none;
-  }
-}
-
-/* ==================== TAMBAHAN: supaya Pokémon latar boleh diklik ==================== */
-.wrap{pointer-events:none}          /* ruang kosong di atas Pokémon "tembus" ke bawah */
-.wrap>*{pointer-events:auto}        /* tetapi kad, butang dan borang tetap boleh diklik */
-.bg-pokemon{opacity:.55}            /* lebih jelas (asal .16 terlalu pudar) */
-@media(max-width:520px){.bg-pokemon{opacity:.45}}
+/* INTERAKSI POKÉMON LATAR */
+.pokemon-background { pointer-events: none; z-index: 0; }
+.bg-pokemon { pointer-events: auto; cursor: pointer; user-select: none; touch-action: manipulation; transition: filter .2s ease, opacity .2s ease; }
+.bg-pokemon:hover, .bg-pokemon:focus-visible { opacity: .9; filter: drop-shadow(0 0 10px #ffcb05) drop-shadow(0 7px 4px #28506b33); }
+.bg-pikachu.activity-bounce { animation: pikachuJump .8s cubic-bezier(.2,.8,.3,1); }
+@keyframes pikachuJump { 0%{transform:translateY(0) rotate(0) scale(1)} 25%{transform:translateY(-32px) rotate(-10deg) scale(1.12)} 50%{transform:translateY(-4px) rotate(10deg) scale(1.05)} 75%{transform:translateY(-18px) rotate(-5deg) scale(1.08)} 100%{transform:translateY(0) rotate(0) scale(1)} }
+.bg-jigglypuff.activity-spin { animation: jigglySpin .9s ease-in-out; }
+@keyframes jigglySpin { 0%{transform:rotate(0) scale(1)} 35%{transform:rotate(-18deg) scale(1.18)} 70%{transform:rotate(18deg) scale(1.12)} 100%{transform:rotate(0) scale(1)} }
+.bg-eevee.activity-wiggle { animation: eeveeWiggle .8s ease-in-out; }
+@keyframes eeveeWiggle { 0%,100%{transform:translateX(0) rotate(0)} 20%{transform:translateX(-14px) rotate(-8deg)} 40%{transform:translateX(14px) rotate(8deg)} 60%{transform:translateX(-10px) rotate(-5deg)} 80%{transform:translateX(10px) rotate(5deg)} }
+.pokemon-bubble { position: fixed; z-index: 20; max-width: 220px; padding: .55rem .8rem; color: #19324d; background: #fffdf3; border: 3px solid #244764; border-radius: 14px; box-shadow: 0 5px 0 #244764; font: 800 .9rem/1.25 "Baloo 2", system-ui, sans-serif; text-align: center; pointer-events: none; transform: translateY(8px) scale(.85); opacity: 0; animation: bubbleShow 2.2s ease forwards; }
+.pokemon-bubble:after { content: ""; position: absolute; left: 50%; bottom: -11px; width: 16px; height: 16px; background: #fffdf3; border-right: 3px solid #244764; border-bottom: 3px solid #244764; transform: translateX(-50%) rotate(45deg); }
+@keyframes bubbleShow { 0%{opacity:0;transform:translateY(8px) scale(.85)} 15%,75%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-10px) scale(.9)} }
+.pokemon-spark { position: fixed; z-index: 19; pointer-events: none; color: #ffcb05; font-size: 1.5rem; text-shadow: 2px 2px 0 #19324d; animation: sparkFly .8s ease-out forwards; }
+@keyframes sparkFly { 0%{opacity:1;transform:translate(0,0) scale(.5) rotate(0)} 100%{opacity:0;transform:translate(var(--spark-x),var(--spark-y)) scale(1.2) rotate(180deg)} }
+.wrap{pointer-events:none}
+.wrap>*{pointer-events:auto}
 </style>
 </head>
 <body>
 <div class="pokemon-background">
- <img
-   id="bg-pikachu"
-   class="bg-pokemon bg-pikachu"
-   src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png"
-   alt="Pikachu interaktif"
-   tabindex="0"
-   role="button"
-   aria-label="Klik Pikachu untuk melihat aktivitinya">
-
- <img
-   id="bg-jigglypuff"
-   class="bg-pokemon bg-jigglypuff"
-   src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png"
-   alt="Jigglypuff interaktif"
-   tabindex="0"
-   role="button"
-   aria-label="Klik Jigglypuff untuk melihat aktivitinya">
-
- <img
-   id="bg-eevee"
-   class="bg-pokemon bg-eevee"
-   src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png"
-   alt="Eevee interaktif"
-   tabindex="0"
-   role="button"
-   aria-label="Klik Eevee untuk melihat aktivitinya">
-
+ <img id="bg-pikachu" class="bg-pokemon bg-pikachu" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="Pikachu interaktif" tabindex="0" role="button" aria-label="Klik Pikachu untuk melihat aktivitinya">
+ <img id="bg-jigglypuff" class="bg-pokemon bg-jigglypuff" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png" alt="Jigglypuff interaktif" tabindex="0" role="button" aria-label="Klik Jigglypuff untuk melihat aktivitinya">
+ <img id="bg-eevee" class="bg-pokemon bg-eevee" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png" alt="Eevee interaktif" tabindex="0" role="button" aria-label="Klik Eevee untuk melihat aktivitinya">
  <span class="bg-cloud cloud-one"></span>
  <span class="bg-cloud cloud-two"></span>
  <span class="bg-pokeball"></span>
@@ -408,17 +465,23 @@ input{border-color:#7195aa}
 window.onerror=function(m,s,l){var a=document.getElementById("app");var label=(typeof TEKS!=="undefined"?TEKS.ralat:"Ralat aplikasi:");if(a)a.innerHTML='<div style="padding:1rem;background:#fde8e8;color:#c93a3a;border-radius:10px"><b>'+label+'</b> '+m+' ('+l+')</div>';};
 
 /* =====================================================================
-   1) TETAPAN: tukar kata laluan Admin di sini (WAJIB tukar sebelum kongsi!)
+   0) SENARAI POKEDEX (Membaiki ralat ReferenceError: POKEDEX is not defined)
+   ===================================================================== */
+const POKEDEX = [
+  { id: 25, name: "Pikachu" },     // k: 0
+  { id: 1,  name: "Bulbasaur" },   // k: 1
+  { id: 7,  name: "Squirtle" },    // k: 2
+  { id: 133, name: "Eevee" },      // k: 3
+  { id: 4,  name: "Charmander" },  // k: 4
+  { id: 39, name: "Jigglypuff" }   // k: 5
+];
+
+/* =====================================================================
+   1) TETAPAN
    ===================================================================== */
 const ADMIN_PASS = "admin123";
-
-/* Papar kotak "Akaun demo" di muka depan untuk pensyarah? true = papar, false = sembunyi.
-   Tukar kepada false apabila laman ini digunakan sebenar di sekolah. */
 const PAPAR_DEMO = true;
 
-/* Akaun demo (dicipta sekali sahaja pada kali pertama laman dibuka).
-   Guru: [nama, nama pengguna, kata laluan]
-   Murid: [nama, nama pengguna, kata laluan, nama pengguna guru, kelas, kemajuan]  */
 const DEMO = {
  guru:[["Cikgu Aminah","guru1","guru123"],["Cikgu Raju","guru2","guru123"]],
  murid:[["Ali bin Ahmad","murid1","murid123","guru1","4 Bestari",{}],
@@ -427,8 +490,7 @@ const DEMO = {
 };
 
 /* =====================================================================
-   2) TEKS: semua perkataan yang dipaparkan di laman web ada di sini.
-   Tukar ejaan atau ayat DI ANTARA tanda petikan sahaja ("...").
+   2) TEKS
    ===================================================================== */
 const TEKS = {
  memuat:"Memuatkan Belajar Digital... Jika mesej ini kekal, skrip tidak berjalan.",
@@ -474,8 +536,7 @@ const TEKS = {
 };
 
 /* =====================================================================
-   3) PELAJARAN: tambah atau ubah pelajaran dan soalan kuiz di sini.
-   a = nombor jawapan betul (0 = pilihan pertama, 1 = kedua, 2 = ketiga)
+   3) PELAJARAN
    ===================================================================== */
 const LESSONS = [
  {id:"m1",mon:{n:"Pikachu",c:"#ffcf33",k:0},title:"Tambah bersama Pikachu",subject:"Matematik",
@@ -490,7 +551,7 @@ const LESSONS = [
 ];
 
 /* =====================================================================
-   4) KOD APLIKASI: tidak perlu diubah
+   4) KOD APLIKASI
    ===================================================================== */
 const KEY="belajar_digital_v1";
 let db;try{db=JSON.parse(localStorage.getItem(KEY))}catch(e){}
@@ -501,8 +562,9 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 const $=s=>document.querySelector(s);
 
 let S=null;try{S=JSON.parse(sessionStorage.getItem("bd_s"))}catch(e){}
+let started=Boolean(S);
 let loginRole=null,lesson=null,result=null,msg="",prefill={u:"",p:""};
-function setS(v){S=v;try{v?sessionStorage.setItem("bd_s",JSON.stringify(v)):sessionStorage.removeItem("bd_s")}catch(e){}render()}
+function setS(v){S=v;if(v)started=true;try{v?sessionStorage.setItem("bd_s",JSON.stringify(v)):sessionStorage.removeItem("bd_s")}catch(e){}render()}
 const note=()=>msg?`<div class="err" role="alert">${esc(msg)}</div>`:"";
 
 function seedDemo(){
@@ -516,6 +578,7 @@ function seedDemo(){
  });
  db.demo=1;save();
 }
+
 function demoBox(){
  if(!PAPAR_DEMO)return "";
  const rows=[["admin",TEKS.admin,"-",ADMIN_PASS]]
@@ -530,9 +593,86 @@ const ROLES=[
  ["guru",TEKS.guru,"👩‍🏫","#2b5fd9","#fff",TEKS.guruHuraian,6,"Charizard"],
  ["murid",TEKS.murid,"🎒","#ffc933","#17233a",TEKS.muridHuraian,25,"Pikachu"]];
 
+/* ==================== MUKA DEPAN (SKRIN MULA GAME) ==================== */
+function startView(){
+ return `
+ <section class="start-screen">
+  <div class="start-badge">⚡ EDISI INTERAKTIF · VER 2.0 ⚡</div>
+  <h1 class="start-title">${TEKS.tajuk}</h1>
+  <p class="start-sub">Kuasai ilmu, cabar minda dan tangkap Pokémon dalam pengembaraan pembelajaran digital!</p>
+
+  <div class="battle-stage" aria-label="Animasi Pikachu menyerang dengan elektrik">
+    <div class="stage-flash"></div>
+    <div class="attack-label">⚡ PIKACHU GUNAKAN THUNDERBOLT! ⚡</div>
+
+    <div class="stage-platform plat-left"></div>
+    <div class="stage-platform plat-right"></div>
+
+    <!-- PIKACHU MENYERANG -->
+    <div class="hero-pikachu">
+      <div class="electric-aura"></div>
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/25.gif"
+           onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png'"
+           alt="Pikachu menyerang">
+    </div>
+
+    <!-- PANAHAN PETIR SVG -->
+    <svg class="lightning-beam" viewBox="0 0 320 100" preserveAspectRatio="none">
+      <defs>
+        <filter id="glowBolt" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="4" result="blur"/>
+          <feMerge>
+            <feMergeNode in="blur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      <polyline points="0,55 65,20 110,70 175,15 225,65 315,35"
+                fill="none" stroke="#ff9800" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" filter="url(#glowBolt)"/>
+      <polyline points="0,55 65,20 110,70 175,15 225,65 315,35"
+                fill="none" stroke="#ffeb3b" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="0,55 65,20 110,70 175,15 225,65 315,35"
+                fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+    <div class="spark-burst">💥⚡✨</div>
+
+    <!-- SASARAN LATIHAN -->
+    <div class="target-dummy">
+      <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/showdown/52.gif"
+           onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png'"
+           alt="Meowth terkena serangan">
+    </div>
+  </div>
+
+  <button class="btn-start-game" onclick="enterGame()">▶ MULA</button>
+  <div class="start-hint">TEKAN BUTANG MULA UNTUK MASUK KE DUNIA AKADEMI</div>
+ </section>`;
+}
+
+function enterGame(){
+ bip(523, .08);
+ setTimeout(()=>bip(659, .08), 80);
+ setTimeout(()=>bip(784, .14), 160);
+ started = true;
+ render();
+ window.scrollTo(0,0);
+}
+
+function backToStart(){
+ bip(440, .08);
+ started = false;
+ loginRole = null;
+ render();
+}
+
 function home(){
  const ic=ROLES.map(r=>pokemon(r[6],86,r[7]));
- return `<h1 class="logo">${TEKS.tajuk}</h1><p class="sub">${TEKS.pilih}</p>
+ return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem">
+   <button class="ghost" style="padding:.35rem .75rem;font-size:.85rem" onclick="backToStart()">⬅ Skrin Mula</button>
+   <span class="tag">Mod Akademi</span>
+ </div>
+ <h1 class="logo">${TEKS.tajuk}</h1><p class="sub">${TEKS.pilih}</p>
  <section class="world-banner">
   <div class="world-copy"><span class="world-kicker">POKÉMON · BELAJAR · TEROKA</span>
    <h2>Selamat datang ke dunia Pokémon!</h2>
@@ -550,6 +690,7 @@ function home(){
  <div class="roles">`+
  ROLES.map((r,i)=>`<button class="role role-${r[0]}" onclick="pick('${r[0]}');bip(660)"><div class="mon">${ic[i]}</div><span><strong>${r[1]}</strong><span class="mut">${r[5]}</span></span><span class="role-arrow">➜</span></button>`).join("")+`</div>`+demoBox();
 }
+
 function loginView(){
  const r=ROLES.find(x=>x[0]===loginRole);
  return `<button class="ghost" onclick="back()">${TEKS.kembali}</button><div class="card" style="max-width:420px;margin:1.5rem auto"><h2>${TEKS.logMasuk} ${r[1]}</h2>${note()}
@@ -557,6 +698,7 @@ function loginView(){
  <div class="q"><label for="p">${TEKS.kataLaluan}</label><input id="p" name="p" type="password" autocomplete="current-password" value="${esc(prefill.p)}" required></div>
  <button type="submit">${TEKS.logMasuk}</button></form></div>`;
 }
+
 function topBar(title,sub){
  return `<div class="top"><div><h1 style="font-size:2rem">${esc(title)}</h1><div class="mut">${esc(sub)}</div></div><button class="ghost" onclick="logout()">${TEKS.logKeluar}</button></div>`;
 }
@@ -574,6 +716,7 @@ function adminView(){
  <button type="submit">${TEKS.tambahGuru}</button></form></div>
  <div class="card"><h2>${TEKS.senaraiGuru}</h2><div class="scroll"><table><tr><th>${TEKS.kolNama}</th><th>${TEKS.kolPengguna}</th><th>${TEKS.kolMurid}</th><th></th></tr>${rows}</table></div></div>`;
 }
+
 function guruView(){
  const me=db.teachers.find(t=>t.id===S.id);if(!me){setTimeout(logout);return ""}
  const mine=db.students.filter(s=>s.t===me.id);
@@ -592,6 +735,7 @@ function guruView(){
  <div><label for="c">${TEKS.kelas}</label><input id="c" name="c" list="cls" placeholder="${TEKS.contohKelas}" required><datalist id="cls">${classes.map(c=>`<option value="${esc(c)}">`).join("")}</datalist></div>
  <button type="submit">${TEKS.tambahMurid}</button></form></div>`+blocks;
 }
+
 let AC;
 function bip(f,d){
   try{
@@ -607,16 +751,19 @@ function bip(f,d){
     o.stop(AC.currentTime+(d||.12))
   }catch(e){}
 }
-// Imej sprite Pokémon dimuatkan daripada repositori sprite awam PokeAPI.
+
 function pokemon(id,w,label){
  const size=w||100;
- const name=label||((POKEDEX.find(p=>p.id===id)||{}).name||"Pokémon");
+ const found=POKEDEX.find(p=>p.id===id);
+ const name=label||(found?found.name:"Pokémon");
  return `<img class="pokemon-sprite" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png" alt="${esc(name)}" width="${size}" height="${size}" loading="lazy" decoding="async">`;
 }
+
 function mon(c,k,w){
  const p=POKEDEX[k]||POKEDEX[0];
  return pokemon(p.id,w,p.name);
 }
+
 const monOf=l=>l.mon||{n:"Pikachu",c:"#ffcf33",k:0};
 const need=L=>Math.ceil(L.q.length*2/3);
 const lessonObj=()=>LESSONS.find(l=>l.id===lesson);
@@ -631,6 +778,7 @@ function muridView(){
  return topBar(TEKS.helo+" "+me.n,TEKS.kelas+" "+me.c)+
  `<div class="card"><div class="hud"><div class="avatar">🧢<span class="avatar-pokemon">${pokemon(25,54,"Pikachu")}</span></div><div class="grow"><b>${TEKS.tahap} ${lv} · XP ${xp}</b><div class="bar xp"><i style="width:${xp%30/30*100}%"></i></div><small class="mut">${TEKS.kemajuanAnda} ${pct(me)}%</small></div></div><div class="strip" aria-label="${TEKS.koleksi}">${strip}</div></div>`+cards;
 }
+
 function lessonView(){
  const L=lessonObj(),m=monOf(L),mm=mon(m.c,m.k,120);
  if(B.ph==="learn")return `<button class="ghost" onclick="closeL()">${TEKS.kembali}</button>
@@ -655,16 +803,21 @@ function lessonView(){
 
 function render(){
  const a=$("#app");
- if(!S)a.innerHTML=loginRole?loginView():home();
+ if(!S){
+   if(!started) a.innerHTML=startView();
+   else a.innerHTML=loginRole?loginView():home();
+ }
  else if(S.role==="admin")a.innerHTML=adminView();
  else if(S.role==="guru")a.innerHTML=guruView();
  else a.innerHTML=lesson?lessonView():muridView();
  msg="";prefill={u:"",p:""};
 }
+
 const pick=r=>{loginRole=r;msg="";render()};
-const demoFill=(r,u,p)=>{loginRole=r;prefill={u:u,p:p};msg="";render();window.scrollTo(0,0)};
+const demoFill=(r,u,p)=>{started=true;loginRole=r;prefill={u:u,p:p};msg="";render();window.scrollTo(0,0)};
 const back=()=>{loginRole=null;render()};
 const logout=()=>{loginRole=null;lesson=null;B=null;result=null;setS(null)};
+
 function login(e){
  e.preventDefault();const f=e.target,p=f.p.value,u=f.u?f.u.value.trim().toLowerCase():"";
  if(loginRole==="admin"){if(p===ADMIN_PASS)return setS({role:"admin"})}
@@ -704,114 +857,56 @@ function finishB(){
  if(!old||B.ok>old.s)me.p[L.id]={s:B.ok,t:L.q.length};
  save();B.ph="end";render();window.scrollTo(0,0);
 }
-/* ================================
-   AKTIVITI POKÉMON LATAR
-================================ */
 
+/* AKTIVITI POKÉMON LATAR */
 const BG_POKEMON_ACTIVITY = {
-  "bg-pikachu": {
-    message: "Pikachu menggunakan Thunder Shock! ⚡",
-    className: "activity-bounce",
-    sound: 880
-  },
-
-  "bg-jigglypuff": {
-    message: "Jigglypuff menyanyi untuk anda! 🎵",
-    className: "activity-spin",
-    sound: 660
-  },
-
-  "bg-eevee": {
-    message: "Eevee sedang bergembira! ✨",
-    className: "activity-wiggle",
-    sound: 520
-  }
+  "bg-pikachu": { message: "Pikachu menggunakan Thunder Shock! ⚡", className: "activity-bounce", sound: 880 },
+  "bg-jigglypuff": { message: "Jigglypuff menyanyi untuk anda! 🎵", className: "activity-spin", sound: 660 },
+  "bg-eevee": { message: "Eevee sedang bergembira! ✨", className: "activity-wiggle", sound: 520 }
 };
 
 function showPokemonBubble(element, message) {
   const oldBubble = document.querySelector(".pokemon-bubble");
-
-  if (oldBubble) {
-    oldBubble.remove();
-  }
-
+  if (oldBubble) oldBubble.remove();
   const bubble = document.createElement("div");
   bubble.className = "pokemon-bubble";
   bubble.textContent = message;
   document.body.appendChild(bubble);
-
   const rect = element.getBoundingClientRect();
   const bubbleWidth = 220;
-
-  let left = rect.left + rect.width / 2 - bubbleWidth / 2;
-  let top = rect.top - 60;
-
-  left = Math.max(8, Math.min(left, window.innerWidth - bubbleWidth - 8));
-  top = Math.max(8, top);
-
+  let left = Math.max(8, Math.min(rect.left + rect.width / 2 - bubbleWidth / 2, window.innerWidth - bubbleWidth - 8));
+  let top = Math.max(8, rect.top - 60);
   bubble.style.left = `${left}px`;
   bubble.style.top = `${top}px`;
-
-  setTimeout(() => {
-    bubble.remove();
-  }, 2300);
+  setTimeout(() => bubble.remove(), 2300);
 }
 
 function createPokemonSparks(element) {
   const rect = element.getBoundingClientRect();
   const symbols = ["✦", "✧", "⚡", "★", "✨"];
-
   for (let i = 0; i < 5; i++) {
     const spark = document.createElement("span");
-
     spark.className = "pokemon-spark";
     spark.textContent = symbols[i % symbols.length];
     spark.style.left = `${rect.left + rect.width / 2}px`;
     spark.style.top = `${rect.top + rect.height / 2}px`;
     spark.style.setProperty("--spark-x", `${(Math.random() - .5) * 130}px`);
     spark.style.setProperty("--spark-y", `${-30 - Math.random() * 90}px`);
-
     document.body.appendChild(spark);
-
-    setTimeout(() => {
-      spark.remove();
-    }, 900);
+    setTimeout(() => spark.remove(), 900);
   }
 }
 
 function activateBackgroundPokemon(element) {
   const activity = BG_POKEMON_ACTIVITY[element.id];
-
-  if (!activity) {
-    return;
-  }
-
-  element.classList.remove(
-    "activity-bounce",
-    "activity-spin",
-    "activity-wiggle"
-  );
-
-  /*
-   * Paksa browser memulakan animasi semula setiap kali Pokémon diklik.
-   */
+  if (!activity) return;
+  element.classList.remove("activity-bounce", "activity-spin", "activity-wiggle");
   void element.offsetWidth;
-
   element.classList.add(activity.className);
-
   showPokemonBubble(element, activity.message);
   createPokemonSparks(element);
-
-  /*
-   * Fungsi bip() telah tersedia dalam kod asal anda.
-   */
-  if (typeof bip === "function") {
-    bip(activity.sound, .14);
-  }
-
-  setTimeout(() => {
-    element.classList.remove(activity.className);
-  }, 950);
+  if (typeof bip === "function") bip(activity.sound, .14);
+  setTimeout(() => element.classList.remove(activity.className), 950);
 }
 
 function setupBackgroundPokemon() {
@@ -821,7 +916,6 @@ function setupBackgroundPokemon() {
       event.stopPropagation();
       activateBackgroundPokemon(element);
     });
-
     element.addEventListener("keydown", event => {
       if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
@@ -838,7 +932,3 @@ render();
 </script>
 </body>
 </html>
-
-
-
-
