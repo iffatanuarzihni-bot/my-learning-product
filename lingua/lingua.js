@@ -135,8 +135,20 @@ function toast(t){const d=document.createElement("div");d.className="lg-toast";d
 const back=(to,l)=>`<button class="ghost" data-act="${to||"hub"}">⬅ ${l||"Kembali"}</button>`;
 const bar=(v,m,c)=>`<div class="bar ${c||""}"><i style="width:${Math.max(0,Math.min(100,v/m*100))}%"></i></div>`;
 const hpc=(h,m)=>h/m<.35?"hp low":h/m<.65?"hp mid":"hp";
-/* Dialog RPG: klik untuk teruskan */
-function dialog(lines,done,who,cls){let i=0;const d=()=>{show(`<div class="lg-dlg" id="dl"><b>${esc(who||"Profesor Bahasa")}:</b> ${esc(lines[i])}<br><small>(klik untuk teruskan ▶ ${i+1}/${lines.length})</small></div>`,cls);$("#dl").onclick=()=>{snd("click");i++;i<lines.length?d():done()}};d()}
+/* Potret watak yang sedang bercakap (emoji besar + Pokémon pendamping) */
+const PORT={"Profesor Bahasa":{e:"🧑‍🔬"},"Bos Roket":{e:"🦹",p:53},"Juara Bahasa":{e:"👑",p:149},"Flora":{e:"🌸",p:43},"Volt":{e:"⚡",p:26},"Rocky":{e:"⛏️",p:95}};
+const portrait=(who,cls)=>{const P=PORT[who]||{e:"🧑"};return `<div class="lg-port ${cls||""}"><span class="lg-face">${P.e}</span>${P.p?`<span class="lg-pk">${spr(P.p,160)}</span>`:""}</div>`};
+/* Dialog RPG: setiap baris boleh "teks" atau [penutur,"teks"]; klik untuk teruskan */
+function dialog(lines,done,who,cls){
+ let i=0,tm=null;
+ const d=()=>{
+  const L=lines[i],sp=Array.isArray(L)?L[0]:(who||"Profesor Bahasa"),tx=Array.isArray(L)?L[1]:L;
+  show(`<div class="lg-talk"><div class="lg-stage">${portrait(sp)}</div><div class="lg-dlg" id="dl"><b class="lg-who">${esc(sp)}</b><span id="dt"></span><br><small>(klik untuk teruskan ▶ ${i+1}/${lines.length})</small></div></div>`,cls);
+  const el=$("#dt");let n=0;
+  tm=setInterval(()=>{n++;el.textContent=tx.slice(0,n);if(n>=tx.length){clearInterval(tm);tm=null}},22);
+  $("#dl").onclick=()=>{snd("click");if(tm){clearInterval(tm);tm=null}if(n<tx.length){el.textContent=tx;n=tx.length;return}i++;i<lines.length?d():done()};
+ };d();
+}
 
 /* ---------- SOALAN ---------- */
 function mk(arr,n,t){return shuf(arr).slice(0,n).map(q=>{const ix=shuf(q.o.map((_,i)=>i));return{q:q.q,o:ix.map(i=>q.o[i]),a:ix.indexOf(q.a),e:q.e,x:q.x,t:t||q.t}})}
@@ -205,9 +217,9 @@ function hub(){
 function region(r){
  const R=RG[r],pr=G.prog[r]||0,can=pr>=3||G.badges.includes(r);music("menu");
  show(`${back("hub","Peta")}<h2>${R.n}</h2><p>${R.top} · Ketua Gim <b>${R.leader}</b></p><div style="font-size:2rem">${R.deco}</div>
- <div class="lg-dlg"><b>${R.leader}:</b> ${esc(R.lines)}${pr<3&&!G.badges.includes(r)?" Selesaikan 3 aktiviti dahulu sebelum mencabar saya!":""}</div>
+ <div class="lg-row lg-sayrow">${portrait(R.leader,"sm")}<div class="lg-dlg" style="flex:1;min-width:220px"><b class="lg-who">${R.leader}</b>${esc(R.lines)}${pr<3&&!G.badges.includes(r)?" Selesaikan 3 aktiviti dahulu sebelum mencabar saya!":""}</div></div>
  <p>Cabaran wilayah: ${Math.min(pr,3)}/3 ${bar(Math.min(pr,3),3)}</p>
- <div class="lg-nav"><button data-act="enc" data-a="${r}">🌿 Pertemuan Liar</button><button data-act="trn" data-a="${r}">⚔️ Pertarungan Jurulatih</button><button data-act="puz" data-a="${r}">🧩 Teka-teki Pokémon</button><button data-act="hunt" data-a="${r}">🔎 Cari Kata Tersembunyi</button><button data-act="gym" data-a="${r}" ${can?"":"disabled"}>🏟️ Cabaran Gim ${can?"":"🔒"}</button></div>`,R.bg);
+ <div class="lg-nav"><button data-act="enc" data-a="${r}">🌿 Pertemuan Liar</button><button data-act="trn" data-a="${r}">⚔️ Pertarungan Jurulatih</button><button data-act="puz" data-a="${r}">🧩 Teka-teki Pokémon</button><button data-act="hunt" data-a="${r}">🔎 Cari Kata (Pilih Terus)</button><button data-act="gym" data-a="${r}" ${can?"":"disabled"}>🏟️ Cabaran Gim ${can?"":"🔒"}</button></div>`,R.bg);
 }
 const hubBtn=r=>`<button data-act="region" data-a="${r}">Kembali ke ${RG[r].n}</button>`;
 function done(r,msgs,extra){const m=alive()[0];return show(`<div class="card" style="text-align:center"><h2>🎉 Misi Selesai!</h2>${(msgs||[]).map(t=>`<p>${t}</p>`).join("")}${extra||""}${hubBtn(r)}</div>`,RG[r].bg)}
@@ -245,8 +257,9 @@ function battle(c){
  const N=c.qs.length,need=Math.ceil(N*.7),emax=need*10;let i=0,hit=0,ehp=emax,msg=`${SP[c.e.id].n} mahu bertarung!`,cu=alive()[0];
  if(!cu){toast("Pasukan anda pengsan! Pergi ke Pusat Pokémon.");return c.back()}
  music("battle");snd("enc");
+ const FX={Rumput:"🍃",Api:"🔥",Air:"💧",Elektrik:"⚡",Batu:"🪨",Psikik:"🔮",Naga:"🐲",Racun:"☠️",Terbang:"💨",Serangga:"🐛",Lawan:"👊",Biasa:"✨"};
  const sc=(an)=>{const it=G.items;$("#sc").innerHTML=`<div class="lg-scene ${c.bg}"><div class="lg-pl en"><b>${SP[c.e.id].n}</b> Tahap ${c.e.lv}${bar(ehp,emax,hpc(ehp,emax))}</div>
-  <div class="lg-sp enemy ${an==="atk"?"shake":""}">${spr(c.e.id,110)}</div><div class="lg-sp me ${an==="hurt"?"shake":an==="atk"?"lunge":""}">${spr(cu.id,100)}</div>
+  <div class="lg-sp enemy ${an==="atk"?"hit":an==="hurt"?"lunge-en":""}">${spr(c.e.id,110)}</div><div class="lg-sp me ${an==="hurt"?"hit":an==="atk"?"lunge-me":""}">${spr(cu.id,100)}</div>${an==="atk"?`<span class="lg-fx to-en">${FX[SP[cu.id].t]||"✨"}</span>`:an==="hurt"?`<span class="lg-fx to-me">${FX[SP[c.e.id].t]||"✨"}</span>`:""}
   <div class="lg-pl me"><b>${SP[cu.id].n}</b> Tahap ${cu.lv}${bar(cu.hp,mhp(cu),hpc(cu.hp,mhp(cu)))}<small>${cu.hp}/${mhp(cu)} HP</small></div><div class="lg-msg">${esc(msg)}</div></div>
   <div class="lg-row"><button data-act="use" data-a="potion" ${it.potion>0&&cu.hp<mhp(cu)?"":"disabled"}>🧪 Potion ×${it.potion}</button><button data-act="use" data-a="super" ${it.super>0&&cu.hp<mhp(cu)?"":"disabled"}>💊 Super ×${it.super}</button><span class="tag">Soalan ${Math.min(i+1,N)}/${N} · Perlu ${need} betul (${hit}/${need})</span></div>`};
  BT={use:k=>{const it=G.items;if(it[k]<=0||cu.hp>=mhp(cu))return;it[k]--;cu.hp=Math.min(mhp(cu),cu.hp+(k==="super"?50:20));msg=`${SP[cu.id].n} dipulihkan!`;snd("ok");sc()}};
@@ -272,10 +285,10 @@ function battle(c){
 const avgLv=()=>{const a=alive()[0];return a?a.lv:3};
 function trainer(r){
  const nm=rnd(["Ali","Mei Ling","Kumar","Aisyah","Jebat","Siti"]),e={id:rnd(RG[r].pool),lv:Math.max(2,avgLv()+rnd([-1,0,1]))};
- dialog([`Jurulatih ${nm}: Saya akan mencabar pengetahuan tatabahasa anda!`],()=>battle({title:`Jurulatih ${nm}`,bg:RG[r].bg,e,qs:Q(r,5),atk:9,xp:30,coins:30,prog:r,back:()=>region(r)}),"Jurulatih "+nm,RG[r].bg);
+ dialog(["Saya akan mencabar pengetahuan tatabahasa anda!"],()=>battle({title:`Jurulatih ${nm}`,bg:RG[r].bg,e,qs:Q(r,5),atk:9,xp:30,coins:30,prog:r,back:()=>region(r)}),"Jurulatih "+nm,RG[r].bg);
 }
 function gym(r){
- const R=RG[r];dialog([`${R.leader}: Saya Ketua Gim ${R.n}! Tunjukkan anda memahami ${R.top.toLowerCase()}!`],()=>battle({title:`Gim ${R.n}: ${R.leader}`,bg:R.bg,e:R.gym,qs:Q(r,10),atk:12,xp:70,coins:70,back:()=>region(r),
+ const R=RG[r];dialog([`Saya Ketua Gim ${R.n}! Tunjukkan anda memahami ${R.top.toLowerCase()}!`],()=>battle({title:`Gim ${R.n}: ${R.leader}`,bg:R.bg,e:R.gym,qs:Q(r,10),atk:12,xp:70,coins:70,back:()=>region(r),
   onWin:(h,n)=>{const first=!G.badges.includes(r);if(first){G.badges.push(r);snd("badge")}sync(r,h,n);chk();return `<p class="lg-badge">🏅 ${R.badge}${first?" diperoleh!":""}</p>`}}),R.leader,R.bg);
 }
 function elite(){
@@ -289,10 +302,10 @@ function champ(){
  show(`${back("hub","Peta")}<h2>👑 Liga Juara</h2><div class="card"><p>${G.master?"Anda sudah menjadi PENGUASA BAHASA POKÉMON! Cabar semula untuk berlatih.":"Bos Roket telah tewas! Kini cabar Juara Bahasa."}</p><div class="lg-row"><button data-act="final">🏆 Cabar Juara Bahasa</button><button data-act="elite">🏅 Elit Empat</button></div></div>`,"lg-c1");
 }
 function boss(){
- dialog(["Bos Roket: Hahaha! Pokédex Bahasa itu milik kami!","Profesor Bahasa: Jawab dengan betul, "+G.name+". Kita boleh menang!"],()=>battle({title:"Bos Pasukan Roket",bg:"lg-c1",e:{id:53,lv:28},qs:mixed(10),atk:14,xp:100,coins:100,back:champ,onWin:()=>{G.rocket=true;return "<p>🚀 Pasukan Roket dikalahkan! Data Pokédex Bahasa dipulihkan.</p>"}}),"Bos Roket","lg-c1");
+ dialog([["Bos Roket","Hahaha! Pokédex Bahasa itu milik kami!"],["Profesor Bahasa","Jawab dengan betul, "+G.name+". Kita boleh menang!"]],()=>battle({title:"Bos Pasukan Roket",bg:"lg-c1",e:{id:53,lv:28},qs:mixed(10),atk:14,xp:100,coins:100,back:champ,onWin:()=>{G.rocket=true;return "<p>🚀 Pasukan Roket dikalahkan! Data Pokédex Bahasa dipulihkan.</p>"}}),"Bos Roket","lg-c1");
 }
 function final(){
- dialog(["Juara Bahasa: Selamat datang ke arena akhir! 20 soalan, 14 jawapan betul diperlukan.","Tunjukkan bahawa anda menguasai kata berimbuhan, kata majmuk dan kata ganda!"],()=>battle({title:"Juara Bahasa: Peperiksaan Akhir",bg:"lg-c1",e:{id:149,lv:40},qs:Q("c1",20),atk:12,xp:200,coins:200,back:champ,
+ dialog(["Selamat datang ke arena akhir! 20 soalan, 14 jawapan betul diperlukan.","Tunjukkan bahawa anda menguasai kata berimbuhan, kata majmuk dan kata ganda!"],()=>battle({title:"Juara Bahasa: Peperiksaan Akhir",bg:"lg-c1",e:{id:149,lv:40},qs:Q("c1",20),atk:12,xp:200,coins:200,back:champ,
   onWin:(h,n)=>{G.master=true;sync("c1",h,n);chk();return `<p class="lg-badge">🏆 PENGUASA BAHASA POKÉMON 🏆</p><p>Tahniah, ${esc(G.name)}! Anda telah memulihkan Pokédex Bahasa.</p>`}}),"Juara Bahasa","lg-c1");
 }
 
@@ -328,9 +341,10 @@ function pzPadan(r){
 
 /* ---------- CARI KATA TERSEMBUNYI ---------- */
 function hunt(r){
+ /* Semua perkataan dipaparkan terus (tiada kotak tertutup). Murid ketik perkataan yang betul. */
  const t=RG[r].t,tg=shuf(W.filter(w=>w.t===t)).slice(0,4),ot=shuf(W.filter(w=>w.t!==t)).slice(0,6),tiles=shuf(tg.concat(ot).map(w=>({w,s:0})));let found=0,msg="";
- const draw=()=>{show(`<h2>🔎 Cari Kata Tersembunyi</h2><div class="card"><p>Cari <b>4 perkataan ${TN[t].toLowerCase()}</b> yang tersembunyi di sekitar ${RG[r].n}! Ditemui: ${found}/4</p><div class="lg-tiles">${tiles.map((x,i)=>`<button data-i="${i}" class="${x.s===1?"got":x.s===2?"miss":""}" ${x.s?"disabled":""}>${x.s?esc(x.w.w):"📦"}</button>`).join("")}</div>${msg?`<div class="lg-fb ${msg[0]}"><p>${msg[1]}</p></div>`:""}${found>=4?`<button id="hk">Selesai ➡</button>`:""}</div>`,RG[r].bg);
-  document.querySelectorAll(".lg-tiles button").forEach(b=>b.onclick=()=>{const x=tiles[+b.dataset.i];if(x.w.t===t){x.s=1;found++;snd("ok");msg=["good",`Betul! ${esc(x.w.w)} ialah ${esc(x.w.n)}.`]}else{x.s=2;snd("no");msg=["try",`Tidak mengapa! ${esc(x.w.w)} ialah ${TN[x.w.t]} (${esc(x.w.n)}). Teruskan mencari!`]}draw()});
+ const draw=()=>{show(`${back("region","Kembali").replace('data-act="region"','data-act="region" data-a="'+r+'"')}<h2>🔎 Pilih Perkataan ${TN[t]}</h2><div class="card"><p>Ketik <b>4 perkataan ${TN[t].toLowerCase()}</b> daripada senarai di bawah. Ditemui: ${found}/4</p><div class="lg-tiles">${tiles.map((x,i)=>`<button data-i="${i}" class="${x.s===1?"got":x.s===2?"miss":""}" ${x.s?"disabled":""}>${esc(x.w.w)}${x.s===1?" ✔":""}</button>`).join("")}</div>${msg?`<div class="lg-fb ${msg[0]}"><p>${msg[1]}</p></div>`:""}${found>=4?`<button id="hk">Selesai ➡</button>`:""}</div>`,RG[r].bg);
+  document.querySelectorAll(".lg-tiles button").forEach(b=>b.onclick=()=>{const x=tiles[+b.dataset.i];if(x.w.t===t){x.s=1;found++;snd("ok");msg=["good",`Betul! ${esc(x.w.w)} ialah ${esc(x.w.n)}.`]}else{x.s=2;snd("no");msg=["try",`Tidak mengapa! ${esc(x.w.w)} ialah ${TN[x.w.t]} (${esc(x.w.n)}). Teruskan memilih!`]}draw()});
   const h=$("#hk");if(h)h.onclick=()=>{const m=reward(25,30,alive()[0]);G.prog[r]=(G.prog[r]||0)+1;snd("win");done(r,["Semua kata ditemui! +25 XP, +30 🪙",...m])}};draw();
 }
 
@@ -375,7 +389,7 @@ function achv(){show(`${back()}<h2>🏆 Pencapaian</h2><div class="lg-grid">${AC
 function prof(i){
  show(`${back()}<h2>🧑‍🔬 Profesor Bahasa</h2><p class="mut">Pembantu ini menggunakan pangkalan pengetahuan dan jawapan yang telah ditetapkan. Ia bukan AI sebenar.</p>
  <div class="lg-grid">${["imbuhan","majmuk","ganda"].map(t=>`<div class="card"><h2>${KB[t].t}</h2><p>${esc(KB[t].d)}</p><p><b>Contoh:</b> ${esc(KB[t].ex)}</p><p><i>💡 ${esc(KB[t].hint)}</i></p></div>`).join("")}</div>
- <h2>Soalan Lazim</h2><div class="lg-nav">${FAQ.map((f,j)=>`<button class="${i==j?"":"ghost"}" data-act="prof" data-a="${j}">${esc(f[0])}</button>`).join("")}</div>${i!==undefined&&FAQ[i]?`<div class="lg-dlg"><b>Prof. Bahasa:</b> ${esc(FAQ[i][1])}</div>`:""}`,"lg-dark");
+ <h2>Soalan Lazim</h2><div class="lg-nav">${FAQ.map((f,j)=>`<button class="${i==j?"":"ghost"}" data-act="prof" data-a="${j}">${esc(f[0])}</button>`).join("")}</div>${i!==undefined&&FAQ[i]?`<div class="lg-row lg-sayrow">${portrait("Profesor Bahasa","sm")}<div class="lg-dlg" style="flex:1;min-width:220px"><b class="lg-who">Profesor Bahasa</b>${esc(FAQ[i][1])}</div></div>`:""}`,"lg-dark");
 }
 
 /* ---------- TETAPAN AUDIO ---------- */
