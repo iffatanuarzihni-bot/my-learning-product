@@ -74,3 +74,76 @@
 
 .lg-chip.ok{background:var(--grn);color:#fff}.lg-chip.no{background:var(--red);color:#fff}.lg-chip.dim{opacity:.5}.lg-chip.go{background:#fff;outline:3px solid var(--pri)}
 .lg-main .sil{opacity:.8}
+
+/* ===== SAIZ RESPONSIF: tulisan, kotak dan watak mengikut saiz peranti ===== */
+.lg-main{font-size:clamp(1.05rem,.9rem + 1vw,1.45rem);max-width:none;padding:1rem max(1rem,calc((100% - 1150px)/2)) 2rem}
+.lg-main h2{font-size:clamp(1.4rem,1rem + 2vw,2.4rem)}
+.lg-main h1{font-size:clamp(1.1rem,.8rem + 2vw,2rem)!important}
+.lg-main button,.lg-nav button,.lg-row button{font-size:clamp(1rem,.85rem + .8vw,1.3rem);padding:.7rem 1.2rem}
+.lg-main .tag{font-size:clamp(.85rem,.7rem + .6vw,1.15rem)}
+.lg-main .card{padding:clamp(1rem,2.5vw,1.8rem)}
+.lg-main .card p,.lg-main .card small{font-size:inherit}
+.lg-main small{font-size:.8em}
+.lg-q h3{font-size:clamp(1.25rem,1rem + 1.8vw,2.1rem);line-height:1.35}
+.lg-opts{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:.9rem}
+.lg-opts button{padding:clamp(.8rem,2vw,1.3rem);font-size:clamp(1.05rem,.9rem + 1vw,1.5rem)}
+.lg-fb{font-size:clamp(1rem,.85rem + .8vw,1.35rem)}
+.lg-tray{font-size:clamp(1.4rem,1rem + 2vw,2.2rem);min-height:4rem}
+.lg-chip{font-size:clamp(1.1rem,.9rem + 1vw,1.6rem)!important}
+.lg-tiles{grid-template-columns:repeat(auto-fit,minmax(min(46%,150px),1fr))}
+.lg-tiles button{min-height:clamp(80px,14vw,130px);font-size:clamp(1rem,.9rem + 1vw,1.5rem)}
+.lg-map{grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))}
+.lg-node{min-height:clamp(150px,22vw,260px);font-size:clamp(1rem,.9rem + 1vw,1.4rem)}
+.lg-node span{font-size:clamp(1.6rem,3vw,2.6rem)}
+.lg-grid{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+
+/* Pokémon besar mengisi skrin (tinggi adegan mengikut tinggi peranti) */
+.lg-scene{height:clamp(300px,52vh,600px)}
+.lg-sp img,.lg-sp .lg-fbk{width:clamp(110px,24vw,260px)!important;height:auto!important}
+.lg-sp .lg-fbk{font-size:clamp(4rem,14vw,9rem)}
+.lg-sp.big img{width:clamp(130px,28vw,280px)!important}
+.lg-grid .lg-sp.big img,.lg-row .lg-sp.big img{width:clamp(80px,14vw,140px)!important}
+.lg-pl{font-size:clamp(.9rem,.7rem + 1vw,1.4rem);min-width:clamp(150px,24vw,300px);padding:.4rem .8rem}
+.lg-pl .bar{height:clamp(12px,1.6vw,20px)}
+.lg-msg{font-size:clamp(1rem,.85rem + .9vw,1.45rem);padding:.6rem 1rem}
+.lg-hud .mon img,.lg-row>.mon img{width:clamp(48px,8vw,80px)!important;height:auto!important}
+
+/* ===== DIALOG: watak Profesor bercakap ===== */
+.lg-talk{display:flex;flex-direction:column;justify-content:flex-end;gap:1rem;min-height:calc(100vh - 8rem)}
+.lg-stage{flex:1;display:flex;align-items:center;justify-content:center;min-height:42vh}
+.lg-port{display:flex;align-items:flex-end;justify-content:center;gap:clamp(.5rem,3vw,2rem)}
+.lg-face{display:grid;place-items:center;width:clamp(150px,34vw,320px);height:clamp(150px,34vw,320px);font-size:clamp(5rem,20vw,12rem);line-height:1;background:radial-gradient(circle,#fffdf3 55%,#dce8ff);border:5px solid var(--ink);border-radius:50%;box-shadow:0 8px 0 rgba(10,18,38,.5);animation:lgTalk .6s ease-in-out infinite alternate}
+.lg-pk img{width:clamp(110px,24vw,240px)!important;height:auto!important;image-rendering:pixelated;animation:lgTalk .8s ease-in-out infinite alternate}
+.lg-port.sm .lg-face{width:clamp(84px,14vw,130px);height:clamp(84px,14vw,130px);font-size:clamp(3rem,8vw,5rem);animation:none}
+.lg-port.sm .lg-pk{display:none}
+@keyframes lgTalk{to{transform:translateY(-10px) scale(1.03)}}
+.lg-dlg{font-size:clamp(1.15rem,.9rem + 1.5vw,1.9rem);line-height:1.5;padding:clamp(1rem,2.5vw,1.8rem);border-radius:20px}
+.lg-who{display:block;color:var(--pri);margin-bottom:.3rem;font-size:.85em}
+.lg-sayrow{margin:1rem 0;align-items:center}
+@media(prefers-reduced-motion:reduce){.lg-face,.lg-pk img{animation:none}}
+
+/* ===== ANIMASI PERGERAKAN & SERANGAN POKÉMON ===== */
+.lg-scene{container-type:size;overflow:hidden}
+.lg-sp{animation:lgIdle 2.2s ease-in-out infinite;z-index:2}
+.lg-sp.enemy{animation-delay:-.8s}
+@keyframes lgIdle{50%{transform:translateY(-8px)}}
+.lg-sp.big{animation:lgIdle 2.2s ease-in-out infinite}
+/* Pokémon pemain meluru ke arah musuh */
+.lg-sp.me.lunge-me{animation:lgLungeMe .75s ease-in-out}
+.lg-sp.enemy.lunge-en{animation:lgLungeEn .75s ease-in-out}
+@keyframes lgLungeMe{0%{transform:translate(0,0)}35%{transform:translate(8vw,-4vh) scale(1.08)}55%{transform:translate(40vw,-22%) scale(1.18)}100%{transform:translate(0,0)}}
+@keyframes lgLungeEn{0%{transform:translate(0,0)}35%{transform:translate(-8vw,4vh) scale(1.08)}55%{transform:translate(-40vw,22%) scale(1.18)}100%{transform:translate(0,0)}}
+@supports (width:1cqw){
+ @keyframes lgLungeMe{0%{transform:translate(0,0)}35%{transform:translate(10cqw,-6cqh) scale(1.08)}55%{transform:translate(48cqw,-34cqh) scale(1.18)}100%{transform:translate(0,0)}}
+ @keyframes lgLungeEn{0%{transform:translate(0,0)}35%{transform:translate(-10cqw,6cqh) scale(1.08)}55%{transform:translate(-48cqw,34cqh) scale(1.18)}100%{transform:translate(0,0)}}
+}
+/* Kesan hentaman: bergegar dan berkelip */
+.lg-sp.hit{animation:lgHit .7s .45s both}
+@keyframes lgHit{0%{transform:translateX(0);filter:none}15%{transform:translateX(-16px);filter:brightness(3) saturate(0)}30%{transform:translateX(16px);filter:none}45%{transform:translateX(-12px);filter:brightness(3) saturate(0)}60%{transform:translateX(10px)}100%{transform:translateX(0);filter:none}}
+/* Projektil jenis Pokémon terbang dari penyerang ke sasaran */
+.lg-fx{position:absolute;z-index:3;font-size:clamp(2.6rem,9vw,5.5rem);filter:drop-shadow(0 0 12px #ffcb05);pointer-events:none;opacity:0}
+.lg-fx.to-en{left:22%;bottom:26%;animation:lgFxEn .7s .2s ease-in forwards}
+.lg-fx.to-me{right:22%;top:26%;animation:lgFxMe .7s .2s ease-in forwards}
+@keyframes lgFxEn{0%{opacity:1;transform:translate(0,0) scale(.6) rotate(0)}100%{opacity:0;transform:translate(52cqw,-32cqh) scale(1.7) rotate(360deg)}}
+@keyframes lgFxMe{0%{opacity:1;transform:translate(0,0) scale(.6) rotate(0)}100%{opacity:0;transform:translate(-52cqw,32cqh) scale(1.7) rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.lg-sp,.lg-sp.hit,.lg-sp.lunge-me,.lg-sp.lunge-en,.lg-fx{animation:none}.lg-fx{display:none}}
