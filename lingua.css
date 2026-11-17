@@ -1,0 +1,76 @@
+/* ===== Pokémon Language Adventure: Lingua Region =====
+   Menumpang pada gaya sedia ada (button, .card, .bar, .tag) dalam index.html */
+.lg{position:fixed;inset:0;z-index:100;display:none;flex-direction:column;background:#0d1630}
+.lg.on{display:flex}
+.lg-top{display:flex;justify-content:space-between;align-items:center;gap:.5rem;padding:.5rem .8rem;background:#101c36;border-bottom:4px solid var(--gold)}
+.lg-top b{font:400 .6rem "Press Start 2P",monospace;color:var(--gold)}
+.lg-top button{padding:.3rem .6rem;font-size:.85rem}
+.lg-main{flex:1;overflow-y:auto;padding:1rem;max-width:980px;width:100%;margin:0 auto;animation:pop .3s ease-out}
+.lg-main h2{color:var(--gold);text-shadow:2px 2px 0 var(--ink)}
+.lg-main .mut,.lg-main p{color:#e8f0ff}
+.lg-main .card p,.lg-main .card .mut,.lg-main .card small{color:var(--navy)}
+.lg-main .card h2{color:var(--navy);text-shadow:none}
+.lg-hub{background:linear-gradient(#1c3566,#2d7a4f)}
+.lg-g1{background:linear-gradient(#7fd6ff,#3aa75a 70%,#1f6b38)}
+.lg-g2{background:linear-gradient(#0b1030,#1f3b8a 55%,#00b3d9)}
+.lg-g3{background:linear-gradient(#4a3a33,#8b6b4a 60%,#3a2b24)}
+.lg-c1{background:linear-gradient(#2a0f4d,#7b3fbf 60%,#ffcb05)}
+.lg-dark{background:#13203f}
+.lg-row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.lg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem}
+.lg-grid .card{margin:0}
+.lg-map{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.9rem;margin:1rem 0}
+.lg-node{padding:1rem;text-align:center;border-radius:20px;min-height:130px;display:flex;flex-direction:column;justify-content:center;gap:.3rem}
+.lg-node small{font-weight:600}
+.lg-nav{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+.lg-nav button,.lg-row button{padding:.45rem .8rem;font-size:.92rem}
+.lg-dlg{background:var(--paper);color:var(--ink);border:4px solid var(--ink);border-radius:16px;padding:.9rem 1.1rem;margin:1rem 0;box-shadow:0 5px 0 var(--ink);cursor:pointer;font-weight:700}
+.lg-dlg small{color:var(--mut)}
+.lg-scene{position:relative;height:300px;border:4px solid var(--ink);border-radius:22px;overflow:hidden;margin-bottom:.8rem;background:inherit}
+.lg-sp{position:absolute}
+.lg-sp.enemy{right:9%;top:16%}
+.lg-sp.me{left:9%;bottom:12%}
+.lg-sp img{image-rendering:pixelated}
+.lg-sp.big{position:static;display:flex;justify-content:center}
+.lg-pl{position:absolute;background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:12px;padding:.25rem .55rem;min-width:150px;font-size:.85rem}
+.lg-pl.en{left:4%;top:6%}
+.lg-pl.me{right:4%;bottom:14%}
+.lg-pl .bar{height:12px;margin:.15rem 0;min-width:0}
+.lg-msg{position:absolute;left:0;right:0;bottom:0;background:rgba(16,28,54,.88);color:#fff;padding:.35rem .7rem;font-size:.9rem;min-height:2.2rem}
+.lg-fbk{font-size:2rem}
+.shake{animation:lgShake .5s}
+.lunge{animation:lgLunge .5s}
+@keyframes lgShake{25%{transform:translateX(-10px)}50%{transform:translateX(10px)}75%{transform:translateX(-6px)}}
+@keyframes lgLunge{50%{transform:translate(60px,-30px) scale(1.1)}}
+.lg-q h3{margin:.2rem 0 .6rem;color:var(--navy)}
+.lg-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem}
+.lg-opts button{text-align:left;background:#f4f8ff}
+.lg-opts .ok{background:var(--grn);color:#fff}
+.lg-opts .no{background:var(--red);color:#fff}
+.lg-opts .dim{opacity:.5}
+.lg-hint{background:#fff4d6;border:3px solid var(--ink);border-radius:12px;padding:.5rem .8rem;color:var(--ink)!important}
+.lg-fb{margin-top:.8rem;padding:.8rem 1rem;border:3px solid var(--ink);border-radius:14px}
+.lg-fb.good{background:#e3fbea}
+.lg-fb.try{background:#fff4d6}
+.lg-fb p{margin:.3rem 0;color:var(--ink)!important}
+.lg-chip{margin:.2rem}
+.lg-tray{min-height:3rem;border:3px dashed var(--ink);border-radius:12px;padding:.5rem;background:#fff;color:var(--ink);font-weight:800;font-size:1.2rem}
+.lg-ball{width:64px;height:64px;margin:1rem auto;border-radius:50%;border:4px solid var(--ink);background:linear-gradient(#ef3e4a 48%,var(--ink) 48% 56%,#fff 56%)}
+.lg-ball.throw{animation:lgBall 1.8s ease-in-out}
+@keyframes lgBall{0%{transform:translateY(-90px) scale(.5)}25%{transform:translateY(0)}40%{transform:rotate(-25deg)}55%{transform:rotate(25deg)}70%{transform:rotate(-20deg)}85%{transform:rotate(15deg)}100%{transform:rotate(0)}}
+.lg-tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:.6rem}
+.lg-tiles button{min-height:70px;font-size:.95rem}
+.lg-tiles .got{background:var(--grn);color:#fff}
+.lg-tiles .miss{background:#ffd9d9}
+.lg-badge{font:400 .8rem "Press Start 2P",monospace;color:var(--gold)!important;line-height:1.8}
+.lg-toast{position:fixed;left:50%;top:60px;transform:translateX(-50%);z-index:300;background:var(--paper);color:var(--ink);border:3px solid var(--ink);border-radius:14px;padding:.6rem 1rem;font-weight:800;box-shadow:0 5px 0 var(--ink);animation:lgToast 2.6s forwards}
+@keyframes lgToast{0%{opacity:0}10%,80%{opacity:1}100%{opacity:0}}
+.lg-modal{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.6);display:grid;place-items:center;padding:1rem}
+.lg-modal .card{max-width:380px;width:100%;margin:0}
+.lg-modal .card *{color:var(--navy)}
+.lg-main input[type=range]{width:100%;padding:0;border:0}
+@media(max-width:600px){.lg-scene{height:260px}.lg-sp.enemy img,.lg-sp.me img{width:80px;height:80px}.lg-pl{min-width:120px;font-size:.75rem}}
+@media(prefers-reduced-motion:reduce){.shake,.lunge,.lg-ball.throw{animation:none}}
+
+.lg-chip.ok{background:var(--grn);color:#fff}.lg-chip.no{background:var(--red);color:#fff}.lg-chip.dim{opacity:.5}.lg-chip.go{background:#fff;outline:3px solid var(--pri)}
+.lg-main .sil{opacity:.8}
